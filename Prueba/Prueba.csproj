@@ -72,6 +72,10 @@
       <Project>{6f783db6-b051-413d-a395-09a156427217}</Project>
       <Name>ServiceIMSS</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ServiceInvgate\ServiceInvgate.csproj">
+      <Project>{ad213e44-06c7-4861-9dc0-ac9a63172ef8}</Project>
+      <Name>ServiceInvgate</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

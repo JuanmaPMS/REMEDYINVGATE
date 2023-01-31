@@ -12,6 +12,7 @@
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+	<LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -41,6 +42,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Invgate\IncidentesCommentGetRequest.cs" />
+    <Compile Include="Invgate\IncidentesCommentGetResponse.cs" />
+    <Compile Include="Invgate\IncidentesCommentPostRequest.cs" />
+    <Compile Include="Invgate\IncidentesCommentPostResponse.cs" />
+    <Compile Include="Invgate\IncidentesGetRequest.cs" />
+    <Compile Include="Invgate\IncidentesGetResponse.cs" />
+    <Compile Include="Invgate\IncidentesPostRequest.cs" />
+    <Compile Include="Invgate\IncidentesPostResponse.cs" />
+    <Compile Include="Invgate\IncidentesPutRequest.cs" />
+    <Compile Include="Invgate\IncidentesPutResponse.cs" />
     <Compile Include="Remedy\Categorizacion.cs" />
     <Compile Include="Remedy\Incidente.cs" />
     <Compile Include="Remedy\Comentario.cs" />
@@ -50,8 +61,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Remedy\Result.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Invgate\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
