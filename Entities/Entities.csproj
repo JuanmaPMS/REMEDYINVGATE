@@ -12,7 +12,7 @@
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-	<LangVersion>8.0</LangVersion>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -58,6 +58,16 @@
     <Compile Include="Intermedio\CreaTicket.cs" />
     <Compile Include="Intermedio\ActualizaTicket.cs" />
     <Compile Include="Intermedio\Result.cs" />
+    <Compile Include="Invgate\OrdenTrabajoCommentGetRequest.cs" />
+    <Compile Include="Invgate\OrdenTrabajoCommentGetResponse.cs" />
+    <Compile Include="Invgate\OrdenTrabajoCommentPostRequest.cs" />
+    <Compile Include="Invgate\OrdenTrabajoCommentPostResponse.cs" />
+    <Compile Include="Invgate\OrdenTrabajoGetRequest.cs" />
+    <Compile Include="Invgate\OrdenTrabajoGetResponse.cs" />
+    <Compile Include="Invgate\OrdenTrabajoPostRequest.cs" />
+    <Compile Include="Invgate\OrdenTrabajoPostResponse.cs" />
+    <Compile Include="Invgate\OrdenTrabajoPutRequest.cs" />
+    <Compile Include="Invgate\OrdenTrabajoPutResponse.cs" />
     <Compile Include="Remedy\Categorizacion.cs" />
     <Compile Include="Remedy\Incidente.cs" />
     <Compile Include="Remedy\Comentario.cs" />
