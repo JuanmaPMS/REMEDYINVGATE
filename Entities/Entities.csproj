@@ -52,6 +52,12 @@
     <Compile Include="Invgate\IncidentesPostResponse.cs" />
     <Compile Include="Invgate\IncidentesPutRequest.cs" />
     <Compile Include="Invgate\IncidentesPutResponse.cs" />
+    <Compile Include="Intermedio\ActualizaCategorizacion.cs" />
+    <Compile Include="Intermedio\ActualizaPriorizacion.cs" />
+    <Compile Include="Intermedio\AgregaNota.cs" />
+    <Compile Include="Intermedio\CreaTicket.cs" />
+    <Compile Include="Intermedio\ActualizaTicket.cs" />
+    <Compile Include="Intermedio\Result.cs" />
     <Compile Include="Remedy\Categorizacion.cs" />
     <Compile Include="Remedy\Incidente.cs" />
     <Compile Include="Remedy\Comentario.cs" />
