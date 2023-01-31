@@ -42,9 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Intermedio\ActualizaCategorizacion.cs" />
+    <Compile Include="Intermedio\ActualizaPriorizacion.cs" />
     <Compile Include="Intermedio\AgregaNota.cs" />
     <Compile Include="Intermedio\CreaTicket.cs" />
-    <Compile Include="Intermedio\ActualizaIncidente.cs" />
+    <Compile Include="Intermedio\ActualizaTicket.cs" />
     <Compile Include="Intermedio\Result.cs" />
     <Compile Include="Remedy\Categorizacion.cs" />
     <Compile Include="Remedy\Incidente.cs" />
