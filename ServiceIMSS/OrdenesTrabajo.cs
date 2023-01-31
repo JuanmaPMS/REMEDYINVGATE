@@ -72,9 +72,13 @@ namespace ServiceIMSS
 
                     foreach (XmlElement node in xmlNode)
                     {
+                        transaccion = node.LastChild.InnerText;
                         result.Resultado = node.FirstChild.InnerText;
                     }
-                    result.Estatus = true;
+                    if (transaccion == "Error")
+                        result.Estatus = false;
+                    else
+                        result.Estatus = true;
                 }
                 else
                 {
@@ -137,9 +141,13 @@ namespace ServiceIMSS
 
                     foreach (XmlElement node in xmlNode)
                     {
+                        transaccion = node.LastChild.InnerText;
                         result.Resultado = node.FirstChild.InnerText;
                     }
-                    result.Estatus = true;
+                    if (transaccion == "Error")
+                        result.Estatus = false;
+                    else
+                        result.Estatus = true;
                 }
                 else
                 {
@@ -201,9 +209,13 @@ namespace ServiceIMSS
 
                     foreach (XmlElement node in xmlNode)
                     {
+                        transaccion = node.LastChild.InnerText;
                         result.Resultado = node.FirstChild.InnerText;
                     }
-                    result.Estatus = true;
+                    if (transaccion == "Error")
+                        result.Estatus = false;
+                    else
+                        result.Estatus = true;
                 }
                 else
                 {
@@ -273,9 +285,13 @@ namespace ServiceIMSS
 
                     foreach (XmlElement node in xmlNode)
                     {
+                        transaccion = node.LastChild.InnerText;
                         result.Resultado = node.FirstChild.InnerText;
                     }
-                    result.Estatus = true;
+                    if (transaccion == "Error")
+                        result.Estatus = false;
+                    else
+                        result.Estatus = true;
                 }
                 else
                 {
