@@ -110,15 +110,28 @@ namespace Prueba
             //INCOMPLETO POR ID object respuesta = instance.GetCategoriasProducto(1140);
             //COMPLETO POR ID
             //object respuesta = instance.GetNombresCategoriasByProductoId(1413);
-            object respuesta = instance.GetNombresCategoriasByProductoNombre("NA");
+            //object respuesta = instance.GetNombresCategoriasByProductoNombre("NA");
 
             //object respuesta = instance.GetIdsCategoriasByProductoId(1347);
             //object respuesta = instance.GetIdsCategoriasByProductoNombre("PLUS 5500");
 
-            Console.WriteLine(respuesta);
+            //Console.WriteLine(respuesta);
+
+            
+
+
+
+
+
+
+
 
             Console.ReadKey();
 
         }
+
+
+
+
     }
 }
