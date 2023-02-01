@@ -34,12 +34,12 @@ namespace Prueba
             //result = incidentes.ActualizaCategorizacion(categorizacion);
 
 
-            //GET INCIDENTE
-            IncidentesGetRequest getRequest = new IncidentesGetRequest();
-            getRequest.id = 7086;
+            ////GET INCIDENTE
+            //IncidentesGetRequest getRequest = new IncidentesGetRequest();
+            //getRequest.id = 7086;
 
-            IncidentesInvgate instance = new IncidentesInvgate();
-            var respuesta = instance.GetIncidente(getRequest);
+            //IncidentesInvgate instance = new IncidentesInvgate();
+            //var respuesta = instance.GetIncidente(getRequest);
 
 
             ////POST INCIDENTE
@@ -102,8 +102,18 @@ namespace Prueba
             //IncidentesCommentInvgate comment = new IncidentesCommentInvgate();
             //var respuesta = comment.PostIncidenteComment(postRequest);
 
+            //GET INCIDENTE
+            //CategoriastInvgate getRequest = new CategoriastInvgate();
+            //getRequest.id = 7086;
 
+            CategoriastInvgate instance = new CategoriastInvgate();
+            //INCOMPLETO POR ID object respuesta = instance.GetCategoriasProducto(1140);
+            //COMPLETO POR ID
+            //object respuesta = instance.GetNombresCategoriasByProductoId(1413);
+            object respuesta = instance.GetNombresCategoriasByProductoNombre("NA");
 
+            //object respuesta = instance.GetIdsCategoriasByProductoId(1347);
+            //object respuesta = instance.GetIdsCategoriasByProductoNombre("PLUS 5500");
 
             Console.WriteLine(respuesta);
 

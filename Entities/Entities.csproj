@@ -42,6 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Invgate\ResultCategorias.cs" />
+    <Compile Include="Invgate\CategoriasInvgateResponse.cs" />
     <Compile Include="Invgate\IncidentesCommentGetRequest.cs" />
     <Compile Include="Invgate\IncidentesCommentGetResponse.cs" />
     <Compile Include="Invgate\IncidentesCommentPostRequest.cs" />

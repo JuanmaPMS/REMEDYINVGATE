@@ -95,6 +95,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CategoriastInvgate.cs" />
     <Compile Include="OrdenTrabajoCommentInvgate.cs" />
     <Compile Include="IncidentesCommentInvgate.cs" />
     <Compile Include="OrdenTrabajoInvgate.cs" />
