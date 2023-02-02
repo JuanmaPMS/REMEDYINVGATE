@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Configuration;
+using Entities.Invgate;
 
 namespace ServiceInvgate
 {
@@ -175,7 +176,7 @@ namespace ServiceInvgate
                 int idPadre = 0;
 
                 //Se agrega el producto, seria el ultimo
-
+                var sss = listaCategoriasAll.Where(x => x.name == nombreProducto).ToList();
                 if (listaCategoriasAll.Where(x => x.name == nombreProducto).ToList().Count == 0)
                 {
                     data.exito = false;
@@ -418,6 +419,128 @@ namespace ServiceInvgate
             }
             return data;
         }
+
+
+        public ResultCategorias GetNombresCategoriasByProductoNombreArreglo(string cadena)
+        {
+            ResultCategorias data = new ResultCategorias();
+
+            List<CategoriasInvgateResponse> listaCategoriasAll = new List<CategoriasInvgateResponse>();
+            List<CategoriasInvgateResponse> listaCategoriasEncontradas = new List<CategoriasInvgateResponse>();
+            
+            var arregloSplit = cadena.Split('|');
+            
+            int indexAuxiliar = 0;
+            string producto = null;
+
+            for (int i = (arregloSplit.Length - 1); i > 0; i--)
+            {
+                if (indexAuxiliar == 0) //NO SE HA DEFINIDO VALOR 
+                {
+                    if (arregloSplit[i] != "") {
+                        //SE DEFINE CUAL ES EL ULTIMO NIVEL
+                        indexAuxiliar = i;
+                        producto = arregloSplit[i];
+                    }
+                }
+            }
+
+            List<CategoriaComplemento> diccionarioBase = new List<CategoriaComplemento>();
+
+            ////SE INICIALIZA
+            //for (int i = 0; i < arregloSplit.Length; i++)
+            //{
+            //    diccionarioBase.Add(new CategoriaComplemento { nivel = i, categoria = "", idCategoria = null });
+            //}
+
+            try
+            {
+                var client = new RestClient(UrlServicios + "/categories");
+
+                var request = new RestRequest("", Method.Get);
+                client.Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator(user, password);
+
+                var response = client.Execute(request);
+
+                //Console.WriteLine(response.Content);
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    listaCategoriasAll = JsonConvert.DeserializeObject<List<CategoriasInvgateResponse>>(response.Content);
+                }
+                else
+                {
+                    data.exito = false;
+                    data.error = response.ErrorMessage;
+                    data.categorias = null;
+                    return data;
+                }
+
+                
+                //Se agrega el producto, seria el ultimo
+                listaCategoriasEncontradas = listaCategoriasAll.Where(x => x.name == producto).ToList();
+
+                listaCategoriasEncontradas.ForEach((x)=>
+                        {
+                            //x.diccionario = diccionarioBase;
+
+                            x.diccionario = new List<CategoriaComplemento>();
+                            //SE INICIALIZA
+                            for (int i = 0; i < arregloSplit.Length; i++)
+                            {
+                                x.diccionario.Add(new CategoriaComplemento { nivel = i, categoria = "", idCategoria = null });
+                            }
+
+
+
+                            int idPadre = 0;
+
+                            x.diccionario[indexAuxiliar].idCategoria = x.id;
+                            x.diccionario[indexAuxiliar].categoria = x.name;
+                            idPadre = x.parent_category_id;
+
+                            for (int i = (indexAuxiliar - 1); i >= 0; i--)
+                            {
+                                if (idPadre != 0)
+                                {
+                                    CategoriasInvgateResponse categoriaEncontrada = listaCategoriasAll.Where(y => y.id == idPadre).First();
+
+                                    x.diccionario[i].idCategoria = categoriaEncontrada.id;
+                                    x.diccionario[i].categoria = categoriaEncontrada.name;
+                                    idPadre = categoriaEncontrada.parent_category_id;
+                                }
+                            }
+
+                            for (int i = 0; i < x.diccionario.Count; i++)
+                            {
+                                if (i == 0)
+                                {
+                                    x.diccionarioCadena = x.diccionario[i].categoria;
+                                }
+                                else {
+                                    x.diccionarioCadena += "|"+ x.diccionario[i].categoria;
+                                }
+                            }
+                        });
+                data.exito = true;
+                data.error = null;
+
+                var aaa = JsonConvert.SerializeObject(listaCategoriasEncontradas);
+                data.categorias = listaCategoriasEncontradas.Where(x=> x.diccionarioCadena == cadena).First().diccionario;
+
+
+            }
+            catch (Exception ex)
+            {
+                data.exito = false;
+                data.error = ex.Message;
+                data.categorias = null;
+
+            }
+            return data;
+
+        }
+
 
     }
 }

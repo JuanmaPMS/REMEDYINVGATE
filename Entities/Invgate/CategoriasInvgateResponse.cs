@@ -11,6 +11,21 @@ namespace Entities
         public int id { get; set; }
         public string name { get; set; }
         public int parent_category_id { get; set; }
+
+
+        //auxiliar
+        public List<CategoriaComplemento> diccionario { get; set; }
+        public string diccionarioCadena { get; set; }
+
+    }
+
+    public class CategoriaComplemento {
+        public int nivel { get; set; }
+
+        public int? idCategoria { get; set; }
+        public string? categoria { get; set; }
         
     }
+
+
 }

@@ -9,6 +9,7 @@ using System.Configuration;
 using System.Net;
 using System.IO;
 using ServiceInvgate;
+using Entities.Invgate;
 
 namespace Prueba
 {
@@ -117,14 +118,24 @@ namespace Prueba
 
             //Console.WriteLine(respuesta);
 
-            
 
 
 
+            CategoriasProductoModel model = new CategoriasProductoModel();
 
+            model.Mesa = "MESA DE SERVICIO IMSS";
+            model.CatOperacion01 = "INFRAESTRUCTURA DE REDES Y TELECOMUNICACIONES";
+            model.CatOperacion02 = "REDES Y ENLACES";
+            model.CatOperacion03 = "SOPORTAR";
+            model.CatProducto01 = "HARDWARE";
+            model.CatProducto02 = "COMPUTO PERSONAL";
+            model.CatProducto03 = "ESCANER";
+            model.Producto = "TARJETA LOGICA";
 
+            //string cadena = "MESA DE SERVICIO IMSS|INFRAESTRUCTURA DE REDES Y TELECOMUNICACIONES|REDES Y ENLACES|SOPORTAR|HARDWARE|COMPUTO PERSONAL|ESCANER|TARJETA LOGICA";
+            string cadena = "MESA DE SERVICIO IMSS|INFRAESTRUCTURA DE REDES Y TELECOMUNICACIONES|TELEFONIA|SOPORTAR||||";
 
-
+            object respuesta = instance.GetNombresCategoriasByProductoNombreArreglo(cadena);
 
             Console.ReadKey();
 
