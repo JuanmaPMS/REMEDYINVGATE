@@ -492,7 +492,6 @@ namespace ServiceInvgate
                             }
 
 
-
                             int idPadre = 0;
 
                             x.diccionario[indexAuxiliar].idCategoria = x.id;
@@ -525,7 +524,7 @@ namespace ServiceInvgate
                 data.exito = true;
                 data.error = null;
 
-                var aaa = JsonConvert.SerializeObject(listaCategoriasEncontradas);
+                //var aaa = JsonConvert.SerializeObject(listaCategoriasEncontradas);
                 data.categorias = listaCategoriasEncontradas.Where(x=> x.diccionarioCadena == cadena).First().diccionario;
 
 

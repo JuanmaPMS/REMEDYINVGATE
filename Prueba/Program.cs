@@ -132,8 +132,11 @@ namespace Prueba
             model.CatProducto03 = "ESCANER";
             model.Producto = "TARJETA LOGICA";
 
+
+            // PRUEBAS
             //string cadena = "MESA DE SERVICIO IMSS|INFRAESTRUCTURA DE REDES Y TELECOMUNICACIONES|REDES Y ENLACES|SOPORTAR|HARDWARE|COMPUTO PERSONAL|ESCANER|TARJETA LOGICA";
-            string cadena = "MESA DE SERVICIO IMSS|INFRAESTRUCTURA DE REDES Y TELECOMUNICACIONES|TELEFONIA|SOPORTAR||||";
+            //string cadena = "MESA DE SERVICIO IMSS|INFRAESTRUCTURA DE REDES Y TELECOMUNICACIONES|TELEFONIA|SOPORTAR||||";
+            string cadena = "MESA DE SERVICIO IMSS|APLICACIONES|CORREO Y MENSAJERIA|DAR BAJA||||";
 
             object respuesta = instance.GetNombresCategoriasByProductoNombreArreglo(cadena);
 
