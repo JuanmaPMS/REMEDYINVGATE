@@ -125,10 +125,10 @@ namespace ServiceInvgate
         }
 
 
-        public object PutIncidente(IncidentesPutRequest incidente)
+        public Entities.Intermedio.Result PutIncidente(IncidentesPutRequest incidente)
         {
-            var a = JsonConvert.SerializeObject(incidente);
-            object data;
+            IncidentesPutResponse postResponse = new IncidentesPutResponse();
+            Entities.Intermedio.Result Resultado = new Entities.Intermedio.Result();
             try
             {
                 var client = new RestClient(UrlServicios + "/incident");
@@ -142,18 +142,27 @@ namespace ServiceInvgate
 
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    data = JsonConvert.DeserializeObject(response.Content);
+                    postResponse = JsonConvert.DeserializeObject<IncidentesPutResponse>(response.Content);
+                    Resultado.Ticket = postResponse.id.ToString();
+                    Resultado.Resultado = "Transacción exitosa, registro agregado a Invgate People Media";
+                    Resultado.Estado = "Exito";
                 }
                 else
                 {
-                    data = new { Error = "Ocurrio un error: " + response.ErrorMessage };
+
+                    Resultado.Ticket = String.Empty;
+                    Resultado.Resultado = response.ErrorException.Message;
+                    Resultado.Estado = "Error";
                 }
             }
             catch (Exception ex)
             {
-                data = new { Error = "Ocurrio un error: " + ex.Message };
+                //data = new { Error = "Ocurrio un error: " + ex.Message };
+                Resultado.Ticket = String.Empty;
+                Resultado.Resultado = "Ocurrio un error: " + ex.Message;
+                Resultado.Estado = "Error";
             }
-            return data;
+            return Resultado;
         }
 
     }

@@ -64,22 +64,37 @@ namespace Prueba
 
 
             //PUT INCIDENTE
-            //IncidentesPutRequest putRequest = new IncidentesPutRequest();
-            //putRequest.category_id = 1833;
-            //putRequest.title = "INCIDENTE DE PRUEBA MODIFICACION - LIM";
-            //putRequest.priority_id = 5; // "id": 5,            "name": "Crítica"
-            //putRequest.date_format = null;
-            //putRequest.customer_id = 1;
-            //putRequest.source_id = 1; //"id": 1,             "name": "Correo"
-            //putRequest.id = 7081;
-            //putRequest.type_id = 6; // "id": 6, "name": "Incidente mayor"
-            //putRequest.description = "INCIDENTE DE PRUEBA MODIFICACION";
-            //putRequest.location_id = null;
-            //putRequest.date = "1675215295";
-            //putRequest.reassignment = true;
+            IncidentesPutRequest putRequest = new IncidentesPutRequest(){
+category_id= 610, //NO ES OBLIGATORIO
+title = "INCIDENTE DE PRUEBA 4 MODIFICACION postman- LIM", ////OBLIGATORIO
+                priority_id = 2, //NO ES OBLIGATORIO
+date_format = null, //NO ES OBLIGATORIO
+customer_id = 1, //NO ES OBLIGATORIO
+source_id = 1, //NO ES OBLIGATORIO
+id = 7086,  //OBLIGATORIO
+type_id= 3, //NO ES OBLIGATORIO
+description = null, //NO ES OBLIGATORIO
+location_id= null, //NO ES OBLIGATORIO
+date = "1675183785", //NO ES OBLIGATORIO
+reassignment = false
+}
+;
+        //putRequest.category_id = 1833;
+        //putRequest.title = "INCIDENTE DE PRUEBA MODIFICACION - LIM";
+        //putRequest.priority_id = 5; // "id": 5,            "name": "Crítica"
+        //putRequest.date_format = null;
+        //putRequest.customer_id = 1;
+        //putRequest.source_id = 1; //"id": 1,             "name": "Correo"
+        //putRequest.id = 7081;
+        //putRequest.type_id = 6; // "id": 6, "name": "Incidente mayor"
+        //putRequest.description = "INCIDENTE DE PRUEBA MODIFICACION";
+        //putRequest.location_id = null;
+        //putRequest.date = "1675215295";
+        //putRequest.reassignment = true;
 
-            //IncidentesInvgate incidentes = new IncidentesInvgate();
-            //var respuesta = incidentes.PutIncidente(putRequest);
+
+            IncidentesInvgate incidentes = new IncidentesInvgate();
+            Entities.Intermedio.Result respuesta = incidentes.PutIncidente(putRequest);
 
 
 
@@ -96,12 +111,12 @@ namespace Prueba
             //IncidentesCommentPostRequest postRequest = new IncidentesCommentPostRequest();
             //postRequest.is_solution = false;
             //postRequest.author_id = 1;
-            //postRequest.request_id = 7081;
+            //postRequest.request_id = 7091;
             //postRequest.customer_visible = true;
-            //postRequest.comment = "COMENTARIO UNO - LIM";
+            //postRequest.comment = "COMENTARIO DOS - LIM";
 
             //IncidentesCommentInvgate comment = new IncidentesCommentInvgate();
-            //var respuesta = comment.PostIncidenteComment(postRequest);
+            //Entities.Intermedio.Result respuesta = comment.PostIncidenteComment(postRequest);
 
             //GET INCIDENTE
             //CategoriastInvgate getRequest = new CategoriastInvgate();
@@ -138,7 +153,7 @@ namespace Prueba
             //string cadena = "MESA DE SERVICIO IMSS|INFRAESTRUCTURA DE REDES Y TELECOMUNICACIONES|TELEFONIA|SOPORTAR||||";
             string cadena = "MESA DE SERVICIO IMSS|APLICACIONES|CORREO Y MENSAJERIA|DAR BAJA||||";
 
-            object respuesta = instance.GetNombresCategoriasByProductoNombreArreglo(cadena);
+            //object respuesta = instance.GetNombresCategoriasByProductoNombreArreglo(cadena);
 
             Console.ReadKey();
 
