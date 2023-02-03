@@ -480,6 +480,19 @@ namespace ServiceInvgate
                 //Se agrega el producto, seria el ultimo
                 listaCategoriasEncontradas = listaCategoriasAll.Where(x => x.name == producto).ToList();
 
+                if (listaCategoriasEncontradas.Count == 0) { 
+                    List<CategoriaComplemento> lista = new List<CategoriaComplemento>();
+                    CategoriasInvgateResponse mesa = listaCategoriasAll.Where((x) => x.name == "MESA DE SERVICIO IMSS").First();
+                    lista.Add(new CategoriaComplemento() { nivel = 0, idCategoria = mesa.id, categoria = mesa.name });
+                    
+                    data.exito = true;
+                    data.error = null;
+
+                    //var aaa = JsonConvert.SerializeObject(listaCategoriasEncontradas);
+                    data.categorias = lista;
+                    return data;
+                }
+
                 listaCategoriasEncontradas.ForEach((x)=>
                         {
                             //x.diccionario = diccionarioBase;
