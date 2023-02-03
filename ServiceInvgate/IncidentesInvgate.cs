@@ -10,6 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Configuration;
+using Entities.Intermedio;
+using System.Reflection;
 
 namespace ServiceInvgate
 {
@@ -57,10 +59,12 @@ namespace ServiceInvgate
             return data;
         }
 
-        public object PostIncidente(IncidentesPostRequest incidente)
+        public Entities.Intermedio.Result PostIncidente(IncidentesPostRequest incidente)
         {
+            IncidentesPostResponse postResponse = new IncidentesPostResponse();
+            Entities.Intermedio.Result Resultado = new Entities.Intermedio.Result();
 
-            var a = JsonConvert.SerializeObject(incidente);
+
             object data;
             try
             {
@@ -75,19 +79,49 @@ namespace ServiceInvgate
 
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    data = JsonConvert.DeserializeObject(response.Content);
+                    postResponse = JsonConvert.DeserializeObject<IncidentesPostResponse>(response.Content);
+                    Resultado.Ticket = postResponse.request_id.ToString();
+                    Resultado.Resultado = "Transacción exitosa, registro agregado a Invgate People Media";
+                    Resultado.Estado = "Exito";
+                    
+
+
                 }
                 else
                 {
-                    data = new { Error = "Ocurrio un error: " + response.ErrorMessage };
+
+                    Resultado.Ticket = String.Empty;
+                    Resultado.Resultado = response.ErrorMessage;
+                    Resultado.Estado = "Error";
                 }
             }
             catch (Exception ex)
             {
-                data = new { Error = "Ocurrio un error: " + ex.Message };
+                Resultado.Ticket = String.Empty;
+                Resultado.Resultado = "Ocurrio un error: " + ex.Message;
+                Resultado.Estado = "Error";
+
             }
-            return data;
+        
+            return Resultado;
         }
+
+        public String PostAttachments(HttpPostedFileBase[] Files, int incidenteID)
+        {
+            var client = new RestClient("http://10.0.0.6:8080/ServiceDesk");
+            var request = new RestRequest("",Method.Post);
+            request.AddParameter("IncidentId", incidenteID.ToString());
+            foreach (HttpPostedFileBase file_unit in Files)
+            {
+                MemoryStream target = new MemoryStream();
+                file_unit.InputStream.CopyTo(target);
+                byte[] data = target.ToArray();
+                request.AddFile("files", data, file_unit.FileName);
+            }
+            var response = client.Execute(request);
+            return response.StatusCode.ToString();
+        }
+
 
         public object PutIncidente(IncidentesPutRequest incidente)
         {

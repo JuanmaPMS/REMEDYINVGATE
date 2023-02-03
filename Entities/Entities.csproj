@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Intermedio\AttachedFile.cs" />
     <Compile Include="Invgate\Class1.cs" />
     <Compile Include="Invgate\ResultCategorias.cs" />
     <Compile Include="Invgate\CategoriasInvgateResponse.cs" />

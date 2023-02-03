@@ -10,7 +10,7 @@ namespace Entities
     {
         public bool exito { get; set; }
         public string error { get; set; }
-        public object categorias { get; set; }
+        public List<CategoriaComplemento> categorias { get; set; }
         
     }
 }

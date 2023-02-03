@@ -67,13 +67,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="MesaIMSS.asmx" />
+    <Content Include="ConnRemedy.asmx" />
+    <Content Include="Intermediario\MesaServicio.asmx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MesaIMSS.asmx.cs">
-      <DependentUpon>MesaIMSS.asmx</DependentUpon>
+    <Compile Include="ConnRemedy.asmx.cs">
+      <DependentUpon>ConnRemedy.asmx</DependentUpon>
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Intermediario\MesaServicio.asmx.cs">
+      <DependentUpon>MesaServicio.asmx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -95,6 +99,13 @@
       <Project>{6f783db6-b051-413d-a395-09a156427217}</Project>
       <Name>ServiceIMSS</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ServiceInvgate\ServiceInvgate.csproj">
+      <Project>{ad213e44-06c7-4861-9dc0-ac9a63172ef8}</Project>
+      <Name>ServiceInvgate</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
