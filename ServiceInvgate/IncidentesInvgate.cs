@@ -21,6 +21,8 @@ namespace ServiceInvgate
         string user = ConfigurationManager.AppSettings["usernameInvgate"];
         string password = ConfigurationManager.AppSettings["passwordInvgate"];
         string UrlServicios = ConfigurationManager.AppSettings["UrlInvgate"];
+        string ApiAttachments = ConfigurationManager.AppSettings["RutaApiAttachments"];
+
 
         public object GetIncidente(IncidentesGetRequest incidente)
         {
@@ -108,7 +110,7 @@ namespace ServiceInvgate
 
         public String PostAttachments(HttpPostedFileBase[] Files, int incidenteID)
         {
-            var client = new RestClient("http://10.0.0.6:8080/ServiceDesk");
+            var client = new RestClient(ApiAttachments);
             var request = new RestRequest("",Method.Post);
             request.AddParameter("IncidentId", incidenteID.ToString());
             foreach (HttpPostedFileBase file_unit in Files)
