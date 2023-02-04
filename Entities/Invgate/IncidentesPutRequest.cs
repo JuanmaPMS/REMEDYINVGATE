@@ -10,7 +10,7 @@ namespace Entities
     public class IncidentesPutRequest
     {
         public int? category_id { get; set; }
-        public string? title { get; set; }
+        //public string? title { get; set; }
         public int? priority_id { get; set; }
         public string? date_format { get; set; }
         public int? customer_id { get; set; }
