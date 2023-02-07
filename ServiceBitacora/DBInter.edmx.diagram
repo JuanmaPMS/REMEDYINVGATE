@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e013ee3e2f8d444cba503dfc266c6e9a" Name="Diagram1">
+        <EntityTypeShape EntityType="InterRemedyInvgateModel.CatEstadoIncidente" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterRemedyInvgateModel.CatEstadoWO" Width="1.5" PointX="2.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterRemedyInvgateModel.CatFuenteReportada" Width="1.5" PointX="7.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterRemedyInvgateModel.CatImpactoIncidente" Width="1.5" PointX="4.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterRemedyInvgateModel.CatMotivoEstadoIncidente" Width="1.5" PointX="9.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterRemedyInvgateModel.CatMotivoEstadoWO" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterRemedyInvgateModel.CatPrioridadWO" Width="1.5" PointX="0.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterRemedyInvgateModel.CatTipoIncidencia" Width="1.5" PointX="10.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterRemedyInvgateModel.CatTipoOperacionIncidente" Width="1.5" PointX="6.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterRemedyInvgateModel.CatTipoOperacionWO" Width="1.5" PointX="8.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterRemedyInvgateModel.CatUrgenciaIncidente" Width="1.5" PointX="10.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterRemedyInvgateModel.Incidente" Width="1.5" PointX="5.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterRemedyInvgateModel.IncidenteNotas" Width="1.5" PointX="8" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterRemedyInvgateModel.IncidentesDocumentos" Width="1.5" PointX="8" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterRemedyInvgateModel.OrdenTrabajo" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterRemedyInvgateModel.OrdenTrabajoDocumentos" Width="1.5" PointX="3" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterRemedyInvgateModel.OrdenTrabajoNotas" Width="1.5" PointX="3" PointY="4.625" IsExpanded="true" />
+        <AssociationConnector Association="InterRemedyInvgateModel.FK_IncidenteNotas_Incidente" ManuallyRouted="false" />
+        <AssociationConnector Association="InterRemedyInvgateModel.FK_IncidentesDocumentos_Incidente" ManuallyRouted="false" />
+        <AssociationConnector Association="InterRemedyInvgateModel.FK_OrdenTrabajoDocumentos_OrdenTrabajo" ManuallyRouted="false" />
+        <AssociationConnector Association="InterRemedyInvgateModel.FK_OrdenTrabajoNotas_OrdenTrabajo" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

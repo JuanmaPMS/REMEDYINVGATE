@@ -16,5 +16,6 @@ namespace Entities.Intermedio
         public string CategoriaPro02 { get; set; }
         public string CategoriaPro03 { get; set; }
         public string GrupoSoporte { get; set; }
+        public string FechaCambio { get; set; }
     }
 }

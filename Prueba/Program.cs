@@ -10,6 +10,8 @@ using System.Net;
 using System.IO;
 using ServiceInvgate;
 using Entities.Invgate;
+using ServiceBitacora;
+using Entities.Intermedio;
 
 namespace Prueba
 {
@@ -17,6 +19,40 @@ namespace Prueba
     {
         static void Main(string[] args)
         {
+            //Pruebas bitacora
+            CreaTicket ticket = new CreaTicket();
+            ticket.TipoOperacion = "C_INC";
+            ticket.NombreProveedor = "PEOPLE-MEDIA";
+            ticket.TicketIMSS = "INC007878";
+            ticket.Descripcion = "PRUEBA DE INTEGRACIOn 7";
+            ticket.Resumen = "PRUEBA DE INTEGRACIOn 7";
+            ticket.Impacto = "1000";
+            ticket.Urgencia = "2000";
+            ticket.Prioridad = "";
+            ticket.TipoIncidencia = "0";
+            ticket.FuenteReportada = "2000";
+            ticket.NombreProducto = "";
+            ticket.GrupoSoporte = "SOPORTE";
+            ticket.CategoriaOpe01 = "INFRAESTRUCTURA DE REDES Y TELECOMUNICACIONES";
+            ticket.CategoriaOpe02 = "REDES Y ENLACES";
+            ticket.CategoriaOpe03 = "SOPORTAR";
+            ticket.CategoriaPro01 = "HARDWARE";
+            ticket.CategoriaPro02 = "COMPUTO PERSONAL";
+            ticket.CategoriaPro03 = "";
+            ticket.EstadoNuevo = "1";
+            ticket.Notas = "Prueba de notas";
+            ticket.FechaCreacion = "02/02/2023 07:30:00 p.m.";
+            ticket.Cliente = "IMSS";
+            ticket.VIP = "Si";
+            ticket.Sensibilidad = "Sensibilidad";
+
+            IncidenteData incidenteData= new IncidenteData();
+            //incidenteData.Crear(ticket, 1275, out string result);
+            int result = incidenteData.Get(ticket.TicketIMSS);
+            Console.WriteLine(result);  
+
+
+
             //Categorizacion categorizacion = new Categorizacion();
             //Incidentes incidentes = new Incidentes();
 
@@ -107,7 +143,7 @@ namespace Prueba
             //CategoriastInvgate getRequest = new CategoriastInvgate();
             //getRequest.id = 7086;
 
-            CategoriastInvgate instance = new CategoriastInvgate();
+            //CategoriastInvgate instance = new CategoriastInvgate();
             //INCOMPLETO POR ID object respuesta = instance.GetCategoriasProducto(1140);
             //COMPLETO POR ID
             //object respuesta = instance.GetNombresCategoriasByProductoId(1413);
@@ -121,24 +157,24 @@ namespace Prueba
 
 
 
-            CategoriasProductoModel model = new CategoriasProductoModel();
+            //CategoriasProductoModel model = new CategoriasProductoModel();
 
-            model.Mesa = "MESA DE SERVICIO IMSS";
-            model.CatOperacion01 = "INFRAESTRUCTURA DE REDES Y TELECOMUNICACIONES";
-            model.CatOperacion02 = "REDES Y ENLACES";
-            model.CatOperacion03 = "SOPORTAR";
-            model.CatProducto01 = "HARDWARE";
-            model.CatProducto02 = "COMPUTO PERSONAL";
-            model.CatProducto03 = "ESCANER";
-            model.Producto = "TARJETA LOGICA";
+            //model.Mesa = "MESA DE SERVICIO IMSS";
+            //model.CatOperacion01 = "INFRAESTRUCTURA DE REDES Y TELECOMUNICACIONES";
+            //model.CatOperacion02 = "REDES Y ENLACES";
+            //model.CatOperacion03 = "SOPORTAR";
+            //model.CatProducto01 = "HARDWARE";
+            //model.CatProducto02 = "COMPUTO PERSONAL";
+            //model.CatProducto03 = "ESCANER";
+            //model.Producto = "TARJETA LOGICA";
 
 
-            // PRUEBAS
-            //string cadena = "MESA DE SERVICIO IMSS|INFRAESTRUCTURA DE REDES Y TELECOMUNICACIONES|REDES Y ENLACES|SOPORTAR|HARDWARE|COMPUTO PERSONAL|ESCANER|TARJETA LOGICA";
-            //string cadena = "MESA DE SERVICIO IMSS|INFRAESTRUCTURA DE REDES Y TELECOMUNICACIONES|TELEFONIA|SOPORTAR||||";
-            string cadena = "MESA DE SERVICIO IMSS|APLICACIONES|CORREO Y MENSAJERIA|DAR BAJA||||";
+            //// PRUEBAS
+            ////string cadena = "MESA DE SERVICIO IMSS|INFRAESTRUCTURA DE REDES Y TELECOMUNICACIONES|REDES Y ENLACES|SOPORTAR|HARDWARE|COMPUTO PERSONAL|ESCANER|TARJETA LOGICA";
+            ////string cadena = "MESA DE SERVICIO IMSS|INFRAESTRUCTURA DE REDES Y TELECOMUNICACIONES|TELEFONIA|SOPORTAR||||";
+            //string cadena = "MESA DE SERVICIO IMSS|APLICACIONES|CORREO Y MENSAJERIA|DAR BAJA||||";
 
-            object respuesta = instance.GetNombresCategoriasByProductoNombreArreglo(cadena);
+            //object respuesta = instance.GetNombresCategoriasByProductoNombreArreglo(cadena);
 
             Console.ReadKey();
 

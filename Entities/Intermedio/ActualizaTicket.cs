@@ -9,6 +9,9 @@ namespace Entities.Intermedio
     public class ActualizaTicket
     {
         public string TicketIMSS { get; set; }
+        public string Impacto { get; set; }
+        public string Urgencia { get; set; }
+        public string Prioridad { get; set; }
         public string EstadoNuevo { get; set; }
         public string Motivo { get; set; }
         public DateTime FechaCambio { get; set; }

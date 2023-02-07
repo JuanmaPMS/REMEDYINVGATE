@@ -95,6 +95,10 @@
       <Project>{4f6cd4ee-548b-49be-908e-93cb98753184}</Project>
       <Name>Entities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ServiceBitacora\ServiceBitacora.csproj">
+      <Project>{53b77fec-11cc-48a0-9e2a-ac12dbcc6c16}</Project>
+      <Name>ServiceBitacora</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ServiceIMSS\ServiceIMSS.csproj">
       <Project>{6f783db6-b051-413d-a395-09a156427217}</Project>
       <Name>ServiceIMSS</Name>

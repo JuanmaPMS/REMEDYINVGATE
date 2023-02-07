@@ -5,19 +5,18 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{32223702-5617-4238-8CDA-EA598E30C794}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>Prueba</RootNamespace>
-    <AssemblyName>Prueba</AssemblyName>
+    <ProjectGuid>{53B77FEC-11CC-48A0-9E2A-AC12DBCC6C16}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ServiceBitacora</RootNamespace>
+    <AssemblyName>ServiceBitacora</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -27,7 +26,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -44,12 +42,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -58,42 +53,107 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
+    <Compile Include="CatEstadoIncidente.cs">
+      <DependentUpon>DBInter.tt</DependentUpon>
     </Compile>
+    <Compile Include="CatEstadoWO.cs">
+      <DependentUpon>DBInter.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CatFuenteReportada.cs">
+      <DependentUpon>DBInter.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CatImpactoIncidente.cs">
+      <DependentUpon>DBInter.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CatMotivoEstadoIncidente.cs">
+      <DependentUpon>DBInter.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CatMotivoEstadoWO.cs">
+      <DependentUpon>DBInter.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CatPrioridadWO.cs">
+      <DependentUpon>DBInter.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CatTipoIncidencia.cs">
+      <DependentUpon>DBInter.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CatTipoOperacionIncidente.cs">
+      <DependentUpon>DBInter.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CatTipoOperacionWO.cs">
+      <DependentUpon>DBInter.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CatUrgenciaIncidente.cs">
+      <DependentUpon>DBInter.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBInter.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBInter.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBInter.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBInter.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBInter.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBInter.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Incidente.cs">
+      <DependentUpon>DBInter.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IncidenteData.cs" />
+    <Compile Include="IncidenteNotas.cs">
+      <DependentUpon>DBInter.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IncidentesDocumentos.cs">
+      <DependentUpon>DBInter.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OrdenTrabajo.cs">
+      <DependentUpon>DBInter.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OrdenTrabajoData.cs" />
+    <Compile Include="OrdenTrabajoDocumentos.cs">
+      <DependentUpon>DBInter.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OrdenTrabajoNotas.cs">
+      <DependentUpon>DBInter.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    <EntityDeploy Include="DBInter.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DBInter.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="DBInter.edmx.diagram">
+      <DependentUpon>DBInter.edmx</DependentUpon>
     </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DBInter.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DBInter.edmx</DependentUpon>
+      <LastGenOutput>DBInter.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="DBInter.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DBInter.edmx</DependentUpon>
+      <LastGenOutput>DBInter.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Entities\Entities.csproj">
       <Project>{4f6cd4ee-548b-49be-908e-93cb98753184}</Project>
       <Name>Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ServiceBitacora\ServiceBitacora.csproj">
-      <Project>{53b77fec-11cc-48a0-9e2a-ac12dbcc6c16}</Project>
-      <Name>ServiceBitacora</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ServiceIMSS\ServiceIMSS.csproj">
-      <Project>{6f783db6-b051-413d-a395-09a156427217}</Project>
-      <Name>ServiceIMSS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ServiceInvgate\ServiceInvgate.csproj">
-      <Project>{ad213e44-06c7-4861-9dc0-ac9a63172ef8}</Project>
-      <Name>ServiceInvgate</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceIMSS", "ServiceIMSS\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceInvgate", "ServiceInvgate\ServiceInvgate.csproj", "{AD213E44-06C7-4861-9DC0-AC9A63172EF8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBitacora", "ServiceBitacora\ServiceBitacora.csproj", "{53B77FEC-11CC-48A0-9E2A-AC12DBCC6C16}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{AD213E44-06C7-4861-9DC0-AC9A63172EF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD213E44-06C7-4861-9DC0-AC9A63172EF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD213E44-06C7-4861-9DC0-AC9A63172EF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53B77FEC-11CC-48A0-9E2A-AC12DBCC6C16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53B77FEC-11CC-48A0-9E2A-AC12DBCC6C16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53B77FEC-11CC-48A0-9E2A-AC12DBCC6C16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53B77FEC-11CC-48A0-9E2A-AC12DBCC6C16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

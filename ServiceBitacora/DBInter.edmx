@@ -1,0 +1,809 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="InterRemedyInvgateModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CatEstadoIncidente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClaveRemedy" Type="int" />
+          <Property Name="Descripcion" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="CatEstadoWO">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClaveRemedy" Type="int" />
+          <Property Name="Descripcion" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="CatFuenteReportada">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClaveRemedy" Type="int" />
+          <Property Name="Descripcion" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="CatImpactoIncidente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClaveRemedy" Type="int" />
+          <Property Name="Descripcion" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CatMotivoEstadoIncidente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idCatEstado" Type="int" />
+          <Property Name="ClaveRemedy" Type="int" />
+          <Property Name="Descripcion" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="CatMotivoEstadoWO">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idCatEstadoWO" Type="int" />
+          <Property Name="ClaveRemedy" Type="int" />
+          <Property Name="Descripcion" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="CatPrioridadWO">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClaveRemedy" Type="int" />
+          <Property Name="Descripcion" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="CatTipoIncidencia">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClaveRemedy" Type="int" />
+          <Property Name="Descripcion" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="CatTipoOperacionIncidente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClaveRemedy" Type="nvarchar" MaxLength="50" />
+          <Property Name="Descripcion" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="CatTipoOperacionWO">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClaveRemedy" Type="nvarchar" MaxLength="50" />
+          <Property Name="Descripcion" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="CatUrgenciaIncidente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClaveRemedy" Type="int" />
+          <Property Name="Descripcion" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="Incidente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TicketRemedy" Type="nvarchar" MaxLength="50" />
+          <Property Name="TicketInvgate" Type="int" />
+          <Property Name="Descripcion" Type="nvarchar(max)" />
+          <Property Name="Resumen" Type="nvarchar" MaxLength="200" />
+          <Property Name="Impacto" Type="nvarchar" MaxLength="50" />
+          <Property Name="Urgencia" Type="nvarchar" MaxLength="50" />
+          <Property Name="TipoIncidencia" Type="nvarchar" MaxLength="50" />
+          <Property Name="FuenteReportada" Type="nvarchar" MaxLength="50" />
+          <Property Name="NombreProducto" Type="nvarchar" MaxLength="200" />
+          <Property Name="GrupoSoporte" Type="nvarchar" MaxLength="200" />
+          <Property Name="CategoriaOpe01" Type="nvarchar" MaxLength="200" />
+          <Property Name="CategoriaOpe02" Type="nvarchar" MaxLength="200" />
+          <Property Name="CategoriaOpe03" Type="nvarchar" MaxLength="200" />
+          <Property Name="CategoriaPro01" Type="nvarchar" MaxLength="200" />
+          <Property Name="CategoriaPro02" Type="nvarchar" MaxLength="200" />
+          <Property Name="CategoriaPro03" Type="nvarchar" MaxLength="200" />
+          <Property Name="Estado" Type="nvarchar" MaxLength="50" />
+          <Property Name="Motivo" Type="nvarchar" MaxLength="50" />
+          <Property Name="FechaCreacion" Type="nvarchar" MaxLength="50" />
+          <Property Name="Cliente" Type="nvarchar" MaxLength="200" />
+          <Property Name="VIP" Type="bit" />
+          <Property Name="Sensibilidad" Type="nvarchar" MaxLength="200" />
+          <Property Name="Usuario" Type="nvarchar" MaxLength="50" />
+          <Property Name="Inclusion" Type="datetime" />
+        </EntityType>
+        <EntityType Name="IncidenteNotas">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Incidente_id" Type="int" />
+          <Property Name="Nota" Type="nvarchar" MaxLength="800" />
+          <Property Name="Usuario" Type="nvarchar" MaxLength="50" />
+          <Property Name="Inclusion" Type="datetime" />
+        </EntityType>
+        <EntityType Name="IncidentesDocumentos">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Incidente_id" Type="int" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="200" />
+          <Property Name="Tamanio" Type="nvarchar" MaxLength="50" />
+          <Property Name="Contenido" Type="nvarchar" MaxLength="800" />
+          <Property Name="Usuario" Type="nvarchar" MaxLength="50" />
+          <Property Name="Inclusion" Type="datetime" />
+        </EntityType>
+        <EntityType Name="OrdenTrabajo">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TicketRemedy" Type="nvarchar" MaxLength="50" />
+          <Property Name="TicketInvgate" Type="int" />
+          <Property Name="Descripcion" Type="nvarchar(max)" />
+          <Property Name="Resumen" Type="nvarchar" MaxLength="200" />
+          <Property Name="Prioridad" Type="nvarchar" MaxLength="50" />
+          <Property Name="FuenteReportada" Type="nvarchar" MaxLength="50" />
+          <Property Name="NombreProducto" Type="nvarchar" MaxLength="200" />
+          <Property Name="GrupoSoporte" Type="nvarchar" MaxLength="200" />
+          <Property Name="CategoriaOpe01" Type="nvarchar" MaxLength="200" />
+          <Property Name="CategoriaOpe02" Type="nvarchar" MaxLength="200" />
+          <Property Name="CategoriaOpe03" Type="nvarchar" MaxLength="200" />
+          <Property Name="CategoriaPro01" Type="nvarchar" MaxLength="200" />
+          <Property Name="CategoriaPro02" Type="nvarchar" MaxLength="200" />
+          <Property Name="CategoriaPro03" Type="nvarchar" MaxLength="200" />
+          <Property Name="Estado" Type="nvarchar" MaxLength="50" />
+          <Property Name="Motivo" Type="nvarchar" MaxLength="50" />
+          <Property Name="FechaCreacion" Type="nvarchar" MaxLength="50" />
+          <Property Name="Cliente" Type="nvarchar" MaxLength="200" />
+          <Property Name="VIP" Type="bit" />
+          <Property Name="Sensibilidad" Type="nvarchar" MaxLength="200" />
+          <Property Name="Usuario" Type="nvarchar" MaxLength="50" />
+          <Property Name="Inclusion" Type="datetime" />
+        </EntityType>
+        <EntityType Name="OrdenTrabajoDocumentos">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrdenTrabajo_id" Type="int" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="200" />
+          <Property Name="Tamanio" Type="nvarchar" MaxLength="50" />
+          <Property Name="Contenido" Type="nvarchar" MaxLength="800" />
+          <Property Name="Usuario" Type="nvarchar" MaxLength="50" />
+          <Property Name="Inclusion" Type="datetime" />
+        </EntityType>
+        <EntityType Name="OrdenTrabajoNotas">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrdenTrabajo_id" Type="int" />
+          <Property Name="Nota" Type="nvarchar" MaxLength="800" />
+          <Property Name="Usuario" Type="nvarchar" MaxLength="50" />
+          <Property Name="Inclusion" Type="datetime" />
+        </EntityType>
+        <Association Name="FK_IncidenteNotas_Incidente">
+          <End Role="Incidente" Type="Self.Incidente" Multiplicity="0..1" />
+          <End Role="IncidenteNotas" Type="Self.IncidenteNotas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Incidente">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="IncidenteNotas">
+              <PropertyRef Name="Incidente_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IncidentesDocumentos_Incidente">
+          <End Role="Incidente" Type="Self.Incidente" Multiplicity="0..1" />
+          <End Role="IncidentesDocumentos" Type="Self.IncidentesDocumentos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Incidente">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="IncidentesDocumentos">
+              <PropertyRef Name="Incidente_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrdenTrabajoDocumentos_OrdenTrabajo">
+          <End Role="OrdenTrabajo" Type="Self.OrdenTrabajo" Multiplicity="0..1" />
+          <End Role="OrdenTrabajoDocumentos" Type="Self.OrdenTrabajoDocumentos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrdenTrabajo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="OrdenTrabajoDocumentos">
+              <PropertyRef Name="OrdenTrabajo_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrdenTrabajoNotas_OrdenTrabajo">
+          <End Role="OrdenTrabajo" Type="Self.OrdenTrabajo" Multiplicity="0..1" />
+          <End Role="OrdenTrabajoNotas" Type="Self.OrdenTrabajoNotas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrdenTrabajo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="OrdenTrabajoNotas">
+              <PropertyRef Name="OrdenTrabajo_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="InterRemedyInvgateModelStoreContainer">
+          <EntitySet Name="CatEstadoIncidente" EntityType="Self.CatEstadoIncidente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CatEstadoWO" EntityType="Self.CatEstadoWO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CatFuenteReportada" EntityType="Self.CatFuenteReportada" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CatImpactoIncidente" EntityType="Self.CatImpactoIncidente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CatMotivoEstadoIncidente" EntityType="Self.CatMotivoEstadoIncidente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CatMotivoEstadoWO" EntityType="Self.CatMotivoEstadoWO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CatPrioridadWO" EntityType="Self.CatPrioridadWO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CatTipoIncidencia" EntityType="Self.CatTipoIncidencia" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CatTipoOperacionIncidente" EntityType="Self.CatTipoOperacionIncidente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CatTipoOperacionWO" EntityType="Self.CatTipoOperacionWO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CatUrgenciaIncidente" EntityType="Self.CatUrgenciaIncidente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Incidente" EntityType="Self.Incidente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="IncidenteNotas" EntityType="Self.IncidenteNotas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="IncidentesDocumentos" EntityType="Self.IncidentesDocumentos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrdenTrabajo" EntityType="Self.OrdenTrabajo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrdenTrabajoDocumentos" EntityType="Self.OrdenTrabajoDocumentos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrdenTrabajoNotas" EntityType="Self.OrdenTrabajoNotas" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_IncidenteNotas_Incidente" Association="Self.FK_IncidenteNotas_Incidente">
+            <End Role="Incidente" EntitySet="Incidente" />
+            <End Role="IncidenteNotas" EntitySet="IncidenteNotas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IncidentesDocumentos_Incidente" Association="Self.FK_IncidentesDocumentos_Incidente">
+            <End Role="Incidente" EntitySet="Incidente" />
+            <End Role="IncidentesDocumentos" EntitySet="IncidentesDocumentos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrdenTrabajoDocumentos_OrdenTrabajo" Association="Self.FK_OrdenTrabajoDocumentos_OrdenTrabajo">
+            <End Role="OrdenTrabajo" EntitySet="OrdenTrabajo" />
+            <End Role="OrdenTrabajoDocumentos" EntitySet="OrdenTrabajoDocumentos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrdenTrabajoNotas_OrdenTrabajo" Association="Self.FK_OrdenTrabajoNotas_OrdenTrabajo">
+            <End Role="OrdenTrabajo" EntitySet="OrdenTrabajo" />
+            <End Role="OrdenTrabajoNotas" EntitySet="OrdenTrabajoNotas" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="InterRemedyInvgateModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CatEstadoIncidente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClaveRemedy" Type="Int32" />
+          <Property Name="Descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="CatEstadoWO">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClaveRemedy" Type="Int32" />
+          <Property Name="Descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="CatFuenteReportada">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClaveRemedy" Type="Int32" />
+          <Property Name="Descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="CatImpactoIncidente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClaveRemedy" Type="Int32" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="CatMotivoEstadoIncidente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idCatEstado" Type="Int32" />
+          <Property Name="ClaveRemedy" Type="Int32" />
+          <Property Name="Descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="CatMotivoEstadoWO">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idCatEstadoWO" Type="Int32" />
+          <Property Name="ClaveRemedy" Type="Int32" />
+          <Property Name="Descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="CatPrioridadWO">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClaveRemedy" Type="Int32" />
+          <Property Name="Descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="CatTipoIncidencia">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClaveRemedy" Type="Int32" />
+          <Property Name="Descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="CatTipoOperacionIncidente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClaveRemedy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="CatTipoOperacionWO">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClaveRemedy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="CatUrgenciaIncidente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClaveRemedy" Type="Int32" />
+          <Property Name="Descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Incidente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TicketRemedy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TicketInvgate" Type="Int32" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Resumen" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Impacto" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Urgencia" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TipoIncidencia" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FuenteReportada" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NombreProducto" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="GrupoSoporte" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CategoriaOpe01" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CategoriaOpe02" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CategoriaOpe03" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CategoriaPro01" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CategoriaPro02" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CategoriaPro03" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Estado" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Motivo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FechaCreacion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Cliente" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="VIP" Type="Boolean" />
+          <Property Name="Sensibilidad" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Usuario" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Inclusion" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="IncidenteNotas" Relationship="Self.FK_IncidenteNotas_Incidente" FromRole="Incidente" ToRole="IncidenteNotas" />
+          <NavigationProperty Name="IncidentesDocumentos" Relationship="Self.FK_IncidentesDocumentos_Incidente" FromRole="Incidente" ToRole="IncidentesDocumentos" />
+        </EntityType>
+        <EntityType Name="IncidenteNotas">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Incidente_id" Type="Int32" />
+          <Property Name="Nota" Type="String" MaxLength="800" FixedLength="false" Unicode="true" />
+          <Property Name="Usuario" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Inclusion" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Incidente" Relationship="Self.FK_IncidenteNotas_Incidente" FromRole="IncidenteNotas" ToRole="Incidente" />
+        </EntityType>
+        <EntityType Name="IncidentesDocumentos">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Incidente_id" Type="Int32" />
+          <Property Name="Nombre" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Tamanio" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Contenido" Type="String" MaxLength="800" FixedLength="false" Unicode="true" />
+          <Property Name="Usuario" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Inclusion" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Incidente" Relationship="Self.FK_IncidentesDocumentos_Incidente" FromRole="IncidentesDocumentos" ToRole="Incidente" />
+        </EntityType>
+        <EntityType Name="OrdenTrabajo">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TicketRemedy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TicketInvgate" Type="Int32" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Resumen" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Prioridad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FuenteReportada" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NombreProducto" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="GrupoSoporte" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CategoriaOpe01" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CategoriaOpe02" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CategoriaOpe03" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CategoriaPro01" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CategoriaPro02" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CategoriaPro03" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Estado" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Motivo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FechaCreacion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Cliente" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="VIP" Type="Boolean" />
+          <Property Name="Sensibilidad" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Usuario" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Inclusion" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="OrdenTrabajoDocumentos" Relationship="Self.FK_OrdenTrabajoDocumentos_OrdenTrabajo" FromRole="OrdenTrabajo" ToRole="OrdenTrabajoDocumentos" />
+          <NavigationProperty Name="OrdenTrabajoNotas" Relationship="Self.FK_OrdenTrabajoNotas_OrdenTrabajo" FromRole="OrdenTrabajo" ToRole="OrdenTrabajoNotas" />
+        </EntityType>
+        <EntityType Name="OrdenTrabajoDocumentos">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrdenTrabajo_id" Type="Int32" />
+          <Property Name="Nombre" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Tamanio" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Contenido" Type="String" MaxLength="800" FixedLength="false" Unicode="true" />
+          <Property Name="Usuario" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Inclusion" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="OrdenTrabajo" Relationship="Self.FK_OrdenTrabajoDocumentos_OrdenTrabajo" FromRole="OrdenTrabajoDocumentos" ToRole="OrdenTrabajo" />
+        </EntityType>
+        <EntityType Name="OrdenTrabajoNotas">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrdenTrabajo_id" Type="Int32" />
+          <Property Name="Nota" Type="String" MaxLength="800" FixedLength="false" Unicode="true" />
+          <Property Name="Usuario" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Inclusion" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="OrdenTrabajo" Relationship="Self.FK_OrdenTrabajoNotas_OrdenTrabajo" FromRole="OrdenTrabajoNotas" ToRole="OrdenTrabajo" />
+        </EntityType>
+        <Association Name="FK_IncidenteNotas_Incidente">
+          <End Role="Incidente" Type="Self.Incidente" Multiplicity="0..1" />
+          <End Role="IncidenteNotas" Type="Self.IncidenteNotas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Incidente">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="IncidenteNotas">
+              <PropertyRef Name="Incidente_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IncidentesDocumentos_Incidente">
+          <End Role="Incidente" Type="Self.Incidente" Multiplicity="0..1" />
+          <End Role="IncidentesDocumentos" Type="Self.IncidentesDocumentos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Incidente">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="IncidentesDocumentos">
+              <PropertyRef Name="Incidente_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrdenTrabajoDocumentos_OrdenTrabajo">
+          <End Role="OrdenTrabajo" Type="Self.OrdenTrabajo" Multiplicity="0..1" />
+          <End Role="OrdenTrabajoDocumentos" Type="Self.OrdenTrabajoDocumentos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrdenTrabajo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="OrdenTrabajoDocumentos">
+              <PropertyRef Name="OrdenTrabajo_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrdenTrabajoNotas_OrdenTrabajo">
+          <End Role="OrdenTrabajo" Type="Self.OrdenTrabajo" Multiplicity="0..1" />
+          <End Role="OrdenTrabajoNotas" Type="Self.OrdenTrabajoNotas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrdenTrabajo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="OrdenTrabajoNotas">
+              <PropertyRef Name="OrdenTrabajo_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="InterEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CatEstadoIncidente" EntityType="Self.CatEstadoIncidente" />
+          <EntitySet Name="CatEstadoWO" EntityType="Self.CatEstadoWO" />
+          <EntitySet Name="CatFuenteReportada" EntityType="Self.CatFuenteReportada" />
+          <EntitySet Name="CatImpactoIncidente" EntityType="Self.CatImpactoIncidente" />
+          <EntitySet Name="CatMotivoEstadoIncidente" EntityType="Self.CatMotivoEstadoIncidente" />
+          <EntitySet Name="CatMotivoEstadoWO" EntityType="Self.CatMotivoEstadoWO" />
+          <EntitySet Name="CatPrioridadWO" EntityType="Self.CatPrioridadWO" />
+          <EntitySet Name="CatTipoIncidencia" EntityType="Self.CatTipoIncidencia" />
+          <EntitySet Name="CatTipoOperacionIncidente" EntityType="Self.CatTipoOperacionIncidente" />
+          <EntitySet Name="CatTipoOperacionWO" EntityType="Self.CatTipoOperacionWO" />
+          <EntitySet Name="CatUrgenciaIncidente" EntityType="Self.CatUrgenciaIncidente" />
+          <EntitySet Name="Incidente" EntityType="Self.Incidente" />
+          <EntitySet Name="IncidenteNotas" EntityType="Self.IncidenteNotas" />
+          <EntitySet Name="IncidentesDocumentos" EntityType="Self.IncidentesDocumentos" />
+          <EntitySet Name="OrdenTrabajo" EntityType="Self.OrdenTrabajo" />
+          <EntitySet Name="OrdenTrabajoDocumentos" EntityType="Self.OrdenTrabajoDocumentos" />
+          <EntitySet Name="OrdenTrabajoNotas" EntityType="Self.OrdenTrabajoNotas" />
+          <AssociationSet Name="FK_IncidenteNotas_Incidente" Association="Self.FK_IncidenteNotas_Incidente">
+            <End Role="Incidente" EntitySet="Incidente" />
+            <End Role="IncidenteNotas" EntitySet="IncidenteNotas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IncidentesDocumentos_Incidente" Association="Self.FK_IncidentesDocumentos_Incidente">
+            <End Role="Incidente" EntitySet="Incidente" />
+            <End Role="IncidentesDocumentos" EntitySet="IncidentesDocumentos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrdenTrabajoDocumentos_OrdenTrabajo" Association="Self.FK_OrdenTrabajoDocumentos_OrdenTrabajo">
+            <End Role="OrdenTrabajo" EntitySet="OrdenTrabajo" />
+            <End Role="OrdenTrabajoDocumentos" EntitySet="OrdenTrabajoDocumentos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrdenTrabajoNotas_OrdenTrabajo" Association="Self.FK_OrdenTrabajoNotas_OrdenTrabajo">
+            <End Role="OrdenTrabajo" EntitySet="OrdenTrabajo" />
+            <End Role="OrdenTrabajoNotas" EntitySet="OrdenTrabajoNotas" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="InterRemedyInvgateModelStoreContainer" CdmEntityContainer="InterEntities">
+          <EntitySetMapping Name="CatEstadoIncidente">
+            <EntityTypeMapping TypeName="InterRemedyInvgateModel.CatEstadoIncidente">
+              <MappingFragment StoreEntitySet="CatEstadoIncidente">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ClaveRemedy" ColumnName="ClaveRemedy" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CatEstadoWO">
+            <EntityTypeMapping TypeName="InterRemedyInvgateModel.CatEstadoWO">
+              <MappingFragment StoreEntitySet="CatEstadoWO">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ClaveRemedy" ColumnName="ClaveRemedy" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CatFuenteReportada">
+            <EntityTypeMapping TypeName="InterRemedyInvgateModel.CatFuenteReportada">
+              <MappingFragment StoreEntitySet="CatFuenteReportada">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ClaveRemedy" ColumnName="ClaveRemedy" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CatImpactoIncidente">
+            <EntityTypeMapping TypeName="InterRemedyInvgateModel.CatImpactoIncidente">
+              <MappingFragment StoreEntitySet="CatImpactoIncidente">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ClaveRemedy" ColumnName="ClaveRemedy" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CatMotivoEstadoIncidente">
+            <EntityTypeMapping TypeName="InterRemedyInvgateModel.CatMotivoEstadoIncidente">
+              <MappingFragment StoreEntitySet="CatMotivoEstadoIncidente">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="idCatEstado" ColumnName="idCatEstado" />
+                <ScalarProperty Name="ClaveRemedy" ColumnName="ClaveRemedy" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CatMotivoEstadoWO">
+            <EntityTypeMapping TypeName="InterRemedyInvgateModel.CatMotivoEstadoWO">
+              <MappingFragment StoreEntitySet="CatMotivoEstadoWO">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="idCatEstadoWO" ColumnName="idCatEstadoWO" />
+                <ScalarProperty Name="ClaveRemedy" ColumnName="ClaveRemedy" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CatPrioridadWO">
+            <EntityTypeMapping TypeName="InterRemedyInvgateModel.CatPrioridadWO">
+              <MappingFragment StoreEntitySet="CatPrioridadWO">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ClaveRemedy" ColumnName="ClaveRemedy" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CatTipoIncidencia">
+            <EntityTypeMapping TypeName="InterRemedyInvgateModel.CatTipoIncidencia">
+              <MappingFragment StoreEntitySet="CatTipoIncidencia">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ClaveRemedy" ColumnName="ClaveRemedy" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CatTipoOperacionIncidente">
+            <EntityTypeMapping TypeName="InterRemedyInvgateModel.CatTipoOperacionIncidente">
+              <MappingFragment StoreEntitySet="CatTipoOperacionIncidente">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ClaveRemedy" ColumnName="ClaveRemedy" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CatTipoOperacionWO">
+            <EntityTypeMapping TypeName="InterRemedyInvgateModel.CatTipoOperacionWO">
+              <MappingFragment StoreEntitySet="CatTipoOperacionWO">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ClaveRemedy" ColumnName="ClaveRemedy" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CatUrgenciaIncidente">
+            <EntityTypeMapping TypeName="InterRemedyInvgateModel.CatUrgenciaIncidente">
+              <MappingFragment StoreEntitySet="CatUrgenciaIncidente">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ClaveRemedy" ColumnName="ClaveRemedy" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Incidente">
+            <EntityTypeMapping TypeName="InterRemedyInvgateModel.Incidente">
+              <MappingFragment StoreEntitySet="Incidente">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="TicketRemedy" ColumnName="TicketRemedy" />
+                <ScalarProperty Name="TicketInvgate" ColumnName="TicketInvgate" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Resumen" ColumnName="Resumen" />
+                <ScalarProperty Name="Impacto" ColumnName="Impacto" />
+                <ScalarProperty Name="Urgencia" ColumnName="Urgencia" />
+                <ScalarProperty Name="TipoIncidencia" ColumnName="TipoIncidencia" />
+                <ScalarProperty Name="FuenteReportada" ColumnName="FuenteReportada" />
+                <ScalarProperty Name="NombreProducto" ColumnName="NombreProducto" />
+                <ScalarProperty Name="GrupoSoporte" ColumnName="GrupoSoporte" />
+                <ScalarProperty Name="CategoriaOpe01" ColumnName="CategoriaOpe01" />
+                <ScalarProperty Name="CategoriaOpe02" ColumnName="CategoriaOpe02" />
+                <ScalarProperty Name="CategoriaOpe03" ColumnName="CategoriaOpe03" />
+                <ScalarProperty Name="CategoriaPro01" ColumnName="CategoriaPro01" />
+                <ScalarProperty Name="CategoriaPro02" ColumnName="CategoriaPro02" />
+                <ScalarProperty Name="CategoriaPro03" ColumnName="CategoriaPro03" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Motivo" ColumnName="Motivo" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="Cliente" ColumnName="Cliente" />
+                <ScalarProperty Name="VIP" ColumnName="VIP" />
+                <ScalarProperty Name="Sensibilidad" ColumnName="Sensibilidad" />
+                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+                <ScalarProperty Name="Inclusion" ColumnName="Inclusion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IncidenteNotas">
+            <EntityTypeMapping TypeName="InterRemedyInvgateModel.IncidenteNotas">
+              <MappingFragment StoreEntitySet="IncidenteNotas">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Incidente_id" ColumnName="Incidente_id" />
+                <ScalarProperty Name="Nota" ColumnName="Nota" />
+                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+                <ScalarProperty Name="Inclusion" ColumnName="Inclusion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IncidentesDocumentos">
+            <EntityTypeMapping TypeName="InterRemedyInvgateModel.IncidentesDocumentos">
+              <MappingFragment StoreEntitySet="IncidentesDocumentos">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Incidente_id" ColumnName="Incidente_id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Tamanio" ColumnName="Tamanio" />
+                <ScalarProperty Name="Contenido" ColumnName="Contenido" />
+                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+                <ScalarProperty Name="Inclusion" ColumnName="Inclusion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrdenTrabajo">
+            <EntityTypeMapping TypeName="InterRemedyInvgateModel.OrdenTrabajo">
+              <MappingFragment StoreEntitySet="OrdenTrabajo">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="TicketRemedy" ColumnName="TicketRemedy" />
+                <ScalarProperty Name="TicketInvgate" ColumnName="TicketInvgate" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Resumen" ColumnName="Resumen" />
+                <ScalarProperty Name="Prioridad" ColumnName="Prioridad" />
+                <ScalarProperty Name="FuenteReportada" ColumnName="FuenteReportada" />
+                <ScalarProperty Name="NombreProducto" ColumnName="NombreProducto" />
+                <ScalarProperty Name="GrupoSoporte" ColumnName="GrupoSoporte" />
+                <ScalarProperty Name="CategoriaOpe01" ColumnName="CategoriaOpe01" />
+                <ScalarProperty Name="CategoriaOpe02" ColumnName="CategoriaOpe02" />
+                <ScalarProperty Name="CategoriaOpe03" ColumnName="CategoriaOpe03" />
+                <ScalarProperty Name="CategoriaPro01" ColumnName="CategoriaPro01" />
+                <ScalarProperty Name="CategoriaPro02" ColumnName="CategoriaPro02" />
+                <ScalarProperty Name="CategoriaPro03" ColumnName="CategoriaPro03" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Motivo" ColumnName="Motivo" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="Cliente" ColumnName="Cliente" />
+                <ScalarProperty Name="VIP" ColumnName="VIP" />
+                <ScalarProperty Name="Sensibilidad" ColumnName="Sensibilidad" />
+                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+                <ScalarProperty Name="Inclusion" ColumnName="Inclusion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrdenTrabajoDocumentos">
+            <EntityTypeMapping TypeName="InterRemedyInvgateModel.OrdenTrabajoDocumentos">
+              <MappingFragment StoreEntitySet="OrdenTrabajoDocumentos">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="OrdenTrabajo_id" ColumnName="OrdenTrabajo_id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Tamanio" ColumnName="Tamanio" />
+                <ScalarProperty Name="Contenido" ColumnName="Contenido" />
+                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+                <ScalarProperty Name="Inclusion" ColumnName="Inclusion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrdenTrabajoNotas">
+            <EntityTypeMapping TypeName="InterRemedyInvgateModel.OrdenTrabajoNotas">
+              <MappingFragment StoreEntitySet="OrdenTrabajoNotas">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="OrdenTrabajo_id" ColumnName="OrdenTrabajo_id" />
+                <ScalarProperty Name="Nota" ColumnName="Nota" />
+                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+                <ScalarProperty Name="Inclusion" ColumnName="Inclusion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
