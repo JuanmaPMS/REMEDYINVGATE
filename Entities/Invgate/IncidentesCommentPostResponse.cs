@@ -9,6 +9,6 @@ namespace Entities
     public class IncidentesCommentPostResponse
     {
         public string status { get; set; }
-        
+
     }
 }

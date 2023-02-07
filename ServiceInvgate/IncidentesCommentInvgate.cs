@@ -58,10 +58,11 @@ namespace ServiceInvgate
             return data;
         }
 
-        public object PostIncidenteComment(IncidentesCommentPostRequest comentario)
+        public Entities.Intermedio.Result PostIncidenteComment(IncidentesCommentPostRequest comentario)
         {
-            var a = JsonConvert.SerializeObject(comentario);
-            object data;
+
+            IncidentesCommentPostResponse postResponse = new IncidentesCommentPostResponse();
+             Entities.Intermedio.Result Resultado = new Entities.Intermedio.Result();
             try
             {
                 var client = new RestClient(UrlServicios + "/incident.comment");
@@ -75,18 +76,28 @@ namespace ServiceInvgate
 
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    data = JsonConvert.DeserializeObject(response.Content);
+                    postResponse = JsonConvert.DeserializeObject<IncidentesCommentPostResponse>(response.Content);
+                    Resultado.Ticket = comentario.request_id.ToString();
+                    Resultado.Resultado = "Transacción exitosa, registro agregado a Invgate People Media";
+                    Resultado.Estado = "Exito";
                 }
                 else
                 {
-                    data = new { Error = "Ocurrio un error: " + response.ErrorMessage };
+                    //data = new { Error = "Ocurrio un error: " + response.ErrorMessage };
+                    Resultado.Ticket = String.Empty;
+                    Resultado.Resultado = response.ErrorException.Message;
+                    Resultado.Estado = "Error";
+
                 }
             }
             catch (Exception ex)
             {
-                data = new { Error = "Ocurrio un error: " + ex.Message };
+                //data = new { Error = "Ocurrio un error: " + ex.Message };
+                Resultado.Ticket = String.Empty;
+                Resultado.Resultado = "Ocurrio un error: " + ex.Message;
+                Resultado.Estado = "Error";
             }
-            return data;
+            return Resultado;
         }
 
        
