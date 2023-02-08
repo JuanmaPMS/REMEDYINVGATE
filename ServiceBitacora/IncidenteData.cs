@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Entities.Intermedio;
 using System.Data.SqlClient;
+using Entities;
 
 namespace ServiceBitacora
 {
@@ -17,18 +18,34 @@ namespace ServiceBitacora
             this.ctx = new InterEntities();
         }
 
-        public int Get(string ticketImss)
+        public Ticket Get(string ticketImss)
         {
-            int id = 0;
+            Ticket result = new Ticket();
             try
             {
-                id = ctx.Database.SqlQuery<int>("EXEC [dbo].[SP_OBTIENE_TICKET_INVGATE_INCIDENTE] @TicketIMSS", new SqlParameter("@TicketIMSS", ticketImss)).FirstOrDefault();
+                result = ctx.Database.SqlQuery<Ticket>("EXEC [dbo].[SP_OBTIENE_TICKET_INVGATE_INCIDENTE] @TicketIMSS", new SqlParameter("@TicketIMSS", ticketImss)).FirstOrDefault();
             }
             catch (Exception ex)
             {
 
             }
-            return id;
+            return result;
+        }
+
+        public bool Existe(string ticketImss)
+        {
+            try
+            {
+                Incidente incidente = ctx.Incidente.Where(x => x.TicketRemedy.Trim().ToUpper() == ticketImss.Trim().ToUpper()).FirstOrDefault();
+                if (incidente != null)
+                    return true;
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
         public int Crear(CreaTicket ticket, int idInvgate, out string Result)
@@ -59,10 +76,19 @@ namespace ServiceBitacora
                                     new SqlParameter("@VIP", ticket.VIP.ToUpper() == "SI" ? 1 : 0),
                                     new SqlParameter("@Sensibilidad", ticket.Sensibilidad),
                                     new SqlParameter("@Usuario", ""),
-                                    new SqlParameter("@Nota", ticket.Notas)
+                                    new SqlParameter("@Nota", ticket.Notas),
+                                    new SqlParameter("@Archivo01", ticket.Adjunto01),
+                                    new SqlParameter("@ArchivoName01", ticket.AdjuntoName01),
+                                    new SqlParameter("@ArchivoSize01", ticket.AdjuntoSize01),
+                                    new SqlParameter("@Archivo02", ticket.Adjunto02),
+                                    new SqlParameter("@ArchivoName02", ticket.AdjuntoName02),
+                                    new SqlParameter("@ArchivoSize02", ticket.AdjuntoSize02),
+                                    new SqlParameter("@Archivo03", ticket.Adjunto03),
+                                    new SqlParameter("@ArchivoName03", ticket.AdjuntoName03),
+                                    new SqlParameter("@ArchivoSize03", ticket.AdjuntoSize03)
                 };
 
-                id = ctx.Database.ExecuteSqlCommand("EXEC [dbo].[SP_INSERT_INCIDENTE] @TicketRemedy,@TicketInvgate,@Descripcion,@Resumen,@Impacto,@Urgencia,@TipoIncidencia,@FuenteReportada,@NombreProducto,@GrupoSoporte,@CategoriaOpe01,@CategoriaOpe02,@CategoriaOpe03,@CategoriaPro01,@CategoriaPro02,@CategoriaPro03,@Estado,@FechaCreacion,@Cliente,@VIP,@Sensibilidad,@Usuario,@Nota ", sqParam);
+                id = ctx.Database.ExecuteSqlCommand("EXEC [dbo].[SP_INSERT_INCIDENTE] @TicketRemedy,@TicketInvgate,@Descripcion,@Resumen,@Impacto,@Urgencia,@TipoIncidencia,@FuenteReportada,@NombreProducto,@GrupoSoporte,@CategoriaOpe01,@CategoriaOpe02,@CategoriaOpe03,@CategoriaPro01,@CategoriaPro02,@CategoriaPro03,@Estado,@FechaCreacion,@Cliente,@VIP,@Sensibilidad,@Usuario,@Nota,@Archivo01,@ArchivoName01,@ArchivoSize01,@Archivo02,@ArchivoName02,@ArchivoSize02,@Archivo03,@ArchivoName03,@ArchivoSize03 ", sqParam);
                 Result = "Exito: Incidente registrado en bitácora.";
             }
             catch (Exception ex)
@@ -82,7 +108,7 @@ namespace ServiceBitacora
                                     new SqlParameter("@TicketRemedy", ticket.TicketIMSS),
                                     new SqlParameter("@TicketInvgate", idInvgate),
                                     new SqlParameter("@FechaCambio", ticket.FechaCambio),
-                                    new SqlParameter("@Impacto", ticket.Impacto),
+                                    new SqlParameter("@Impacto", DBNull.Value),
                                     new SqlParameter("@Urgencia", ticket.Urgencia),
                                     new SqlParameter("@Estado", ticket.EstadoNuevo),
                                     new SqlParameter("@Motivo", ticket.Motivo),
@@ -91,7 +117,7 @@ namespace ServiceBitacora
                                     
                 };
 
-                id = ctx.Database.ExecuteSqlCommand("EXEC [dbo].[SP_UPDATE_INCIDENTE] @TicketRemedy,@TicketInvgate,@FechaCambio@Impacto,@Urgencia,@Estado,@Motivo,@Nota,@Usuario ", sqParam);
+                id = ctx.Database.ExecuteSqlCommand("EXEC [dbo].[SP_UPDATE_INCIDENTE] @TicketRemedy,@TicketInvgate,@FechaCambio,@Impacto,@Urgencia,@Estado,@Motivo,@Nota,@Usuario ", sqParam);
                 Result = "Exito: Actualización de incidente registrado en bitácora.";
             }
             catch (Exception ex)

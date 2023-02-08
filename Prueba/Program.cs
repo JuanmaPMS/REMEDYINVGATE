@@ -28,8 +28,8 @@ namespace Prueba
             ticket.Resumen = "PRUEBA DE INTEGRACIOn 7";
             ticket.Impacto = "1000";
             ticket.Urgencia = "2000";
-            ticket.Prioridad = "";
-            ticket.TipoIncidencia = "0";
+            ticket.Prioridad = null;
+            ticket.TipoIncidencia = "";
             ticket.FuenteReportada = "2000";
             ticket.NombreProducto = "";
             ticket.GrupoSoporte = "SOPORTE";
@@ -39,7 +39,7 @@ namespace Prueba
             ticket.CategoriaPro01 = "HARDWARE";
             ticket.CategoriaPro02 = "COMPUTO PERSONAL";
             ticket.CategoriaPro03 = "";
-            ticket.EstadoNuevo = "1";
+            ticket.EstadoNuevo = 1;
             ticket.Notas = "Prueba de notas";
             ticket.FechaCreacion = "02/02/2023 07:30:00 p.m.";
             ticket.Cliente = "IMSS";
@@ -48,7 +48,7 @@ namespace Prueba
 
             IncidenteData incidenteData= new IncidenteData();
             //incidenteData.Crear(ticket, 1275, out string result);
-            int result = incidenteData.Get(ticket.TicketIMSS);
+            Ticket result = incidenteData.Get(ticket.TicketIMSS);
             Console.WriteLine(result);  
 
 

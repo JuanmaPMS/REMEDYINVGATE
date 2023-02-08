@@ -17,6 +17,36 @@ namespace ServiceBitacora
             this.ctx = new InterEntities();
         }
 
+        public Ticket Get(string ticketImss)
+        {
+            Ticket result = new Ticket();
+            try
+            {
+                result = ctx.Database.SqlQuery<Ticket>("EXEC [dbo].[SP_OBTIENE_TICKET_INVGATE_WO] @TicketIMSS", new SqlParameter("@TicketIMSS", ticketImss)).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return result;
+        }
+
+        public bool Existe(string ticketImss)
+        {
+            try
+            {
+                OrdenTrabajo wo = ctx.OrdenTrabajo.Where(x => x.TicketRemedy.Trim().ToUpper() == ticketImss.Trim().ToUpper()).FirstOrDefault();
+                if (wo != null)
+                    return true;
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
         public int Crear(CreaTicket ticket, int idInvgate, out string Result)
         {
             int id = 0;
@@ -75,7 +105,7 @@ namespace ServiceBitacora
 
                 };
 
-                id = ctx.Database.ExecuteSqlCommand("EXEC [dbo].[SP_UPDATE_INCIDENTE] @TicketRemedy,@TicketInvgate,@FechaCambio@Impacto,@Urgencia,@Estado,@Motivo,@Nota,@Usuario ", sqParam);
+                id = ctx.Database.ExecuteSqlCommand("EXEC [dbo].[SP_UPDATE_INCIDENTE] @TicketRemedy,@TicketInvgate,@FechaCambio,@Impacto,@Urgencia,@Estado,@Motivo,@Nota,@Usuario ", sqParam);
                 Result = "Exito: Actualización de Orden de Trabajo registrado en bitácora.";
             }
             catch (Exception ex)

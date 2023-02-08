@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CatalogosData.cs" />
     <Compile Include="CatEstadoIncidente.cs">
       <DependentUpon>DBInter.tt</DependentUpon>
     </Compile>
