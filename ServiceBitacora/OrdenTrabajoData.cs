@@ -92,12 +92,11 @@ namespace ServiceBitacora
             int id = 0;
             try
             {
-                SqlParameter[] sqParam = new SqlParameter[] {
+                List<SqlParameter> sqParam = new List<SqlParameter> {
                                     new SqlParameter("@TicketRemedy", ticket.TicketIMSS),
                                     new SqlParameter("@TicketInvgate", idInvgate),
                                     new SqlParameter("@FechaCambio", ticket.FechaCambio),
-                                    new SqlParameter("@Impacto", ticket.Impacto),
-                                    new SqlParameter("@Urgencia", ticket.Urgencia),
+                                    new SqlParameter("@Prioridad", ticket.Prioridad),
                                     new SqlParameter("@Estado", ticket.EstadoNuevo),
                                     new SqlParameter("@Motivo", ticket.Motivo),
                                     new SqlParameter("@Nota", ticket.Notas),
@@ -105,7 +104,22 @@ namespace ServiceBitacora
 
                 };
 
-                id = ctx.Database.ExecuteSqlCommand("EXEC [dbo].[SP_UPDATE_INCIDENTE] @TicketRemedy,@TicketInvgate,@FechaCambio,@Impacto,@Urgencia,@Estado,@Motivo,@Nota,@Usuario ", sqParam);
+                if (!string.IsNullOrEmpty(ticket.Prioridad))
+                    sqParam.Add(new SqlParameter("@Prioridad", ticket.Prioridad));
+                else
+                    sqParam.Add(new SqlParameter("@Prioridad", DBNull.Value));
+
+                if (!string.IsNullOrEmpty(ticket.EstadoNuevo))
+                    sqParam.Add(new SqlParameter("@Estado", ticket.EstadoNuevo));
+                else
+                    sqParam.Add(new SqlParameter("@Estado", DBNull.Value));
+
+                if (!string.IsNullOrEmpty(ticket.Motivo))
+                    sqParam.Add(new SqlParameter("@Motivo", ticket.Motivo));
+                else
+                    sqParam.Add(new SqlParameter("@Motivo", DBNull.Value));
+
+                id = ctx.Database.ExecuteSqlCommand("EXEC [dbo].[SP_UPDATE_WO] @TicketRemedy,@TicketInvgate,@FechaCambio,@Prioridad,@Estado,@Motivo,@Nota,@Usuario ", sqParam.ToArray());
                 Result = "Exito: Actualización de Orden de Trabajo registrado en bitácora.";
             }
             catch (Exception ex)
@@ -121,11 +135,10 @@ namespace ServiceBitacora
             int id = 0;
             try
             {
-                SqlParameter[] sqParam = new SqlParameter[] {
+                List<SqlParameter> sqParam = new List<SqlParameter> {
                                     new SqlParameter("@TicketRemedy", ticket.TicketIMSS),
                                     new SqlParameter("@TicketInvgate", idInvgate),
                                     new SqlParameter("@FechaCambio", ticket.FechaCambio),
-                                    new SqlParameter("@GrupoSoporte", ticket.GrupoSoporte),
                                     new SqlParameter("@CategoriaOpe01", ticket.CategoriaOpe01),
                                     new SqlParameter("@CategoriaOpe02", ticket.CategoriaOpe02),
                                     new SqlParameter("@CategoriaOpe03", ticket.CategoriaOpe03),
@@ -135,7 +148,12 @@ namespace ServiceBitacora
                                     new SqlParameter("@Usuario", "")
                 };
 
-                id = ctx.Database.ExecuteSqlCommand("EXEC [dbo].[SP_UPDATE_CATEGORIA_WO] @TicketRemedy,@TicketInvgate,@FechaCambio,@GrupoSoporte,@CategoriaOpe01,@CategoriaOpe02,@CategoriaOpe03,@CategoriaPro01,@CategoriaPro02,@CategoriaPro03,@Usuario ", sqParam);
+                if (!string.IsNullOrEmpty(ticket.GrupoSoporte))
+                    sqParam.Add(new SqlParameter("@GrupoSoporte", ticket.GrupoSoporte));
+                else
+                    sqParam.Add(new SqlParameter("@GrupoSoporte", DBNull.Value));
+
+                id = ctx.Database.ExecuteSqlCommand("EXEC [dbo].[SP_UPDATE_CATEGORIA_WO] @TicketRemedy,@TicketInvgate,@FechaCambio,@GrupoSoporte,@CategoriaOpe01,@CategoriaOpe02,@CategoriaOpe03,@CategoriaPro01,@CategoriaPro02,@CategoriaPro03,@Usuario ", sqParam.ToArray());
                 Result = "Exito: Actualización de Orden de Trabajo registrado en bitácora.";
             }
             catch (Exception ex)

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Entities.Intermedio
 {
@@ -10,8 +12,12 @@ namespace Entities.Intermedio
     {
         public string TipoOperacion { get; set; }
         public string NombreProveedor { get; set; }
+
+        [XmlElement(IsNullable = true)] 
         public string TicketIMSS { get; set; }
         public string Descripcion { get; set; }
+
+        [XmlElement(IsNullable = true)]
         public string Resumen { get; set; }
         public string Impacto { get; set; }
         public string Urgencia { get; set; }
