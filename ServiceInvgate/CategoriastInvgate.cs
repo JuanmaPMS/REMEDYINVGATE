@@ -553,6 +553,53 @@ namespace ServiceInvgate
 
         }
 
+        public int GetCategoria(string cadena)
+        {
+            List<CategoriasInvgateResponse> listaCategoriasAll = new List<CategoriasInvgateResponse>();
+            List<CategoriasInvgateResponse> listaCategoriasEncontradas = new List<CategoriasInvgateResponse>();
+            int IdCategoria = 0;
+            var arregloSplit = cadena.Split('|');
+
+            try
+            {
+                var client = new RestClient(UrlServicios + "/categories");
+
+                var request = new RestRequest("", Method.Get);
+                client.Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator(user, password);
+
+                var response = client.Execute(request);
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    listaCategoriasAll = JsonConvert.DeserializeObject<List<CategoriasInvgateResponse>>(response.Content);
+
+                    int idParent = 0;
+                    foreach (string elemento in arregloSplit)
+                    {
+                        listaCategoriasEncontradas = listaCategoriasAll.Where(x => x.parent_category_id == idParent && x.name == elemento).ToList();
+
+                        if (listaCategoriasEncontradas.Count > 0)
+                            idParent = listaCategoriasEncontradas[0].id;
+                    }
+
+                    if (idParent > 0)
+                        IdCategoria = idParent;
+                    else
+                        IdCategoria = 1069;//Se asigna por defecto el Id de la Mesa IMSS
+                }
+                else 
+                {
+                    IdCategoria = 1069;//Se asigna por defecto el Id de la Mesa IMSS
+                }
+            }
+            catch//(Exception ex)
+            {
+                IdCategoria = 1069;//Se asigna por defecto el Id de la Mesa IMSS
+            }
+
+            return IdCategoria;
+        }
+
 
     }
 }

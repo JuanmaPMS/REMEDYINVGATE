@@ -86,7 +86,7 @@ namespace Inter_ServiceDesk_PM
                             VarInter.creator_id = 1240;
                             VarInter.type_id = 1;//Incidente
                             CategoriastInvgate ci = new CategoriastInvgate();
-                            String concat = "CAT PROD" + "|" +//"MESA DE SERVICIO IMSS" + "|" +
+                            string concat = "CAT PROD" + "|" +//"MESA DE SERVICIO IMSS" + "|" +
                                     request.CategoriaOpe01 + "|" +
                                     request.CategoriaOpe02 + "|" +
                                     request.CategoriaOpe03 + "|" +
@@ -94,19 +94,8 @@ namespace Inter_ServiceDesk_PM
                                     request.CategoriaPro02 + "|" +
                                     request.CategoriaPro03 + "|" +
                                     request.NombreProducto;
-                            ci.GetNombresCategoriasByProductoNombreArreglo(concat);
-
-                            ResultCategorias respuesta = ci.GetNombresCategoriasByProductoNombreArreglo(concat);
-                            for (int i = (respuesta.categorias.Count - 1); i >= 0; i--)
-                            {
-
-                                if (respuesta.categorias[i].idCategoria != null)
-                                {
-                                    VarInter.category_id = (int)respuesta.categorias[i].idCategoria;
-                                    break;
-                                }
-                            }
-
+                            
+                            VarInter.category_id = ci.GetCategoria(concat);
                             VarInter.description = request.Descripcion;
                             VarInter.title = request.Resumen;
                             VarInter.source_id = 2;
@@ -376,7 +365,7 @@ namespace Inter_ServiceDesk_PM
 
                             //Obtiene Categoria
                             CategoriastInvgate ci = new CategoriastInvgate();
-                            String concat = "CAT PROD" + "|" +//"MESA DE SERVICIO IMSS" + "|" +
+                            string concat = "CAT PROD" + "|" +//"MESA DE SERVICIO IMSS" + "|" +
                                     request.CategoriaOpe01 + "|" +
                                     request.CategoriaOpe02 + "|" +
                                     request.CategoriaOpe03 + "|" +
@@ -384,19 +373,8 @@ namespace Inter_ServiceDesk_PM
                                     request.CategoriaPro02 + "|" +
                                     request.CategoriaPro03 + "|" +
                                     data.NombreProducto;
-                            ci.GetNombresCategoriasByProductoNombreArreglo(concat);
 
-                            ResultCategorias respuesta = ci.GetNombresCategoriasByProductoNombreArreglo(concat);
-                            for (int i = (respuesta.categorias.Count - 1); i >= 0; i--)
-                            {
-
-                                if (respuesta.categorias[i].idCategoria != null)
-                                {
-                                    VarInter.category_id = (int)respuesta.categorias[i].idCategoria;
-                                    break;
-                                }
-                            }
-
+                            VarInter.category_id = ci.GetCategoria(concat);
                             VarInter.id = data.TicketInvgate;
                             VarInter.date = ConvertToTimestamp(dt).ToString();
 
@@ -514,7 +492,7 @@ namespace Inter_ServiceDesk_PM
                             VarInter.creator_id = 1240;
                             VarInter.type_id = 2; //Orden Trabajo
                             CategoriastInvgate ci = new CategoriastInvgate();
-                            String concat = "MESA DE SERVICIO IMSS" + "|" +
+                            string concat = "MESA DE SERVICIO IMSS" + "|" +
                                     request.CategoriaOpe01 + "|" +
                                     request.CategoriaOpe02 + "|" +
                                     request.CategoriaOpe03 + "|" +
@@ -522,19 +500,8 @@ namespace Inter_ServiceDesk_PM
                                     request.CategoriaPro02 + "|" +
                                     request.CategoriaPro03 + "|" +
                                     request.NombreProducto;
-                            ci.GetNombresCategoriasByProductoNombreArreglo(concat);
 
-                            ResultCategorias respuesta = ci.GetNombresCategoriasByProductoNombreArreglo(concat);
-                            for (int i = (respuesta.categorias.Count - 1); i >= 0; i--)
-                            {
-
-                                if (respuesta.categorias[i].idCategoria != null)
-                                {
-                                    VarInter.category_id = (int)respuesta.categorias[i].idCategoria;
-                                    break;
-                                }
-                            }
-
+                            VarInter.category_id = ci.GetCategoria(concat);
                             VarInter.description = request.Descripcion;
                             VarInter.title = request.Resumen;
                             VarInter.source_id = 2;
@@ -802,7 +769,7 @@ namespace Inter_ServiceDesk_PM
 
                             //Obtiene Categoria
                             CategoriastInvgate ci = new CategoriastInvgate();
-                            String concat = "MESA DE SERVICIO IMSS" + "|" +
+                            string concat = "MESA DE SERVICIO IMSS" + "|" +
                                     request.CategoriaOpe01 + "|" +
                                     request.CategoriaOpe02 + "|" +
                                     request.CategoriaOpe03 + "|" +
@@ -810,19 +777,8 @@ namespace Inter_ServiceDesk_PM
                                     request.CategoriaPro02 + "|" +
                                     request.CategoriaPro03 + "|" +
                                     data.NombreProducto;
-                            ci.GetNombresCategoriasByProductoNombreArreglo(concat);
 
-                            ResultCategorias respuesta = ci.GetNombresCategoriasByProductoNombreArreglo(concat);
-                            for (int i = (respuesta.categorias.Count - 1); i >= 0; i--)
-                            {
-
-                                if (respuesta.categorias[i].idCategoria != null)
-                                {
-                                    VarInter.category_id = (int)respuesta.categorias[i].idCategoria;
-                                    break;
-                                }
-                            }
-
+                            VarInter.category_id = ci.GetCategoria(concat);
                             VarInter.id = data.TicketInvgate;
                             VarInter.date = ConvertToTimestamp(dt).ToString();
 

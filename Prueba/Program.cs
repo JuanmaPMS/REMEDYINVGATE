@@ -46,10 +46,25 @@ namespace Prueba
             ticket.VIP = "Si";
             ticket.Sensibilidad = "Sensibilidad";
 
-            IncidenteData incidenteData= new IncidenteData();
-            //incidenteData.Crear(ticket, 1275, out string result);
-            Ticket result = incidenteData.Get(ticket.TicketIMSS);
-            Console.WriteLine(result);  
+            String concat = "CAT PROD" + "|" +//"MESA DE SERVICIO IMSS" + "|" +
+                            ticket.CategoriaOpe01 + "|" +
+                            ticket.CategoriaOpe02 + "|" +
+                            ticket.CategoriaOpe03 + "|" +
+                            ticket.CategoriaPro01 + "|" +
+                            ticket.CategoriaPro02 + "|" +
+                            ticket.CategoriaPro03 + "|" +
+                            ticket.NombreProducto;
+
+            CategoriastInvgate invgate = new CategoriastInvgate();
+
+            invgate.GetCategoria(concat);
+
+
+
+            //IncidenteData incidenteData= new IncidenteData();
+            ////incidenteData.Crear(ticket, 1275, out string result);
+            //Ticket result = incidenteData.Get(ticket.TicketIMSS);
+            //Console.WriteLine(result);  
 
 
 
@@ -100,22 +115,21 @@ namespace Prueba
 
 
             //PUT INCIDENTE
-            IncidentesPutRequest putRequest = new IncidentesPutRequest(){
-                category_id= 1413, //NO ES OBLIGATORIO
-                //title = "INCIDENTE DE PRUEBA 4 MODIFICACION postman- LIM", ////OBLIGATORIO
-                //                priority_id = 2, //NO ES OBLIGATORIO
-                //date_format = null, //NO ES OBLIGATORIO
-                //customer_id = 1, //NO ES OBLIGATORIO
-                //source_id = 1, //NONO ES OBLIGATORIO
-                //id = 7086,  //OBLIGATORIO
-                id = 7086,  //OBLIGATORIO
-                //type_id= 3, //NO ES OBLIGATORIO
-                //description = null, //NO ES OBLIGATORIO
-                //location_id= null, //NO ES OBLIGATORIO
-                //date = "1675183785", //NO ES OBLIGATORIO
-                //reassignment = false
-            }
-;
+            //IncidentesPutRequest putRequest = new IncidentesPutRequest(){
+            //    category_id= 1413, //NO ES OBLIGATORIO
+            //    //title = "INCIDENTE DE PRUEBA 4 MODIFICACION postman- LIM", ////OBLIGATORIO
+            //    //                priority_id = 2, //NO ES OBLIGATORIO
+            //    //date_format = null, //NO ES OBLIGATORIO
+            //    //customer_id = 1, //NO ES OBLIGATORIO
+            //    //source_id = 1, //NONO ES OBLIGATORIO
+            //    //id = 7086,  //OBLIGATORIO
+            //    id = 7086,  //OBLIGATORIO
+            //    //type_id= 3, //NO ES OBLIGATORIO
+            //    //description = null, //NO ES OBLIGATORIO
+            //    //location_id= null, //NO ES OBLIGATORIO
+            //    //date = "1675183785", //NO ES OBLIGATORIO
+            //    //reassignment = false
+            //}
         //putRequest.category_id = 1833;
         //putRequest.title = "INCIDENTE DE PRUEBA MODIFICACION - LIM";
         //putRequest.priority_id = 5; // "id": 5,            "name": "Crítica"
@@ -130,8 +144,8 @@ namespace Prueba
         //putRequest.reassignment = true;
 
 
-            IncidentesInvgate incidentes = new IncidentesInvgate();
-            Entities.Intermedio.Result respuesta = incidentes.PutIncidente(putRequest);
+            //IncidentesInvgate incidentes = new IncidentesInvgate();
+            //Entities.Intermedio.Result respuesta = incidentes.PutIncidente(putRequest);
 
 
 
