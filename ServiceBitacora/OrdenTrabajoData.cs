@@ -73,10 +73,19 @@ namespace ServiceBitacora
                                     new SqlParameter("@VIP", ticket.VIP.ToUpper() == "SI" ? 1 : 0),
                                     new SqlParameter("@Sensibilidad", ticket.Sensibilidad),
                                     new SqlParameter("@Usuario", ""),
-                                    new SqlParameter("@Nota", ticket.Notas)
+                                    new SqlParameter("@Nota", ticket.Notas),
+                                    new SqlParameter("@Archivo01", ticket.Adjunto01),
+                                    new SqlParameter("@ArchivoName01", ticket.AdjuntoName01),
+                                    new SqlParameter("@ArchivoSize01", ticket.AdjuntoSize01),
+                                    new SqlParameter("@Archivo02", ticket.Adjunto02),
+                                    new SqlParameter("@ArchivoName02", ticket.AdjuntoName02),
+                                    new SqlParameter("@ArchivoSize02", ticket.AdjuntoSize02),
+                                    new SqlParameter("@Archivo03", ticket.Adjunto03),
+                                    new SqlParameter("@ArchivoName03", ticket.AdjuntoName03),
+                                    new SqlParameter("@ArchivoSize03", ticket.AdjuntoSize03)
                 };
 
-                id = ctx.Database.ExecuteSqlCommand("EXEC [dbo].[SP_INSERT_WO] @TicketRemedy,@TicketInvgate,@Descripcion,@Resumen,@Prioridad,@FuenteReportada,@NombreProducto,@GrupoSoporte,@CategoriaOpe01,@CategoriaOpe02,@CategoriaOpe03,@CategoriaPro01,@CategoriaPro02,@CategoriaPro03,@Estado,@FechaCreacion,@Cliente,@VIP,@Sensibilidad,@Usuario,@Nota ", sqParam);
+                id = ctx.Database.ExecuteSqlCommand("EXEC [dbo].[SP_INSERT_WO] @TicketRemedy,@TicketInvgate,@Descripcion,@Resumen,@Prioridad,@FuenteReportada,@NombreProducto,@GrupoSoporte,@CategoriaOpe01,@CategoriaOpe02,@CategoriaOpe03,@CategoriaPro01,@CategoriaPro02,@CategoriaPro03,@Estado,@FechaCreacion,@Cliente,@VIP,@Sensibilidad,@Usuario,@Nota,@Archivo01,@ArchivoName01,@ArchivoSize01,@Archivo02,@ArchivoName02,@ArchivoSize02,@Archivo03,@ArchivoName03,@ArchivoSize03 ", sqParam);
                 Result = "Exito: Orden de Trabajo registrada en bitácora.";
             }
             catch (Exception ex)
@@ -96,9 +105,6 @@ namespace ServiceBitacora
                                     new SqlParameter("@TicketRemedy", ticket.TicketIMSS),
                                     new SqlParameter("@TicketInvgate", idInvgate),
                                     new SqlParameter("@FechaCambio", ticket.FechaCambio),
-                                    new SqlParameter("@Prioridad", ticket.Prioridad),
-                                    new SqlParameter("@Estado", ticket.EstadoNuevo),
-                                    new SqlParameter("@Motivo", ticket.Motivo),
                                     new SqlParameter("@Nota", ticket.Notas),
                                     new SqlParameter("@Usuario", "")
 

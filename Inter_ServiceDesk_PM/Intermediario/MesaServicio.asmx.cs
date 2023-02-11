@@ -492,7 +492,7 @@ namespace Inter_ServiceDesk_PM
                             VarInter.creator_id = 1240;
                             VarInter.type_id = 2; //Orden Trabajo
                             CategoriastInvgate ci = new CategoriastInvgate();
-                            string concat = "MESA DE SERVICIO IMSS" + "|" +
+                            string concat = "CAT PROD" + "|" +//"MESA DE SERVICIO IMSS" + "|" +
                                     request.CategoriaOpe01 + "|" +
                                     request.CategoriaOpe02 + "|" +
                                     request.CategoriaOpe03 + "|" +
@@ -594,8 +594,8 @@ namespace Inter_ServiceDesk_PM
 
                         if (data.TicketInvgate > 0)
                         {
-                            //Valida el estatus, si es Resuelto
-                            if (request.EstadoNuevo == "4")//Resuelto
+                            //Valida el estatus, si es Terminado
+                            if (request.EstadoNuevo == "5")//Terminado
                             {
                                 IncidentesCommentPostRequest VarComent = new IncidentesCommentPostRequest();
 
@@ -611,10 +611,10 @@ namespace Inter_ServiceDesk_PM
                                 IncidentesPutRequest VarInter = new IncidentesPutRequest();
                                 DateTime dt = Convert.ToDateTime(Convert.ToDateTime(request.FechaCambio.ToUpper().Replace("P.M", "").Replace("A.M", "")).ToShortDateString());
 
-                                if(!string.IsNullOrEmpty(request.Urgencia))
+                                if(!string.IsNullOrEmpty(request.Prioridad))
                                 {
                                     //Otiene urgencia
-                                    int IdPrioridad = catalogos.GetUrgencia(Convert.ToInt32(request.Urgencia));
+                                    int IdPrioridad = catalogos.GetPrioridad(Convert.ToInt32(request.Prioridad));
 
                                     VarInter.priority_id = IdPrioridad;
                                     VarInter.id = data.TicketInvgate;
@@ -696,10 +696,10 @@ namespace Inter_ServiceDesk_PM
                             IncidentesPutRequest VarInter = new IncidentesPutRequest();
                             DateTime dt = Convert.ToDateTime(Convert.ToDateTime(request.FechaCambio.ToUpper().Replace("P.M", "").Replace("A.M", "")).ToShortDateString());
 
-                            if (!string.IsNullOrEmpty(request.Urgencia))
+                            if (!string.IsNullOrEmpty(request.Prioridad))
                             {
                                 //Otiene urgencia
-                                int IdPrioridad = catalogos.GetUrgencia(Convert.ToInt32(request.Urgencia));
+                                int IdPrioridad = catalogos.GetPrioridad(Convert.ToInt32(request.Prioridad));
 
                                 VarInter.priority_id = IdPrioridad;
                                 VarInter.id = data.TicketInvgate;
@@ -769,7 +769,7 @@ namespace Inter_ServiceDesk_PM
 
                             //Obtiene Categoria
                             CategoriastInvgate ci = new CategoriastInvgate();
-                            string concat = "MESA DE SERVICIO IMSS" + "|" +
+                            string concat = "CAT PROD" + "|" +//"MESA DE SERVICIO IMSS" + "|" +
                                     request.CategoriaOpe01 + "|" +
                                     request.CategoriaOpe02 + "|" +
                                     request.CategoriaOpe03 + "|" +
