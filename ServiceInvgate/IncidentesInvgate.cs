@@ -149,7 +149,6 @@ namespace ServiceInvgate
                 }
                 else
                 {
-
                     Resultado.Ticket = String.Empty;
                     Resultado.Resultado = response.ErrorException.Message;
                     Resultado.Estado = "Error";
@@ -158,6 +157,43 @@ namespace ServiceInvgate
             catch (Exception ex)
             {
                 //data = new { Error = "Ocurrio un error: " + ex.Message };
+                Resultado.Ticket = String.Empty;
+                Resultado.Resultado = "Ocurrio un error: " + ex.Message;
+                Resultado.Estado = "Error";
+            }
+            return Resultado;
+        }
+
+        public Entities.Intermedio.Result PutStatusIncidente(int IncidenteId, int StatusId)
+        {
+            Entities.Intermedio.Result Resultado = new Entities.Intermedio.Result();
+            try
+            {
+                var options = new RestClientOptions(ApiAttachments)
+                {
+                    MaxTimeout = -1,
+                };
+                var client = new RestClient(options);
+                var request = new RestRequest(ApiAttachments + "?id=" + IncidenteId + "&statusId=" + StatusId, Method.Put);
+
+
+                var response = client.Execute(request);
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    Resultado.Ticket = IncidenteId.ToString();
+                    Resultado.Resultado = "Transacción exitosa, registro actualizado en Invgate People Media";
+                    Resultado.Estado = "Exito";
+                }
+                else
+                {
+                    Resultado.Ticket = String.Empty;
+                    Resultado.Resultado = response.ErrorException.Message;
+                    Resultado.Estado = "Error";
+                }
+            }
+            catch (Exception ex)
+            {
                 Resultado.Ticket = String.Empty;
                 Resultado.Resultado = "Ocurrio un error: " + ex.Message;
                 Resultado.Estado = "Error";

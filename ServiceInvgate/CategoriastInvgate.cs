@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Configuration;
 using Entities.Invgate;
+using System.Xml.Linq;
 
 namespace ServiceInvgate
 {
@@ -600,6 +601,68 @@ namespace ServiceInvgate
             return IdCategoria;
         }
 
+
+        public Categorizacion GetCategorizacion(int IdCategoria)
+        {
+            Categorizacion data = new Categorizacion();
+
+            List<CategoriasInvgateResponse> listaCategoriasAll = new List<CategoriasInvgateResponse>();
+            List<CategoriasInvgateResponse> listaCategoriasEncontradas = new List<CategoriasInvgateResponse>();
+
+            try
+            {
+                var client = new RestClient(UrlServicios + "/categories");
+
+                var request = new RestRequest("", Method.Get);
+                client.Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator(user, password);
+
+                var response = client.Execute(request);
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    listaCategoriasAll = JsonConvert.DeserializeObject<List<CategoriasInvgateResponse>>(response.Content);
+
+                    string[] arr = new string[7];
+
+                    int idParent = IdCategoria;
+
+                    for (int i = 6;i >= 0; i--)
+                    {
+                        listaCategoriasEncontradas = listaCategoriasAll.Where(x => x.id == idParent).ToList();
+
+                        if (listaCategoriasEncontradas.Count > 0)
+                        {
+                            arr[i] = listaCategoriasEncontradas[0].name;
+                            idParent = listaCategoriasEncontradas[0].parent_category_id;
+                        }                        
+                    }
+
+                    int x_ = 0;
+                    string[] arr2 = new string[7];
+                    for (int i = 0; i < arr.Length; i++)
+                    {  
+                        if (arr[i] != null)
+                        {
+                            arr2[x_] = arr[i];
+                            x_ ++;
+                        }
+                    }
+
+                    data.CatOperacion01 = arr2[1] == null ? "" : arr2[1];
+                    data.CatOperacion02 = arr2[2] == null ? "" : arr2[2];
+                    data.CatOperacion03 = arr2[3] == null ? "" : arr2[3];
+                    data.CatProducto01 = arr2[4] == null ? "" : arr2[4];
+                    data.CatProducto02 = arr2[5] == null ? "" : arr2[5];
+                    data.CatProducto03 = arr2[6] == null ? "" : arr2[6];
+
+                }
+            }
+            catch//(Exception ex)
+            {
+            }
+
+            return data;
+        }
 
     }
 }

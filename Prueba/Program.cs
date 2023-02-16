@@ -20,45 +20,58 @@ namespace Prueba
         static void Main(string[] args)
         {
             //Pruebas bitacora
-            CreaTicket ticket = new CreaTicket();
-            ticket.TipoOperacion = "C_INC";
-            ticket.NombreProveedor = "PEOPLE-MEDIA";
-            ticket.TicketIMSS = "INC007878";
-            ticket.Descripcion = "PRUEBA DE INTEGRACIOn 7";
-            ticket.Resumen = "PRUEBA DE INTEGRACIOn 7";
-            ticket.Impacto = "1000";
-            ticket.Urgencia = "2000";
-            ticket.Prioridad = null;
-            ticket.TipoIncidencia = "";
-            ticket.FuenteReportada = "2000";
-            ticket.NombreProducto = "";
-            ticket.GrupoSoporte = "SOPORTE";
-            ticket.CategoriaOpe01 = "INFRAESTRUCTURA DE REDES Y TELECOMUNICACIONES";
-            ticket.CategoriaOpe02 = "REDES Y ENLACES";
-            ticket.CategoriaOpe03 = "SOPORTAR";
-            ticket.CategoriaPro01 = "HARDWARE";
-            ticket.CategoriaPro02 = "COMPUTO PERSONAL";
-            ticket.CategoriaPro03 = "";
-            ticket.EstadoNuevo = 1;
-            ticket.Notas = "Prueba de notas";
-            ticket.FechaCreacion = "02/02/2023 07:30:00 p.m.";
-            ticket.Cliente = "IMSS";
-            ticket.VIP = "Si";
-            ticket.Sensibilidad = "Sensibilidad";
+            //CreaTicket ticket = new CreaTicket();
+            //ticket.TipoOperacion = "C_INC";
+            //ticket.NombreProveedor = "PEOPLE-MEDIA";
+            //ticket.TicketIMSS = "INC007878";
+            //ticket.Descripcion = "PRUEBA DE INTEGRACIOn 7";
+            //ticket.Resumen = "PRUEBA DE INTEGRACIOn 7";
+            //ticket.Impacto = "1000";
+            //ticket.Urgencia = "2000";
+            //ticket.Prioridad = null;
+            //ticket.TipoIncidencia = "";
+            //ticket.FuenteReportada = "2000";
+            //ticket.NombreProducto = "";
+            //ticket.GrupoSoporte = "SOPORTE";
+            //ticket.CategoriaOpe01 = "INFRAESTRUCTURA DE REDES Y TELECOMUNICACIONES";
+            //ticket.CategoriaOpe02 = "REDES Y ENLACES";
+            //ticket.CategoriaOpe03 = "SOPORTAR";
+            //ticket.CategoriaPro01 = "HARDWARE";
+            //ticket.CategoriaPro02 = "COMPUTO PERSONAL";
+            //ticket.CategoriaPro03 = "";
+            //ticket.EstadoNuevo = 1;
+            //ticket.Notas = "Prueba de notas";
+            //ticket.FechaCreacion = "02/02/2023 07:30:00 p.m.";
+            //ticket.Cliente = "IMSS";
+            //ticket.VIP = "Si";
+            //ticket.Sensibilidad = "Sensibilidad";
 
-            String concat = "CAT PROD" + "|" +//"MESA DE SERVICIO IMSS" + "|" +
-                            ticket.CategoriaOpe01 + "|" +
-                            ticket.CategoriaOpe02 + "|" +
-                            ticket.CategoriaOpe03 + "|" +
-                            ticket.CategoriaPro01 + "|" +
-                            ticket.CategoriaPro02 + "|" +
-                            ticket.CategoriaPro03 + "|" +
-                            ticket.NombreProducto;
+            //String concat = "CAT PROD" + "|" +//"MESA DE SERVICIO IMSS" + "|" +
+            //                "APLICACIONES|" +
+            //                "ACCESO A SERVICIOS DE TI|" +
+            //                "GESTIONAR NIVELES DE ACCESO|" +
+            //                "SW MEDICO|" +
+            //                "PROVISION DE SERVICIOS MEDICOS|" +
+            //                "CALCULADORA COVID|" +
+            //                "";
+
+            //CategoriastInvgate invgate = new CategoriastInvgate();
+
+            //invgate.GetCategoria(concat);
+
+            //CatalogosData catalogos = new CatalogosData();
+            //catalogos.GetEstatusIncidenteIMSS(4);
+
+            //IncidentesGetRequest get = new IncidentesGetRequest();
+            //get.id = 7211;
+
+            //IncidentesInvgate invgate = new IncidentesInvgate();
+            //invgate.GetIncidente(get);
+
 
             CategoriastInvgate invgate = new CategoriastInvgate();
 
-            invgate.GetCategoria(concat);
-
+            Categorizacion categorizacion = invgate.GetCategorizacion(1098);
 
 
             //IncidenteData incidenteData= new IncidenteData();
@@ -130,18 +143,18 @@ namespace Prueba
             //    //date = "1675183785", //NO ES OBLIGATORIO
             //    //reassignment = false
             //}
-        //putRequest.category_id = 1833;
-        //putRequest.title = "INCIDENTE DE PRUEBA MODIFICACION - LIM";
-        //putRequest.priority_id = 5; // "id": 5,            "name": "Crítica"
-        //putRequest.date_format = null;
-        //putRequest.customer_id = 1;
-        //putRequest.source_id = 1; //"id": 1,             "name": "Correo"
-        //putRequest.id = 7081;
-        //putRequest.type_id = 6; // "id": 6, "name": "Incidente mayor"
-        //putRequest.description = "INCIDENTE DE PRUEBA MODIFICACION";
-        //putRequest.location_id = null;
-        //putRequest.date = "1675215295";
-        //putRequest.reassignment = true;
+            //putRequest.category_id = 1833;
+            //putRequest.title = "INCIDENTE DE PRUEBA MODIFICACION - LIM";
+            //putRequest.priority_id = 5; // "id": 5,            "name": "Crítica"
+            //putRequest.date_format = null;
+            //putRequest.customer_id = 1;
+            //putRequest.source_id = 1; //"id": 1,             "name": "Correo"
+            //putRequest.id = 7081;
+            //putRequest.type_id = 6; // "id": 6, "name": "Incidente mayor"
+            //putRequest.description = "INCIDENTE DE PRUEBA MODIFICACION";
+            //putRequest.location_id = null;
+            //putRequest.date = "1675215295";
+            //putRequest.reassignment = true;
 
 
             //IncidentesInvgate incidentes = new IncidentesInvgate();

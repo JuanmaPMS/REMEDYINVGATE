@@ -4,13 +4,14 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="InterRemedyInvgateModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="InterRemedyInvgateModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="CatEstadoIncidente">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ClaveRemedy" Type="int" />
+          <Property Name="ClaveInvgate" Type="int" />
           <Property Name="Descripcion" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="CatEstadoWO">
@@ -19,6 +20,7 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ClaveRemedy" Type="int" />
+          <Property Name="ClaveInvgate" Type="int" />
           <Property Name="Descripcion" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="CatFuenteReportada">
@@ -61,6 +63,7 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ClaveRemedy" Type="int" />
+          <Property Name="ClaveInvgate" Type="int" />
           <Property Name="Descripcion" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="CatTipoIncidencia">
@@ -93,6 +96,7 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ClaveRemedy" Type="int" />
+          <Property Name="ClaveInvgate" Type="int" />
           <Property Name="Descripcion" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="Incidente">
@@ -143,7 +147,7 @@
           <Property Name="Incidente_id" Type="int" />
           <Property Name="Nombre" Type="nvarchar" MaxLength="200" />
           <Property Name="Tamanio" Type="nvarchar" MaxLength="50" />
-          <Property Name="Contenido" Type="nvarchar" MaxLength="800" />
+          <Property Name="Contenido" Type="nvarchar(max)" />
           <Property Name="Usuario" Type="nvarchar" MaxLength="50" />
           <Property Name="Inclusion" Type="datetime" />
         </EntityType>
@@ -183,7 +187,7 @@
           <Property Name="OrdenTrabajo_id" Type="int" />
           <Property Name="Nombre" Type="nvarchar" MaxLength="200" />
           <Property Name="Tamanio" Type="nvarchar" MaxLength="50" />
-          <Property Name="Contenido" Type="nvarchar" MaxLength="800" />
+          <Property Name="Contenido" Type="nvarchar(max)" />
           <Property Name="Usuario" Type="nvarchar" MaxLength="50" />
           <Property Name="Inclusion" Type="datetime" />
         </EntityType>
@@ -280,8 +284,7 @@
             <End Role="OrdenTrabajoNotas" EntitySet="OrdenTrabajoNotas" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="InterRemedyInvgateModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -292,6 +295,7 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ClaveRemedy" Type="Int32" />
           <Property Name="Descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ClaveInvgate" Type="Int32" />
         </EntityType>
         <EntityType Name="CatEstadoWO">
           <Key>
@@ -300,6 +304,7 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ClaveRemedy" Type="Int32" />
           <Property Name="Descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ClaveInvgate" Type="Int32" />
         </EntityType>
         <EntityType Name="CatFuenteReportada">
           <Key>
@@ -342,6 +347,7 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ClaveRemedy" Type="Int32" />
           <Property Name="Descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ClaveInvgate" Type="Int32" />
         </EntityType>
         <EntityType Name="CatTipoIncidencia">
           <Key>
@@ -374,6 +380,7 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ClaveRemedy" Type="Int32" />
           <Property Name="Descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ClaveInvgate" Type="Int32" />
         </EntityType>
         <EntityType Name="Incidente">
           <Key>
@@ -426,7 +433,7 @@
           <Property Name="Incidente_id" Type="Int32" />
           <Property Name="Nombre" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Tamanio" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Contenido" Type="String" MaxLength="800" FixedLength="false" Unicode="true" />
+          <Property Name="Contenido" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Usuario" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Inclusion" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Incidente" Relationship="Self.FK_IncidentesDocumentos_Incidente" FromRole="IncidentesDocumentos" ToRole="Incidente" />
@@ -469,7 +476,7 @@
           <Property Name="OrdenTrabajo_id" Type="Int32" />
           <Property Name="Nombre" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Tamanio" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Contenido" Type="String" MaxLength="800" FixedLength="false" Unicode="true" />
+          <Property Name="Contenido" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Usuario" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Inclusion" Type="DateTime" Precision="3" />
           <NavigationProperty Name="OrdenTrabajo" Relationship="Self.FK_OrdenTrabajoDocumentos_OrdenTrabajo" FromRole="OrdenTrabajoDocumentos" ToRole="OrdenTrabajo" />
@@ -577,6 +584,7 @@
           <EntitySetMapping Name="CatEstadoIncidente">
             <EntityTypeMapping TypeName="InterRemedyInvgateModel.CatEstadoIncidente">
               <MappingFragment StoreEntitySet="CatEstadoIncidente">
+                <ScalarProperty Name="ClaveInvgate" ColumnName="ClaveInvgate" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="ClaveRemedy" ColumnName="ClaveRemedy" />
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
@@ -586,6 +594,7 @@
           <EntitySetMapping Name="CatEstadoWO">
             <EntityTypeMapping TypeName="InterRemedyInvgateModel.CatEstadoWO">
               <MappingFragment StoreEntitySet="CatEstadoWO">
+                <ScalarProperty Name="ClaveInvgate" ColumnName="ClaveInvgate" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="ClaveRemedy" ColumnName="ClaveRemedy" />
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
@@ -633,6 +642,7 @@
           <EntitySetMapping Name="CatPrioridadWO">
             <EntityTypeMapping TypeName="InterRemedyInvgateModel.CatPrioridadWO">
               <MappingFragment StoreEntitySet="CatPrioridadWO">
+                <ScalarProperty Name="ClaveInvgate" ColumnName="ClaveInvgate" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="ClaveRemedy" ColumnName="ClaveRemedy" />
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
@@ -669,6 +679,7 @@
           <EntitySetMapping Name="CatUrgenciaIncidente">
             <EntityTypeMapping TypeName="InterRemedyInvgateModel.CatUrgenciaIncidente">
               <MappingFragment StoreEntitySet="CatUrgenciaIncidente">
+                <ScalarProperty Name="ClaveInvgate" ColumnName="ClaveInvgate" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="ClaveRemedy" ColumnName="ClaveRemedy" />
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />

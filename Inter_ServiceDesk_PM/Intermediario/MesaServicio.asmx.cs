@@ -206,18 +206,6 @@ namespace Inter_ServiceDesk_PM
                                 IncidentesPutRequest VarInter = new IncidentesPutRequest();
                                 DateTime dt = Convert.ToDateTime(Convert.ToDateTime(request.FechaCambio.ToUpper().Replace("P.M", "").Replace("A.M", "")).ToShortDateString());
 
-                                //Otiene urgencia
-                                if (!string.IsNullOrEmpty(request.Urgencia))
-                                {
-                                    int IdPrioridad = catalogos.GetUrgencia(Convert.ToInt32(request.Urgencia));
-
-                                    VarInter.priority_id = IdPrioridad;
-                                    VarInter.id = data.TicketInvgate;
-                                    VarInter.date = ConvertToTimestamp(dt).ToString();
-
-                                    response_ = incidentes.PutIncidente(VarInter);
-                                }
-
                                 //AgregaNotas
                                 if (!string.IsNullOrEmpty(request.Notas))
                                 {
@@ -231,6 +219,25 @@ namespace Inter_ServiceDesk_PM
                                     response_ = comments.PostIncidenteComment(VarComent);
                                 }
 
+                                //Obtiene urgencia
+                                if (!string.IsNullOrEmpty(request.Urgencia))
+                                {
+                                    int IdPrioridad = catalogos.GetUrgenciaInvgate(Convert.ToInt32(request.Urgencia));
+
+                                    VarInter.priority_id = IdPrioridad;
+                                    VarInter.id = data.TicketInvgate;
+                                    VarInter.date = ConvertToTimestamp(dt).ToString();
+
+                                    response_ = incidentes.PutIncidente(VarInter);
+                                }
+
+                                //Obtiene estatus
+                                if (!string.IsNullOrEmpty(request.EstadoNuevo))
+                                {
+                                    int IdEstatus = catalogos.GetEstatusIncidenteInvgate(Convert.ToInt32(request.EstadoNuevo));
+
+                                    response_ = incidentes.PutStatusIncidente(data.TicketInvgate, IdEstatus);
+                                }
                             }
 
                             //Bitacora
@@ -295,7 +302,7 @@ namespace Inter_ServiceDesk_PM
                             if(!string.IsNullOrEmpty(request.Urgencia))
                             {
                                 //Otiene urgencia
-                                int IdPrioridad = catalogos.GetUrgencia(Convert.ToInt32(request.Urgencia));
+                                int IdPrioridad = catalogos.GetPrioridadInvgate(Convert.ToInt32(request.Urgencia));
 
                                 VarInter.priority_id = IdPrioridad;
                                 VarInter.id = data.TicketInvgate;
@@ -611,18 +618,6 @@ namespace Inter_ServiceDesk_PM
                                 IncidentesPutRequest VarInter = new IncidentesPutRequest();
                                 DateTime dt = Convert.ToDateTime(Convert.ToDateTime(request.FechaCambio.ToUpper().Replace("P.M", "").Replace("A.M", "")).ToShortDateString());
 
-                                if(!string.IsNullOrEmpty(request.Prioridad))
-                                {
-                                    //Otiene urgencia
-                                    int IdPrioridad = catalogos.GetPrioridad(Convert.ToInt32(request.Prioridad));
-
-                                    VarInter.priority_id = IdPrioridad;
-                                    VarInter.id = data.TicketInvgate;
-                                    VarInter.date = ConvertToTimestamp(dt).ToString();
-
-                                    response_ = incidentes.PutIncidente(VarInter);
-                                }                            
-
                                 //AgregaNotas
                                 if (!string.IsNullOrEmpty(request.Notas))
                                 {
@@ -634,6 +629,26 @@ namespace Inter_ServiceDesk_PM
                                     VarComent.is_solution = false;
 
                                     response_ = comments.PostIncidenteComment(VarComent);
+                                }
+
+                                if (!string.IsNullOrEmpty(request.Prioridad))
+                                {
+                                    //Otiene urgencia
+                                    int IdPrioridad = catalogos.GetPrioridadInvgate(Convert.ToInt32(request.Prioridad));
+
+                                    VarInter.priority_id = IdPrioridad;
+                                    VarInter.id = data.TicketInvgate;
+                                    VarInter.date = ConvertToTimestamp(dt).ToString();
+
+                                    response_ = incidentes.PutIncidente(VarInter);
+                                }
+
+                                //Obtiene estatus
+                                if (!string.IsNullOrEmpty(request.EstadoNuevo))
+                                {
+                                    int IdEstatus = catalogos.GetEstatusIncidenteInvgate(Convert.ToInt32(request.EstadoNuevo));
+
+                                    response_ = incidentes.PutStatusIncidente(data.TicketInvgate, IdEstatus);
                                 }
                             }
 
@@ -699,7 +714,7 @@ namespace Inter_ServiceDesk_PM
                             if (!string.IsNullOrEmpty(request.Prioridad))
                             {
                                 //Otiene urgencia
-                                int IdPrioridad = catalogos.GetPrioridad(Convert.ToInt32(request.Prioridad));
+                                int IdPrioridad = catalogos.GetPrioridadInvgate(Convert.ToInt32(request.Prioridad));
 
                                 VarInter.priority_id = IdPrioridad;
                                 VarInter.id = data.TicketInvgate;

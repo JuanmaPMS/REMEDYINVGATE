@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="e013ee3e2f8d444cba503dfc266c6e9a" Name="Diagram1">
+      <Diagram DiagramId="e013ee3e2f8d444cba503dfc266c6e9a" Name="Diagram1" ZoomLevel="90">
         <EntityTypeShape EntityType="InterRemedyInvgateModel.CatEstadoIncidente" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="true" />
         <EntityTypeShape EntityType="InterRemedyInvgateModel.CatEstadoWO" Width="1.5" PointX="2.75" PointY="7.75" IsExpanded="true" />
         <EntityTypeShape EntityType="InterRemedyInvgateModel.CatFuenteReportada" Width="1.5" PointX="7.75" PointY="7.75" IsExpanded="true" />
