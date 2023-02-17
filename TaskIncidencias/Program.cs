@@ -63,12 +63,12 @@ namespace TaskIncidencias
                     procesados.Add(req.id);
             }
 
-            //bool actualiza = false;
-            //if (procesados.Count > 0)
-            //    actualiza = registros.Procesados(procesados);
+            bool actualiza = false;
+            if (procesados.Count > 0)
+                actualiza = registros.Procesados(procesados);
 
-            //Console.WriteLine(actualiza);
-            Console.ReadKey();
+            Console.WriteLine(actualiza);
+            //Console.ReadKey();
         }
     }
 }
