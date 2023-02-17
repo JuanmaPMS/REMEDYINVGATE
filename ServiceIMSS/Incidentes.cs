@@ -200,8 +200,8 @@ namespace ServiceIMSS
                 @"         <urn:NombreProveedor>" + NombreProveedor + "</urn:NombreProveedor>" +
                 @"         <urn:IDTicketIMSS>" + data.IDTicketRemedy + "</urn:IDTicketIMSS>" +
                 @"         <urn:IDTicketProveedor>" + data.IDTicketInvgate + "</urn:IDTicketProveedor>" +
-                @"         <urn:Impacto>" + data.Impacto + "</urn:Impacto>" +
-                @"         <urn:Urgencia>" + data.Urgencia + "</urn:Urgencia>" +
+                @"         <urn:Impacto>" + data.Impacto.ToString() + "</urn:Impacto>" +
+                @"         <urn:Urgencia>" + data.Urgencia.ToString() + "</urn:Urgencia>" +
                 @"         <urn:FechaActualizacion>" + DateTime.Now.ToString() + "</urn:FechaActualizacion>" +
                 @"      </urn:Actualiza_Prioridad_IMSS>" +
                 @"   </soap:Body>" +

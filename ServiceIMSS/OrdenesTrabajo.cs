@@ -137,7 +137,7 @@ namespace ServiceIMSS
                     XmlDocument xmlDocument = new XmlDocument();
                     xmlDocument.LoadXml(response.Content);
 
-                    XmlNodeList xmlNode = xmlDocument.GetElementsByTagName("ns0:Actualiza_Incidentes_IMSSResponse");
+                    XmlNodeList xmlNode = xmlDocument.GetElementsByTagName("ns0:Actualiza_Ordenes_IMSSResponse");
 
                     foreach (XmlElement node in xmlNode)
                     {
@@ -186,7 +186,7 @@ namespace ServiceIMSS
                 @"   </soap:Header>" +
                 @"   <soap:Body>" +
                 @"      <urn:Actualiza_Prioridad_IMSS>" +
-                @"         <urn:TipoDeOperacion>C_PRY_WO</urn:TipoDeOperacion>" +
+                @"         <urn:TipoDeOperacion>A_PRY_WO</urn:TipoDeOperacion>" +
                 @"         <urn:NombreProveedor>" + NombreProveedor + "</urn:NombreProveedor>" +
                 @"         <urn:IDTicketIMSS>" + data.IDTicketRemedy + "</urn:IDTicketIMSS>" +
                 @"         <urn:IDTicketProveedor>" + data.IDTicketInvgate + "</urn:IDTicketProveedor>" +
@@ -240,7 +240,7 @@ namespace ServiceIMSS
                 var client = new RestClient(UrCliente + "?server=remedy&webService=NXR_WS_GestionDeOrdenesIMSS_PM");
                 var request = new RestRequest("", Method.Post);
                 request.AddHeader("Content-Type", "text/xml charset=utf-8");
-                request.AddHeader("SOAPAction", "urn:NXR_WS_GestionDeOrdenesIMSS_PM/Adiciona_Notas_Incidentes_IMSS");
+                request.AddHeader("SOAPAction", "urn:NXR_WS_GestionDeOrdenesIMSS_PM/Adiciona_Notas_Ordenes_IMSS");
                 var body = @"<?xml version=""1.0"" encoding=""utf-8""?>" +
                 @"<soap:Envelope xmlns:soap=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:urn=""urn:NXR_WS_GestionDeOrdenesIMSS_PM"">" +
                 @"  <soap:Header>" +
@@ -253,7 +253,7 @@ namespace ServiceIMSS
                 @"      </urn:AuthenticationInfo>" +
                 @"   </soap:Header>" +
                 @"   <soap:Body>" +
-                @"      <urn:Adiciona_Notas_Incidentes_IMSS>" +
+                @"      <urn:Adiciona_Notas_Ordenes_IMSS>" +
                 @"         <urn:TipoDeOperacion>C_IT_WO</urn:TipoDeOperacion>" +
                 @"         <urn:NombreProveedor>" + NombreProveedor + "</urn:NombreProveedor>" +
                 @"         <urn:IDTicketIMSS>" + data.IDTicketRemedy + "</urn:IDTicketIMSS>" +
@@ -268,7 +268,7 @@ namespace ServiceIMSS
                 @"         <urn:Adjunto03_attachmentData>" + data.Adjunto03 + "</urn:Adjunto03_attachmentData>" +
                 @"         <urn:Adjunto03_attachmentName>" + data.AdjuntoName03 + "</urn:Adjunto03_attachmentName>" +
                 @"         <urn:Adjunto03_attachmentOrigSize>" + data.AdjuntoSize03 + "</urn:Adjunto03_attachmentOrigSize>" +
-                @"      </urn:Adiciona_Notas_Incidentes_IMSS>" +
+                @"      </urn:Adiciona_Notas_Ordenes_IMSS>" +
                 @"   </soap:Body>" +
                 @"</soap:Envelope>" +
                 @"";
@@ -281,7 +281,7 @@ namespace ServiceIMSS
                     XmlDocument xmlDocument = new XmlDocument();
                     xmlDocument.LoadXml(response.Content);
 
-                    XmlNodeList xmlNode = xmlDocument.GetElementsByTagName("ns0:Adiciona_Notas_Incidentes_IMSSResponse");
+                    XmlNodeList xmlNode = xmlDocument.GetElementsByTagName("ns0:Adiciona_Notas_Ordenes_IMSSResponse");
 
                     foreach (XmlElement node in xmlNode)
                     {

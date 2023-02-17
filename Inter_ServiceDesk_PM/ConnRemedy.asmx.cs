@@ -40,7 +40,8 @@ namespace Inter_ServiceDesk_PM
                 _cambio.CategoriaOpe03 = categorizacion.CatOperacion03;
                 _cambio.CategoriaPro01 = categorizacion.CatProducto01;
                 _cambio.CategoriaPro02 = categorizacion.CatProducto02;
-                _cambio.CategoriaPro03 = categorizacion.CatProducto03;               
+                _cambio.CategoriaPro03 = categorizacion.CatProducto03;
+                _cambio.FechaCambio = DateTime.Now.ToString();
 
                 bitacora.ActualizaCategoria(_cambio, Convert.ToInt32(categorizacion.IDTicketInvgate), out string msg);
             }
@@ -60,6 +61,7 @@ namespace Inter_ServiceDesk_PM
                 _cambio.TicketIMSS = incidente.IDTicketRemedy;
                 _cambio.EstadoNuevo = incidente.EstadoNuevo == 0 ? "" : incidente.EstadoNuevo.ToString();
                 _cambio.Motivo = incidente.MotivoEstado == 0 ? "" : incidente.MotivoEstado.ToString();
+                _cambio.FechaCambio = DateTime.Now.ToString();
 
                 bitacora.ActualizaIncidente(_cambio, Convert.ToInt32(incidente.IDTicketInvgate), out string msg);
             }
@@ -79,6 +81,7 @@ namespace Inter_ServiceDesk_PM
                 _cambio.TicketIMSS = prioridad.IDTicketRemedy;
                 _cambio.Impacto = prioridad.Impacto == 0 ? "" : prioridad.Impacto.ToString();
                 _cambio.Urgencia = prioridad.Urgencia == 0 ? "" : prioridad.Urgencia.ToString();
+                _cambio.FechaCambio = DateTime.Now.ToString();
 
                 bitacora.ActualizaPriorizacion(_cambio, Convert.ToInt32(prioridad.IDTicketInvgate), out string msg);
             }
@@ -120,6 +123,7 @@ namespace Inter_ServiceDesk_PM
                 _cambio.CategoriaPro01 = categorizacion.CatProducto01;
                 _cambio.CategoriaPro02 = categorizacion.CatProducto02;
                 _cambio.CategoriaPro03 = categorizacion.CatProducto03;
+                _cambio.FechaCambio = DateTime.Now.ToString();
 
                 bitacoraWO.ActualizaCategoria(_cambio, Convert.ToInt32(categorizacion.IDTicketInvgate), out string msg);
             }
@@ -139,6 +143,7 @@ namespace Inter_ServiceDesk_PM
                 _cambio.TicketIMSS = ordenTrabajo.IDTicketRemedy;
                 _cambio.EstadoNuevo = ordenTrabajo.EstadoNuevo == 0 ? "" : ordenTrabajo.EstadoNuevo.ToString();
                 _cambio.Motivo = ordenTrabajo.MotivoEstado == 0 ? "" : ordenTrabajo.MotivoEstado.ToString();
+                _cambio.FechaCambio = DateTime.Now.ToString();
 
                 bitacoraWO.ActualizaOrdenTrabajo(_cambio, Convert.ToInt32(ordenTrabajo.IDTicketInvgate), out string msg);
             }
@@ -157,6 +162,7 @@ namespace Inter_ServiceDesk_PM
                 Entities.Intermedio.ActualizaPriorizacion _cambio = new Entities.Intermedio.ActualizaPriorizacion();
                 _cambio.TicketIMSS = prioridad.IDTicketRemedy;
                 _cambio.Prioridad = prioridad.Prioridad == 0 ? "" : prioridad.Prioridad.ToString();
+                _cambio.FechaCambio = DateTime.Now.ToString();
 
                 bitacoraWO.ActualizaPriorizacion(_cambio, Convert.ToInt32(prioridad.IDTicketInvgate), out string msg);
             }

@@ -11,6 +11,7 @@ using ServiceInvgate;
 using ServiceBitacora;
 using Inter_ServiceDesk_PM.Helper;
 using System.Web.Services.Protocols;
+using System.Globalization;
 
 namespace Inter_ServiceDesk_PM
 {
@@ -66,7 +67,7 @@ namespace Inter_ServiceDesk_PM
         public Entities.Intermedio.Result Incidente_Add(CreaTicket request)
         {
             Entities.Intermedio.Result response_ = new Entities.Intermedio.Result();
-
+                      
             try
             {
                 if (Autenticacion != null)
@@ -76,13 +77,16 @@ namespace Inter_ServiceDesk_PM
                         //Valida que no exista el ticket de IMSS
                         if (!bitacora.Existe(request.TicketIMSS))
                         {
+                            //Otiene urgencia
+                            int IdPrioridad = catalogos.GetUrgenciaInvgate(Convert.ToInt32(request.Urgencia));
+
                             IncidentesPostRequest VarInter = new IncidentesPostRequest();
-                            DateTime dt = Convert.ToDateTime(Convert.ToDateTime(request.FechaCreacion.ToUpper().Replace("P.M", "").Replace("A.M", "")).ToShortDateString());
+                            //DateTime dt = Convert.ToDateTime(Convert.ToDateTime(request.FechaCreacion.ToUpper().Replace("P.M", "").Replace("A.M", "")).ToShortDateString());
                             VarInter.customer_id = 1;
                             VarInter.attachments = null;
-                            VarInter.date = ConvertToTimestamp(dt).ToString();
+                            VarInter.date = ConvertToTimestamp(request.FechaCreacion).ToString();
                             VarInter.related_to = null;
-                            VarInter.priority_id = 1;
+                            VarInter.priority_id = IdPrioridad;
                             VarInter.creator_id = 1240;
                             VarInter.type_id = 1;//Incidente
                             CategoriastInvgate ci = new CategoriastInvgate();
@@ -489,13 +493,16 @@ namespace Inter_ServiceDesk_PM
                         //Valida que no exista el ticket de IMSS
                         if (!bitacoraWO.Existe(request.TicketIMSS))
                         {
+                            //Otiene prioridad
+                            int IdPrioridad = catalogos.GetPrioridadInvgate(Convert.ToInt32(request.Prioridad));
+
                             IncidentesPostRequest VarInter = new IncidentesPostRequest();
-                            DateTime dt = Convert.ToDateTime(Convert.ToDateTime(request.FechaCreacion.ToUpper().Replace("P.M", "").Replace("A.M", "")).ToShortDateString());
+                            //DateTime dt = Convert.ToDateTime(Convert.ToDateTime(request.FechaCreacion.ToUpper().Replace("P.M", "").Replace("A.M", "")).ToShortDateString());
                             VarInter.customer_id = 1;
                             VarInter.attachments = null;
-                            VarInter.date = ConvertToTimestamp(dt).ToString();
+                            VarInter.date = ConvertToTimestamp(request.FechaCreacion).ToString();
                             VarInter.related_to = null;
-                            VarInter.priority_id = 1;
+                            VarInter.priority_id = IdPrioridad;
                             VarInter.creator_id = 1240;
                             VarInter.type_id = 2; //Orden Trabajo
                             CategoriastInvgate ci = new CategoriastInvgate();
@@ -514,47 +521,55 @@ namespace Inter_ServiceDesk_PM
                             VarInter.source_id = 2;
 
                             response_ = incidentes.PostIncidente(VarInter);
-                            ///////////Attachments
-                            ///
-                            //incidentes.PostAttachments()
-                            List<HttpPostedFileBase> files_ = new List<HttpPostedFileBase>();
-                            byte[] img1 = request.Adjunto01 != String.Empty ? Convert.FromBase64String(request.Adjunto01) : null;
-                            byte[] img2 = request.Adjunto02 != String.Empty ? Convert.FromBase64String(request.Adjunto02) : null;
-                            byte[] img3 = request.Adjunto03 != String.Empty ? Convert.FromBase64String(request.Adjunto03) : null;
 
-
-
-                            if (img1 != null)
+                            if(response_.Estado == "Exito")
                             {
-                                files_.Add((HttpPostedFileBase)new MemoryPostedFile(img1, request.AdjuntoName01));
-                            }
-                            if (img2 != null)
+                                ///////////Attachments
+                                ///
+                                //incidentes.PostAttachments()
+                                List<HttpPostedFileBase> files_ = new List<HttpPostedFileBase>();
+                                byte[] img1 = request.Adjunto01 != String.Empty ? Convert.FromBase64String(request.Adjunto01) : null;
+                                byte[] img2 = request.Adjunto02 != String.Empty ? Convert.FromBase64String(request.Adjunto02) : null;
+                                byte[] img3 = request.Adjunto03 != String.Empty ? Convert.FromBase64String(request.Adjunto03) : null;
+
+
+
+                                if (img1 != null)
+                                {
+                                    files_.Add((HttpPostedFileBase)new MemoryPostedFile(img1, request.AdjuntoName01));
+                                }
+                                if (img2 != null)
+                                {
+                                    files_.Add((HttpPostedFileBase)new MemoryPostedFile(img2, request.AdjuntoName02));
+                                }
+                                if (img3 != null)
+                                {
+                                    files_.Add((HttpPostedFileBase)new MemoryPostedFile(img3, request.AdjuntoName03));
+                                }
+
+                                incidentes.PostAttachments(files_.ToArray(), Convert.ToInt32(response_.Ticket));
+
+                                //AgregaNotas
+                                if (!string.IsNullOrEmpty(request.Notas))
+                                {
+                                    IncidentesCommentPostRequest VarComent = new IncidentesCommentPostRequest();
+
+                                    VarComent.request_id = Convert.ToInt32(response_.Ticket);
+                                    VarComent.comment = request.Notas;
+                                    VarComent.author_id = 1;
+                                    VarComent.is_solution = false;
+
+                                    response_ = comments.PostIncidenteComment(VarComent);
+                                }
+
+                                //Bitacora
+                                //IncidenteData bitacora = new IncidenteData();
+                                bitacoraWO.Crear(request, Convert.ToInt32(response_.Ticket), out string Result);
+                            } 
+                            else
                             {
-                                files_.Add((HttpPostedFileBase)new MemoryPostedFile(img2, request.AdjuntoName02));
+                                response_.Estado = "Error";
                             }
-                            if (img3 != null)
-                            {
-                                files_.Add((HttpPostedFileBase)new MemoryPostedFile(img3, request.AdjuntoName03));
-                            }
-
-                            incidentes.PostAttachments(files_.ToArray(), Convert.ToInt32(response_.Ticket));
-
-                            //AgregaNotas
-                            if (!string.IsNullOrEmpty(request.Notas))
-                            {
-                                IncidentesCommentPostRequest VarComent = new IncidentesCommentPostRequest();
-
-                                VarComent.request_id = Convert.ToInt32(response_.Ticket);
-                                VarComent.comment = request.Notas;
-                                VarComent.author_id = 1;
-                                VarComent.is_solution = false;
-
-                                response_ = comments.PostIncidenteComment(VarComent);
-                            }
-
-                            //Bitacora
-                            //IncidenteData bitacora = new IncidenteData();
-                            bitacoraWO.Crear(request, Convert.ToInt32(response_.Ticket), out string Result);
                         }
                         else
                         {
@@ -713,7 +728,7 @@ namespace Inter_ServiceDesk_PM
 
                             if (!string.IsNullOrEmpty(request.Prioridad))
                             {
-                                //Otiene urgencia
+                                //Otiene prioridad
                                 int IdPrioridad = catalogos.GetPrioridadInvgate(Convert.ToInt32(request.Prioridad));
 
                                 VarInter.priority_id = IdPrioridad;

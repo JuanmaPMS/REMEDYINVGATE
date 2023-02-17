@@ -16,7 +16,7 @@ namespace TaskIncidencias
             RegistrosInvgate registros = new RegistrosInvgate();
             ProcesaRegistro procesa = new ProcesaRegistro();
 
-            List<RegistrosRequest> list = registros.Get().Where(x => x.idIncidencia == 7221).ToList();
+            List<RegistrosRequest> list = registros.Get().OrderBy(x => x.fecha).ToList();
 
             List<int> procesados = new List<int>();
             foreach(RegistrosRequest req in list)

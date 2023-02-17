@@ -8,7 +8,7 @@ using TaskIncidencias.Models;
 using ServiceInvgate;
 using TaskIncidencias.WS_Remedy;
 using Entities;
-
+using System.Text.RegularExpressions;
 
 namespace TaskIncidencias
 {
@@ -185,6 +185,22 @@ namespace TaskIncidencias
             return result;
         }
 
+        static string CleanInput(string strIn)
+        {
+            // Replace invalid characters with empty strings.
+            try
+            {
+                return Regex.Replace(strIn, @"[^\w\.@-]", "",
+                                     RegexOptions.None, TimeSpan.FromSeconds(1.5));
+            }
+            // If we timeout when replacing invalid characters,
+            // we should return Empty.
+            catch (RegexMatchTimeoutException)
+            {
+                return String.Empty;
+            }
+        }
+
         public Resultado IncidenteAdicionaNotas(int id, string nota)
         {
             Resultado result = new Resultado();
@@ -198,10 +214,11 @@ namespace TaskIncidencias
 
                 if (bitacora.TicketInvgate != null)
                 {
+                    
                     WS_Remedy.Comentario _request = new WS_Remedy.Comentario();
                     _request.IDTicketInvgate = id.ToString();
                     _request.IDTicketRemedy = bitacora.TicketRemedy;
-                    _request.Notas = nota;
+                    _request.Notas = CleanInput(nota);
                     //_request.Adjunto01 = "";
                     //_request.AdjuntoName01 = "";
                     //_request.AdjuntoSize01 = "";
@@ -406,7 +423,7 @@ namespace TaskIncidencias
                     WS_Remedy.Comentario _request = new WS_Remedy.Comentario();
                     _request.IDTicketInvgate = id.ToString();
                     _request.IDTicketRemedy = bitacora.TicketRemedy;
-                    _request.Notas = nota;
+                    _request.Notas = CleanInput(nota);
                     //_request.Adjunto01 = "";
                     //_request.AdjuntoName01 = "";
                     //_request.AdjuntoSize01 = "";

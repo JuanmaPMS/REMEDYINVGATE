@@ -71,7 +71,7 @@ namespace Prueba
 
             CategoriastInvgate invgate = new CategoriastInvgate();
 
-            Categorizacion categorizacion = invgate.GetCategorizacion(1098);
+            Categorizacion categorizacion = invgate.GetCategorizacion(1413);
 
 
             //IncidenteData incidenteData= new IncidenteData();

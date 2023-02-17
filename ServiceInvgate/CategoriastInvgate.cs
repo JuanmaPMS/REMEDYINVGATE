@@ -622,11 +622,11 @@ namespace ServiceInvgate
                 {
                     listaCategoriasAll = JsonConvert.DeserializeObject<List<CategoriasInvgateResponse>>(response.Content);
 
-                    string[] arr = new string[7];
+                    string[] arr = new string[8];
 
                     int idParent = IdCategoria;
 
-                    for (int i = 6;i >= 0; i--)
+                    for (int i = 7;i >= 0; i--)
                     {
                         listaCategoriasEncontradas = listaCategoriasAll.Where(x => x.id == idParent).ToList();
 
@@ -638,7 +638,7 @@ namespace ServiceInvgate
                     }
 
                     int x_ = 0;
-                    string[] arr2 = new string[7];
+                    string[] arr2 = new string[8];
                     for (int i = 0; i < arr.Length; i++)
                     {  
                         if (arr[i] != null)
