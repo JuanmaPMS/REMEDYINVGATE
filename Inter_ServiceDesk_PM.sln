@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceInvgate", "ServiceIn
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBitacora", "ServiceBitacora\ServiceBitacora.csproj", "{53B77FEC-11CC-48A0-9E2A-AC12DBCC6C16}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskIncidencias", "TaskIncidencias\TaskIncidencias.csproj", "{1301C4CD-53B5-4502-8706-10AA4BF52214}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{53B77FEC-11CC-48A0-9E2A-AC12DBCC6C16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53B77FEC-11CC-48A0-9E2A-AC12DBCC6C16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53B77FEC-11CC-48A0-9E2A-AC12DBCC6C16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1301C4CD-53B5-4502-8706-10AA4BF52214}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1301C4CD-53B5-4502-8706-10AA4BF52214}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1301C4CD-53B5-4502-8706-10AA4BF52214}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1301C4CD-53B5-4502-8706-10AA4BF52214}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

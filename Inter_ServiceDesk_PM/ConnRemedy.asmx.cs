@@ -1,4 +1,5 @@
 ﻿using Entities;
+using ServiceBitacora;
 using ServiceIMSS;
 using System;
 using System.Collections.Generic;
@@ -20,58 +21,165 @@ namespace Inter_ServiceDesk_PM
     {
         Incidentes inc = new Incidentes();
         OrdenesTrabajo wo = new OrdenesTrabajo();
-        //[WebMethod]
-        //public string HelloWorld()
-        //{
-        //    return "Hello World";
-        //}
+
+        IncidenteData bitacora = new IncidenteData();
+        OrdenTrabajoData bitacoraWO = new OrdenTrabajoData();
 
         [WebMethod]
-        public Result ActualizaCategorizacionIncidente(Categorizacion categorizacion)
+        public Result IncidenteActualizaCategorizacion(Categorizacion categorizacion)
         {
-            return inc.ActualizaCategorizacion(categorizacion);
+            Result result = inc.ActualizaCategorizacion(categorizacion);
+
+            //Registra bitacora
+            if (result.Estatus)
+            {
+                Entities.Intermedio.ActualizaCategorizacion _cambio = new Entities.Intermedio.ActualizaCategorizacion();
+                _cambio.TicketIMSS = categorizacion.IDTicketRemedy;
+                _cambio.CategoriaOpe01 = categorizacion.CatOperacion01;
+                _cambio.CategoriaOpe02 = categorizacion.CatOperacion02;
+                _cambio.CategoriaOpe03 = categorizacion.CatOperacion03;
+                _cambio.CategoriaPro01 = categorizacion.CatProducto01;
+                _cambio.CategoriaPro02 = categorizacion.CatProducto02;
+                _cambio.CategoriaPro03 = categorizacion.CatProducto03;               
+
+                bitacora.ActualizaCategoria(_cambio, Convert.ToInt32(categorizacion.IDTicketInvgate), out string msg);
+            }
+                
+            return result;
         }
 
         [WebMethod]
-        public Result ActualizaIncidente(Incidente incidente)
+        public Result IncidenteActualiza(Entities.Incidente incidente)
         {
-            return inc.ActualizaIncidente(incidente);
+            Result result = inc.ActualizaIncidente(incidente);
+
+            //Registra bitacora
+            if (result.Estatus)
+            {
+                Entities.Intermedio.ActualizaTicket _cambio = new Entities.Intermedio.ActualizaTicket();
+                _cambio.TicketIMSS = incidente.IDTicketRemedy;
+                _cambio.EstadoNuevo = incidente.EstadoNuevo == 0 ? "" : incidente.EstadoNuevo.ToString();
+                _cambio.Motivo = incidente.MotivoEstado == 0 ? "" : incidente.MotivoEstado.ToString();
+
+                bitacora.ActualizaIncidente(_cambio, Convert.ToInt32(incidente.IDTicketInvgate), out string msg);
+            }
+
+            return result;
         }
 
         [WebMethod]
-        public Result ActualizaPrioridadIncidente(Prioridad prioridad)
+        public Result IncidenteActualizaPrioridad(Prioridad prioridad)
         {
-            return inc.ActualizaPrioridad(prioridad);
+            Result result = inc.ActualizaPrioridad(prioridad);
+
+            //Registra bitacora
+            if (result.Estatus)
+            {
+                Entities.Intermedio.ActualizaPriorizacion _cambio = new Entities.Intermedio.ActualizaPriorizacion();
+                _cambio.TicketIMSS = prioridad.IDTicketRemedy;
+                _cambio.Impacto = prioridad.Impacto == 0 ? "" : prioridad.Impacto.ToString();
+                _cambio.Urgencia = prioridad.Urgencia == 0 ? "" : prioridad.Urgencia.ToString();
+
+                bitacora.ActualizaPriorizacion(_cambio, Convert.ToInt32(prioridad.IDTicketInvgate), out string msg);
+            }
+
+            return result;
         }
 
         [WebMethod]
-        public Result AdicionaNotasIncidente(Comentario comentario)
+        public Result IncidenteAdicionaNotas(Comentario comentario)
         {
-            return inc.AdicionaNotas(comentario);
+            Result result = inc.AdicionaNotas(comentario);
+
+            //Registra bitacora
+            if (result.Estatus)
+            {
+                Entities.Intermedio.AgregaNota _cambio = new Entities.Intermedio.AgregaNota();
+                _cambio.TicketIMSS = comentario.IDTicketRemedy;
+                _cambio.Notas = comentario.Notas;
+
+                bitacora.AgregaNota(_cambio, Convert.ToInt32(comentario.IDTicketInvgate), out string msg);
+            }
+
+            return result;
         }
 
         [WebMethod]
-        public Result ActualizaCategorizacionOrdenTrabajo(Categorizacion categorizacion)
+        public Result OrdenTrabajoActualizaCategorizacion(Categorizacion categorizacion)
         {
-            return wo.ActualizaCategorizacion(categorizacion);
+            Result result = wo.ActualizaCategorizacion(categorizacion);
+
+            //Registra bitacora
+            if (result.Estatus)
+            {
+                Entities.Intermedio.ActualizaCategorizacion _cambio = new Entities.Intermedio.ActualizaCategorizacion();
+                _cambio.TicketIMSS = categorizacion.IDTicketRemedy;
+                _cambio.CategoriaOpe01 = categorizacion.CatOperacion01;
+                _cambio.CategoriaOpe02 = categorizacion.CatOperacion02;
+                _cambio.CategoriaOpe03 = categorizacion.CatOperacion03;
+                _cambio.CategoriaPro01 = categorizacion.CatProducto01;
+                _cambio.CategoriaPro02 = categorizacion.CatProducto02;
+                _cambio.CategoriaPro03 = categorizacion.CatProducto03;
+
+                bitacoraWO.ActualizaCategoria(_cambio, Convert.ToInt32(categorizacion.IDTicketInvgate), out string msg);
+            }
+
+            return result;
         }
 
         [WebMethod]
-        public Result ActualizaOrdenTrabajo(OrdenTrabajo ordenTrabajo)
+        public Result OrdenTrabajoActualiza(Entities.OrdenTrabajo ordenTrabajo)
         {
-            return wo.ActualizaOrdenes(ordenTrabajo);
+            Result result = wo.ActualizaOrdenes(ordenTrabajo);
+
+            //Registra bitacora
+            if (result.Estatus)
+            {
+                Entities.Intermedio.ActualizaTicket _cambio = new Entities.Intermedio.ActualizaTicket();
+                _cambio.TicketIMSS = ordenTrabajo.IDTicketRemedy;
+                _cambio.EstadoNuevo = ordenTrabajo.EstadoNuevo == 0 ? "" : ordenTrabajo.EstadoNuevo.ToString();
+                _cambio.Motivo = ordenTrabajo.MotivoEstado == 0 ? "" : ordenTrabajo.MotivoEstado.ToString();
+
+                bitacoraWO.ActualizaOrdenTrabajo(_cambio, Convert.ToInt32(ordenTrabajo.IDTicketInvgate), out string msg);
+            }
+
+            return result;
         }
 
         [WebMethod]
-        public Result ActualizaPrioridadOrdenTrabajo(PrioridadOT prioridad)
+        public Result OrdenTrabajoActualizaPrioridad(PrioridadOT prioridad)
         {
-            return wo.ActualizaPrioridad(prioridad);
+            Result result = wo.ActualizaPrioridad(prioridad);
+
+            //Registra bitacora
+            if (result.Estatus)
+            {
+                Entities.Intermedio.ActualizaPriorizacion _cambio = new Entities.Intermedio.ActualizaPriorizacion();
+                _cambio.TicketIMSS = prioridad.IDTicketRemedy;
+                _cambio.Prioridad = prioridad.Prioridad == 0 ? "" : prioridad.Prioridad.ToString();
+
+                bitacoraWO.ActualizaPriorizacion(_cambio, Convert.ToInt32(prioridad.IDTicketInvgate), out string msg);
+            }
+
+            return result;
         }
 
         [WebMethod]
-        public Result AdicionaNotasOrdenTrabajo(Comentario comentario)
+        public Result OrdenTrabajoAdicionaNotas(Comentario comentario)
         {
-            return wo.AdicionaNotas(comentario);
+            Result result = wo.AdicionaNotas(comentario);
+
+            //Registra bitacora
+            if (result.Estatus)
+            {
+                Entities.Intermedio.AgregaNota _cambio = new Entities.Intermedio.AgregaNota();
+                _cambio.TicketIMSS = comentario.IDTicketRemedy;
+                _cambio.Notas = comentario.Notas;
+
+                bitacoraWO.AgregaNota(_cambio, Convert.ToInt32(comentario.IDTicketInvgate), out string msg);
+            }
+
+            return result;
         }
     }
 }

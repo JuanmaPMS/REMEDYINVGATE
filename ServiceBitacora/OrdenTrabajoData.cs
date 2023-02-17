@@ -31,6 +31,20 @@ namespace ServiceBitacora
             return result;
         }
 
+        public OrdenTrabajo Get(int ticketInvgate)
+        {
+            OrdenTrabajo datos = new OrdenTrabajo();
+            try
+            {
+                datos = ctx.OrdenTrabajo.Where(x => x.TicketInvgate == ticketInvgate).FirstOrDefault();
+            }
+            catch
+            {
+
+            }
+            return datos;
+        }
+
         public bool Existe(string ticketImss)
         {
             try

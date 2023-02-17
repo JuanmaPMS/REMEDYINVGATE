@@ -32,6 +32,20 @@ namespace ServiceBitacora
             return result;
         }
 
+        public Incidente Get(int ticketInvgate)
+        {
+            Incidente datos = new Incidente();
+            try
+            {
+                datos = ctx.Incidente.Where(x => x.TicketInvgate == ticketInvgate).FirstOrDefault();
+            }
+            catch
+            {
+                
+            }
+            return datos;
+        }
+
         public bool Existe(string ticketImss)
         {
             try

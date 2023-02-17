@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://tempuri.org/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="IncidenteActualizaCategorizacion">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="categorizacion" type="tns:Categorizacion" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Categorizacion">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="IDTicketRemedy" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IDTicketInvgate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CatOperacion01" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CatOperacion02" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CatOperacion03" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CatProducto01" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CatProducto02" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CatProducto03" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="IncidenteActualizaCategorizacionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="IncidenteActualizaCategorizacionResult" type="tns:Result" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Result">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Estatus" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="Resultado" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="IncidenteActualiza">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="incidente" type="tns:Incidente" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Incidente">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="IDTicketRemedy" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IDTicketInvgate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CatCierreOperacion01" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CatCierreOperacion02" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CatCierreOperacion03" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CatCierreProducto01" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CatCierreProducto02" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CatCierreProducto03" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="EstadoNuevo" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="MotivoEstado" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Resolucion" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="IncidenteActualizaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="IncidenteActualizaResult" type="tns:Result" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="IncidenteActualizaPrioridad">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="prioridad" type="tns:Prioridad" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Prioridad">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="IDTicketRemedy" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IDTicketInvgate" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Impacto" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Urgencia" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="IncidenteActualizaPrioridadResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="IncidenteActualizaPrioridadResult" type="tns:Result" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="IncidenteAdicionaNotas">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="comentario" type="tns:Comentario" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Comentario">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="IDTicketRemedy" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IDTicketInvgate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Notas" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Adjunto01" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AdjuntoName01" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AdjuntoSize01" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Adjunto02" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AdjuntoName02" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AdjuntoSize02" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Adjunto03" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AdjuntoName03" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AdjuntoSize03" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="IncidenteAdicionaNotasResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="IncidenteAdicionaNotasResult" type="tns:Result" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="OrdenTrabajoActualizaCategorizacion">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="categorizacion" type="tns:Categorizacion" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="OrdenTrabajoActualizaCategorizacionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="OrdenTrabajoActualizaCategorizacionResult" type="tns:Result" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="OrdenTrabajoActualiza">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ordenTrabajo" type="tns:OrdenTrabajo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="OrdenTrabajo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="IDTicketRemedy" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IDTicketInvgate" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="EstadoNuevo" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="MotivoEstado" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Resolucion" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="OrdenTrabajoActualizaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="OrdenTrabajoActualizaResult" type="tns:Result" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="OrdenTrabajoActualizaPrioridad">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="prioridad" type="tns:PrioridadOT" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="PrioridadOT">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="IDTicketRemedy" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IDTicketInvgate" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Prioridad" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="OrdenTrabajoActualizaPrioridadResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="OrdenTrabajoActualizaPrioridadResult" type="tns:Result" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="OrdenTrabajoAdicionaNotas">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="comentario" type="tns:Comentario" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="OrdenTrabajoAdicionaNotasResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="OrdenTrabajoAdicionaNotasResult" type="tns:Result" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="IncidenteActualizaCategorizacionSoapIn">
+    <wsdl:part name="parameters" element="tns:IncidenteActualizaCategorizacion" />
+  </wsdl:message>
+  <wsdl:message name="IncidenteActualizaCategorizacionSoapOut">
+    <wsdl:part name="parameters" element="tns:IncidenteActualizaCategorizacionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IncidenteActualizaSoapIn">
+    <wsdl:part name="parameters" element="tns:IncidenteActualiza" />
+  </wsdl:message>
+  <wsdl:message name="IncidenteActualizaSoapOut">
+    <wsdl:part name="parameters" element="tns:IncidenteActualizaResponse" />
+  </wsdl:message>
+  <wsdl:message name="IncidenteActualizaPrioridadSoapIn">
+    <wsdl:part name="parameters" element="tns:IncidenteActualizaPrioridad" />
+  </wsdl:message>
+  <wsdl:message name="IncidenteActualizaPrioridadSoapOut">
+    <wsdl:part name="parameters" element="tns:IncidenteActualizaPrioridadResponse" />
+  </wsdl:message>
+  <wsdl:message name="IncidenteAdicionaNotasSoapIn">
+    <wsdl:part name="parameters" element="tns:IncidenteAdicionaNotas" />
+  </wsdl:message>
+  <wsdl:message name="IncidenteAdicionaNotasSoapOut">
+    <wsdl:part name="parameters" element="tns:IncidenteAdicionaNotasResponse" />
+  </wsdl:message>
+  <wsdl:message name="OrdenTrabajoActualizaCategorizacionSoapIn">
+    <wsdl:part name="parameters" element="tns:OrdenTrabajoActualizaCategorizacion" />
+  </wsdl:message>
+  <wsdl:message name="OrdenTrabajoActualizaCategorizacionSoapOut">
+    <wsdl:part name="parameters" element="tns:OrdenTrabajoActualizaCategorizacionResponse" />
+  </wsdl:message>
+  <wsdl:message name="OrdenTrabajoActualizaSoapIn">
+    <wsdl:part name="parameters" element="tns:OrdenTrabajoActualiza" />
+  </wsdl:message>
+  <wsdl:message name="OrdenTrabajoActualizaSoapOut">
+    <wsdl:part name="parameters" element="tns:OrdenTrabajoActualizaResponse" />
+  </wsdl:message>
+  <wsdl:message name="OrdenTrabajoActualizaPrioridadSoapIn">
+    <wsdl:part name="parameters" element="tns:OrdenTrabajoActualizaPrioridad" />
+  </wsdl:message>
+  <wsdl:message name="OrdenTrabajoActualizaPrioridadSoapOut">
+    <wsdl:part name="parameters" element="tns:OrdenTrabajoActualizaPrioridadResponse" />
+  </wsdl:message>
+  <wsdl:message name="OrdenTrabajoAdicionaNotasSoapIn">
+    <wsdl:part name="parameters" element="tns:OrdenTrabajoAdicionaNotas" />
+  </wsdl:message>
+  <wsdl:message name="OrdenTrabajoAdicionaNotasSoapOut">
+    <wsdl:part name="parameters" element="tns:OrdenTrabajoAdicionaNotasResponse" />
+  </wsdl:message>
+  <wsdl:portType name="MesaIMSSSoap">
+    <wsdl:operation name="IncidenteActualizaCategorizacion">
+      <wsdl:input message="tns:IncidenteActualizaCategorizacionSoapIn" />
+      <wsdl:output message="tns:IncidenteActualizaCategorizacionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="IncidenteActualiza">
+      <wsdl:input message="tns:IncidenteActualizaSoapIn" />
+      <wsdl:output message="tns:IncidenteActualizaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="IncidenteActualizaPrioridad">
+      <wsdl:input message="tns:IncidenteActualizaPrioridadSoapIn" />
+      <wsdl:output message="tns:IncidenteActualizaPrioridadSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="IncidenteAdicionaNotas">
+      <wsdl:input message="tns:IncidenteAdicionaNotasSoapIn" />
+      <wsdl:output message="tns:IncidenteAdicionaNotasSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="OrdenTrabajoActualizaCategorizacion">
+      <wsdl:input message="tns:OrdenTrabajoActualizaCategorizacionSoapIn" />
+      <wsdl:output message="tns:OrdenTrabajoActualizaCategorizacionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="OrdenTrabajoActualiza">
+      <wsdl:input message="tns:OrdenTrabajoActualizaSoapIn" />
+      <wsdl:output message="tns:OrdenTrabajoActualizaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="OrdenTrabajoActualizaPrioridad">
+      <wsdl:input message="tns:OrdenTrabajoActualizaPrioridadSoapIn" />
+      <wsdl:output message="tns:OrdenTrabajoActualizaPrioridadSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="OrdenTrabajoAdicionaNotas">
+      <wsdl:input message="tns:OrdenTrabajoAdicionaNotasSoapIn" />
+      <wsdl:output message="tns:OrdenTrabajoAdicionaNotasSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="MesaIMSSSoap" type="tns:MesaIMSSSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="IncidenteActualizaCategorizacion">
+      <soap:operation soapAction="http://tempuri.org/IncidenteActualizaCategorizacion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IncidenteActualiza">
+      <soap:operation soapAction="http://tempuri.org/IncidenteActualiza" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IncidenteActualizaPrioridad">
+      <soap:operation soapAction="http://tempuri.org/IncidenteActualizaPrioridad" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IncidenteAdicionaNotas">
+      <soap:operation soapAction="http://tempuri.org/IncidenteAdicionaNotas" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OrdenTrabajoActualizaCategorizacion">
+      <soap:operation soapAction="http://tempuri.org/OrdenTrabajoActualizaCategorizacion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OrdenTrabajoActualiza">
+      <soap:operation soapAction="http://tempuri.org/OrdenTrabajoActualiza" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OrdenTrabajoActualizaPrioridad">
+      <soap:operation soapAction="http://tempuri.org/OrdenTrabajoActualizaPrioridad" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OrdenTrabajoAdicionaNotas">
+      <soap:operation soapAction="http://tempuri.org/OrdenTrabajoAdicionaNotas" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="MesaIMSSSoap12" type="tns:MesaIMSSSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="IncidenteActualizaCategorizacion">
+      <soap12:operation soapAction="http://tempuri.org/IncidenteActualizaCategorizacion" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IncidenteActualiza">
+      <soap12:operation soapAction="http://tempuri.org/IncidenteActualiza" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IncidenteActualizaPrioridad">
+      <soap12:operation soapAction="http://tempuri.org/IncidenteActualizaPrioridad" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IncidenteAdicionaNotas">
+      <soap12:operation soapAction="http://tempuri.org/IncidenteAdicionaNotas" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OrdenTrabajoActualizaCategorizacion">
+      <soap12:operation soapAction="http://tempuri.org/OrdenTrabajoActualizaCategorizacion" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OrdenTrabajoActualiza">
+      <soap12:operation soapAction="http://tempuri.org/OrdenTrabajoActualiza" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OrdenTrabajoActualizaPrioridad">
+      <soap12:operation soapAction="http://tempuri.org/OrdenTrabajoActualizaPrioridad" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OrdenTrabajoAdicionaNotas">
+      <soap12:operation soapAction="http://tempuri.org/OrdenTrabajoAdicionaNotas" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MesaIMSS">
+    <wsdl:port name="MesaIMSSSoap" binding="tns:MesaIMSSSoap">
+      <soap:address location="http://34.135.21.126/ConnRemedy.asmx" />
+    </wsdl:port>
+    <wsdl:port name="MesaIMSSSoap12" binding="tns:MesaIMSSSoap12">
+      <soap12:address location="http://34.135.21.126/ConnRemedy.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

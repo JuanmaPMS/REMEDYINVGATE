@@ -85,8 +85,6 @@ namespace ServiceInvgate
                     Resultado.Ticket = postResponse.request_id.ToString();
                     Resultado.Resultado = "Transacción exitosa, registro agregado a Invgate People Media";
                     Resultado.Estado = "Exito";
-                    
-
 
                 }
                 else
