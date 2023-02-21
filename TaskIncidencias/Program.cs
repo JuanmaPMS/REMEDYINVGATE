@@ -26,9 +26,9 @@ namespace TaskIncidencias
                 {
                     switch(req.tipoControl)
                     {
-                        //case "ESTATUS":
-                        //    resultado = procesa.IncidenteActualiza(req.idIncidencia, req.identificadorNum, Convert.ToInt32(req.identificadorAlfa));
-                        //    break;
+                        case "ESTATUS":
+                            resultado = procesa.IncidenteActualiza(req.idIncidencia, req.identificadorNum, Convert.ToInt32(req.identificadorAlfa));
+                            break;
                         case "CATEGORIZACION":
                             resultado = procesa.IncidenteActualizaCategorizacion(req.idIncidencia, req.identificadorNum);
                             break;

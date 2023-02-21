@@ -200,8 +200,8 @@ namespace Inter_ServiceDesk_PM
                                 IncidentesCommentPostRequest VarComent = new IncidentesCommentPostRequest();
 
                                 VarComent.request_id = data.TicketInvgate;
-                                VarComent.comment = request.Notas;
-                                VarComent.author_id = 1240;
+                                VarComent.comment = request.Notas == string.Empty ? "Ticket Solucionado" : request.Notas;
+                                VarComent.author_id = 2;
                                 VarComent.is_solution = true;
 
                                 response_ = comments.PostIncidenteComment(VarComent);
@@ -626,8 +626,8 @@ namespace Inter_ServiceDesk_PM
                                 IncidentesCommentPostRequest VarComent = new IncidentesCommentPostRequest();
 
                                 VarComent.request_id = data.TicketInvgate;
-                                VarComent.comment = request.Notas;
-                                VarComent.author_id = 1240;
+                                VarComent.comment = request.Notas == string.Empty ? "Solicitud Terminada" : request.Notas; ;
+                                VarComent.author_id = 2;
                                 VarComent.is_solution = true;
 
                                 response_ = comments.PostIncidenteComment(VarComent);
