@@ -12,6 +12,7 @@ using System.Web;
 using System.Configuration;
 using Entities.Intermedio;
 using System.Reflection;
+using Entities.Invgate;
 
 namespace ServiceInvgate
 {
@@ -22,7 +23,7 @@ namespace ServiceInvgate
         string password = ConfigurationManager.AppSettings["passwordInvgate"];
         string UrlServicios = ConfigurationManager.AppSettings["UrlInvgate"];
         string ApiAttachments = ConfigurationManager.AppSettings["RutaApiAttachments"];
-
+        string UrlServiciosCtrl = ConfigurationManager.AppSettings["UrlServiceControl"];
 
         public object GetIncidente(IncidentesGetRequest incidente)
         {
@@ -155,6 +156,111 @@ namespace ServiceInvgate
             catch (Exception ex)
             {
                 //data = new { Error = "Ocurrio un error: " + ex.Message };
+                Resultado.Ticket = String.Empty;
+                Resultado.Resultado = "Ocurrio un error: " + ex.Message;
+                Resultado.Estado = "Error";
+            }
+            return Resultado;
+        }
+
+        public Entities.Intermedio.Result PutIncidenteStatus(IncidentPutRequest incidente)
+        {
+            Entities.Intermedio.Result Resultado = new Entities.Intermedio.Result();
+            try
+            {
+                var client = new RestClient(UrlServiciosCtrl + "/ActualizarStatus");
+                var request = new RestRequest("", Method.Post);
+                request.AddHeader("Content-Type", "application/json");
+                request.AddParameter("application/json", incidente, ParameterType.RequestBody);
+                var response = client.Execute(request);
+
+                Console.WriteLine(response.Content);
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    Resultado.Ticket = incidente.id.ToString();
+                    Resultado.Resultado = "Transacción exitosa, registro agregado a Invgate People Media";
+                    Resultado.Estado = "Exito";
+                }
+                else
+                {
+                    Resultado.Ticket = String.Empty;
+                    Resultado.Resultado = response.ErrorException.Message;
+                    Resultado.Estado = "Error";
+                }
+            }
+            catch (Exception ex)
+            {
+                Resultado.Ticket = String.Empty;
+                Resultado.Resultado = "Ocurrio un error: " + ex.Message;
+                Resultado.Estado = "Error";
+            }
+            return Resultado;
+        }
+
+        public Entities.Intermedio.Result PutIncidentePriority(IncidentPutRequest incidente)
+        {
+            Entities.Intermedio.Result Resultado = new Entities.Intermedio.Result();
+            try
+            {
+                var client = new RestClient(UrlServiciosCtrl + "/ActualizarPrioridad");
+                var request = new RestRequest("", Method.Post);
+                request.AddHeader("Content-Type", "application/json");
+                request.AddParameter("application/json", incidente, ParameterType.RequestBody);
+                var response = client.Execute(request);
+
+                Console.WriteLine(response.Content);
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    Resultado.Ticket = incidente.id.ToString();
+                    Resultado.Resultado = "Transacción exitosa, registro agregado a Invgate People Media";
+                    Resultado.Estado = "Exito";
+                }
+                else
+                {
+                    Resultado.Ticket = String.Empty;
+                    Resultado.Resultado = response.ErrorException.Message;
+                    Resultado.Estado = "Error";
+                }
+            }
+            catch (Exception ex)
+            {
+                Resultado.Ticket = String.Empty;
+                Resultado.Resultado = "Ocurrio un error: " + ex.Message;
+                Resultado.Estado = "Error";
+            }
+            return Resultado;
+        }
+
+        public Entities.Intermedio.Result PutIncidenteCategory(IncidentPutRequest incidente)
+        {
+            Entities.Intermedio.Result Resultado = new Entities.Intermedio.Result();
+            try
+            {
+                var client = new RestClient(UrlServiciosCtrl + "/ActualizarCategoria");
+                var request = new RestRequest("", Method.Post);
+                request.AddHeader("Content-Type", "application/json");
+                request.AddParameter("application/json", incidente, ParameterType.RequestBody);
+                var response = client.Execute(request);
+
+                Console.WriteLine(response.Content);
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    Resultado.Ticket = incidente.id.ToString();
+                    Resultado.Resultado = "Transacción exitosa, registro agregado a Invgate People Media";
+                    Resultado.Estado = "Exito";
+                }
+                else
+                {
+                    Resultado.Ticket = String.Empty;
+                    Resultado.Resultado = response.ErrorException.Message;
+                    Resultado.Estado = "Error";
+                }
+            }
+            catch (Exception ex)
+            {
                 Resultado.Ticket = String.Empty;
                 Resultado.Resultado = "Ocurrio un error: " + ex.Message;
                 Resultado.Estado = "Error";
