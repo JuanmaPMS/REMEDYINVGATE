@@ -68,7 +68,7 @@ namespace Inter_ServiceDesk_PM
         public Entities.Intermedio.Result Incidente_Add(CreaTicket request)
         {
             Entities.Intermedio.Result response_ = new Entities.Intermedio.Result();
-                      
+
             try
             {
                 if (Autenticacion != null)
@@ -78,14 +78,23 @@ namespace Inter_ServiceDesk_PM
                         //Valida que no exista el ticket de IMSS
                         if (!bitacora.Existe(request.TicketIMSS))
                         {
+                            //Tratamiento de fecha
+                            int day_ = Convert.ToInt32(request.FechaCreacion.Substring(0, 2));
+                            int month_ = Convert.ToInt32(request.FechaCreacion.Substring(3, 2));
+                            int year_ = Convert.ToInt32(request.FechaCreacion.Substring(6, 4));
+                            int hour_ = Convert.ToInt32(request.FechaCreacion.Substring(11, 2));
+                            int minute_ = Convert.ToInt32(request.FechaCreacion.Substring(14, 2));
+                            int second_ = Convert.ToInt32(request.FechaCreacion.Substring(17, 2));
+
+                            DateTime fecha = new DateTime(year_, month_, day_, hour_, minute_, second_);
+
                             //Otiene urgencia
                             int IdPrioridad = catalogos.GetUrgenciaInvgate(Convert.ToInt32(request.Urgencia));
 
                             IncidentesPostRequest VarInter = new IncidentesPostRequest();
-                            //DateTime dt = Convert.ToDateTime(Convert.ToDateTime(request.FechaCreacion.ToUpper().Replace("P.M", "").Replace("A.M", "")).ToShortDateString());
                             VarInter.customer_id = 1;
                             VarInter.attachments = null;
-                            VarInter.date = ConvertToTimestamp(request.FechaCreacion).ToString();
+                            VarInter.date = ConvertToTimestamp(fecha).ToString();
                             VarInter.related_to = null;
                             VarInter.priority_id = IdPrioridad;
                             VarInter.creator_id = 1240;
@@ -99,7 +108,7 @@ namespace Inter_ServiceDesk_PM
                                     request.CategoriaPro02 + "|" +
                                     request.CategoriaPro03 + "|" +
                                     request.NombreProducto;
-                            
+
                             VarInter.category_id = ci.GetCategoria(concat);
                             VarInter.description = request.Descripcion;
                             VarInter.title = request.Resumen;
@@ -172,7 +181,7 @@ namespace Inter_ServiceDesk_PM
                 response_.Estado = "Error";
                 response_.Resultado = ex.Message;
             }
-            
+
             return response_;
         }
 
@@ -209,8 +218,7 @@ namespace Inter_ServiceDesk_PM
                             else
                             {
                                 IncidentPutRequest VarInter = new IncidentPutRequest();
-                                DateTime dt = Convert.ToDateTime(Convert.ToDateTime(request.FechaCambio.ToUpper().Replace("P.M", "").Replace("A.M", "")).ToShortDateString());
-
+                                
                                 //AgregaNotas
                                 if (!string.IsNullOrEmpty(request.Notas))
                                 {
@@ -231,7 +239,6 @@ namespace Inter_ServiceDesk_PM
                                                                         
                                     VarInter.id = data.TicketInvgate;
                                     VarInter.priorityId = IdPrioridad;
-                                    //VarInter.date = ConvertToTimestamp(dt).ToString();
 
                                     response_ = incidentes.PutIncidentePriority(VarInter);
                                 }
@@ -377,8 +384,7 @@ namespace Inter_ServiceDesk_PM
                         if (data.TicketInvgate > 0)
                         {
                             IncidentPutRequest VarInter = new IncidentPutRequest();
-                            DateTime dt = Convert.ToDateTime(Convert.ToDateTime(request.FechaCambio.ToUpper().Replace("P.M", "").Replace("A.M", "")).ToShortDateString());
-
+                            
                             //Obtiene Categoria
                             CategoriastInvgate ci = new CategoriastInvgate();
                             string concat = "CAT PROD" + "|" +//"MESA DE SERVICIO IMSS" + "|" +
@@ -497,14 +503,23 @@ namespace Inter_ServiceDesk_PM
                         //Valida que no exista el ticket de IMSS
                         if (!bitacoraWO.Existe(request.TicketIMSS))
                         {
+                            //Tratamiento de fecha
+                            int day_ = Convert.ToInt32(request.FechaCreacion.Substring(0, 2));
+                            int month_ = Convert.ToInt32(request.FechaCreacion.Substring(3, 2));
+                            int year_ = Convert.ToInt32(request.FechaCreacion.Substring(6, 4));
+                            int hour_ = Convert.ToInt32(request.FechaCreacion.Substring(11, 2));
+                            int minute_ = Convert.ToInt32(request.FechaCreacion.Substring(14, 2));
+                            int second_ = Convert.ToInt32(request.FechaCreacion.Substring(17, 2));
+
+                            DateTime fecha = new DateTime(year_, month_, day_, hour_, minute_, second_);
+
                             //Otiene prioridad
                             int IdPrioridad = catalogos.GetPrioridadInvgate(Convert.ToInt32(request.Prioridad));
 
                             IncidentesPostRequest VarInter = new IncidentesPostRequest();
-                            //DateTime dt = Convert.ToDateTime(Convert.ToDateTime(request.FechaCreacion.ToUpper().Replace("P.M", "").Replace("A.M", "")).ToShortDateString());
                             VarInter.customer_id = 1;
                             VarInter.attachments = null;
-                            VarInter.date = ConvertToTimestamp(request.FechaCreacion).ToString();
+                            VarInter.date = ConvertToTimestamp(fecha).ToString();
                             VarInter.related_to = null;
                             VarInter.priority_id = IdPrioridad;
                             VarInter.creator_id = 1240;
@@ -635,8 +650,7 @@ namespace Inter_ServiceDesk_PM
                             else
                             {
                                 IncidentPutRequest VarInter = new IncidentPutRequest();
-                                DateTime dt = Convert.ToDateTime(Convert.ToDateTime(request.FechaCambio.ToUpper().Replace("P.M", "").Replace("A.M", "")).ToShortDateString());
-
+                                
                                 //AgregaNotas
                                 if (!string.IsNullOrEmpty(request.Notas))
                                 {
@@ -731,8 +745,7 @@ namespace Inter_ServiceDesk_PM
                         if (data.TicketInvgate > 0)
                         {
                             IncidentPutRequest VarInter = new IncidentPutRequest();
-                            DateTime dt = Convert.ToDateTime(Convert.ToDateTime(request.FechaCambio.ToUpper().Replace("P.M", "").Replace("A.M", "")).ToShortDateString());
-
+                            
                             if (!string.IsNullOrEmpty(request.Prioridad))
                             {
                                 //Otiene prioridad
@@ -740,7 +753,6 @@ namespace Inter_ServiceDesk_PM
 
                                 VarInter.id = data.TicketInvgate; 
                                 VarInter.priorityId = IdPrioridad;
-                                //VarInter.date = ConvertToTimestamp(dt).ToString();
 
                                 response_ = incidentes.PutIncidentePriority(VarInter);
                             }
@@ -802,8 +814,7 @@ namespace Inter_ServiceDesk_PM
                         if (data.TicketInvgate > 0)
                         {
                             IncidentPutRequest VarInter = new IncidentPutRequest();
-                            DateTime dt = Convert.ToDateTime(Convert.ToDateTime(request.FechaCambio.ToUpper().Replace("P.M", "").Replace("A.M", "")).ToShortDateString());
-
+                            
                             //Obtiene Categoria
                             CategoriastInvgate ci = new CategoriastInvgate();
                             string concat = "CAT PROD" + "|" +//"MESA DE SERVICIO IMSS" + "|" +
@@ -817,7 +828,6 @@ namespace Inter_ServiceDesk_PM
 
                             VarInter.id = data.TicketInvgate; 
                             VarInter.categoryId = ci.GetCategoria(concat);
-                            //VarInter.date = ConvertToTimestamp(dt).ToString();
 
                             response_ = incidentes.PutIncidenteCategory(VarInter);
 

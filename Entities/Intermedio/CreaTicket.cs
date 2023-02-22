@@ -34,7 +34,7 @@ namespace Entities.Intermedio
         public string CategoriaPro03 { get; set; }
         public int EstadoNuevo { get; set; }
         public string Notas { get; set; }
-        public DateTime FechaCreacion { get; set; }
+        public string FechaCreacion { get; set; }
         public string Adjunto01 { get; set; }
         public string AdjuntoName01 { get; set; }
         public string AdjuntoSize01 { get; set; }
