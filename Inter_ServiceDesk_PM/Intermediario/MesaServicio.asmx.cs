@@ -79,12 +79,17 @@ namespace Inter_ServiceDesk_PM
                         if (!bitacora.Existe(request.TicketIMSS))
                         {
                             //Tratamiento de fecha
-                            int day_ = Convert.ToInt32(request.FechaCreacion.Substring(0, 2));
-                            int month_ = Convert.ToInt32(request.FechaCreacion.Substring(3, 2));
-                            int year_ = Convert.ToInt32(request.FechaCreacion.Substring(6, 4));
-                            int hour_ = Convert.ToInt32(request.FechaCreacion.Substring(11, 2));
-                            int minute_ = Convert.ToInt32(request.FechaCreacion.Substring(14, 2));
-                            int second_ = Convert.ToInt32(request.FechaCreacion.Substring(17, 2));
+                            string[] dataFecha = request.FechaCreacion.Split(' ');
+
+                            string[] fecha_ = dataFecha[0].Split('/');
+                            string[] hora_ = dataFecha[1].Split(':');
+
+                            int day_ = Convert.ToInt32(fecha_[0]);
+                            int month_ = Convert.ToInt32(fecha_[1]);
+                            int year_ = Convert.ToInt32(fecha_[2]);
+                            int hour_ = Convert.ToInt32(hora_[0]);
+                            int minute_ = Convert.ToInt32(hora_[1]);
+                            int second_ = Convert.ToInt32(hora_[2]);
 
                             DateTime fecha = new DateTime(year_, month_, day_, hour_, minute_, second_);
 
@@ -504,12 +509,17 @@ namespace Inter_ServiceDesk_PM
                         if (!bitacoraWO.Existe(request.TicketIMSS))
                         {
                             //Tratamiento de fecha
-                            int day_ = Convert.ToInt32(request.FechaCreacion.Substring(0, 2));
-                            int month_ = Convert.ToInt32(request.FechaCreacion.Substring(3, 2));
-                            int year_ = Convert.ToInt32(request.FechaCreacion.Substring(6, 4));
-                            int hour_ = Convert.ToInt32(request.FechaCreacion.Substring(11, 2));
-                            int minute_ = Convert.ToInt32(request.FechaCreacion.Substring(14, 2));
-                            int second_ = Convert.ToInt32(request.FechaCreacion.Substring(17, 2));
+                            string[] dataFecha = request.FechaCreacion.Split(' ');
+
+                            string[] fecha_ = dataFecha[0].Split('/');
+                            string[] hora_ = dataFecha[1].Split(':');
+
+                            int day_ = Convert.ToInt32(fecha_[0]);
+                            int month_ = Convert.ToInt32(fecha_[1]);
+                            int year_ = Convert.ToInt32(fecha_[2]);
+                            int hour_ = Convert.ToInt32(hora_[0]);
+                            int minute_ = Convert.ToInt32(hora_[1]);
+                            int second_ = Convert.ToInt32(hora_[2]);
 
                             DateTime fecha = new DateTime(year_, month_, day_, hour_, minute_, second_);
 
