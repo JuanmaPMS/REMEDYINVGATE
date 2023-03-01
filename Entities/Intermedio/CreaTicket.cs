@@ -32,7 +32,7 @@ namespace Entities.Intermedio
         public string CategoriaPro01 { get; set; }
         public string CategoriaPro02 { get; set; }
         public string CategoriaPro03 { get; set; }
-        public int EstadoNuevo { get; set; }
+        public string EstadoNuevo { get; set; }
         public string Notas { get; set; }
         public string FechaCreacion { get; set; }
         public string Adjunto01 { get; set; }
