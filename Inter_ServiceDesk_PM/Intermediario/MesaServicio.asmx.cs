@@ -49,6 +49,7 @@ namespace Inter_ServiceDesk_PM
         CatalogosData catalogos = new CatalogosData();
         IncidentesInvgate incidentes = new IncidentesInvgate();
         IncidentesCommentInvgate comments = new IncidentesCommentInvgate();
+        Log log = new Log();
         private long ConvertToTimestamp(DateTime value)
         {
             long epoch = (value.Ticks - 621355968000000000) / 10000000;
@@ -68,7 +69,7 @@ namespace Inter_ServiceDesk_PM
         public Entities.Intermedio.Result Incidente_Add(CreaTicket request)
         {
             Entities.Intermedio.Result response_ = new Entities.Intermedio.Result();
-
+            log.LogCreaTicket(request);
             try
             {
                 if (Autenticacion != null)
@@ -79,19 +80,19 @@ namespace Inter_ServiceDesk_PM
                         if (!bitacora.Existe(request.TicketIMSS))
                         {
                             //Tratamiento de fecha
-                            string[] dataFecha = request.FechaCreacion.Split(' ');
+                            //string[] dataFecha = request.FechaCreacion.Split(' ');
 
-                            string[] fecha_ = dataFecha[0].Split('/');
-                            string[] hora_ = dataFecha[1].Split(':');
+                            //string[] fecha_ = dataFecha[0].Split('/');
+                            //string[] hora_ = dataFecha[1].Split(':');
 
-                            int day_ = Convert.ToInt32(fecha_[0]);
-                            int month_ = Convert.ToInt32(fecha_[1]);
-                            int year_ = Convert.ToInt32(fecha_[2]);
-                            int hour_ = Convert.ToInt32(hora_[0]);
-                            int minute_ = Convert.ToInt32(hora_[1]);
-                            int second_ = Convert.ToInt32(hora_[2]);
+                            //int day_ = Convert.ToInt32(fecha_[0]);
+                            //int month_ = Convert.ToInt32(fecha_[1]);
+                            //int year_ = Convert.ToInt32(fecha_[2]);
+                            //int hour_ = Convert.ToInt32(hora_[0]);
+                            //int minute_ = Convert.ToInt32(hora_[1]);
+                            //int second_ = Convert.ToInt32(hora_[2]);
 
-                            DateTime fecha = new DateTime(year_, month_, day_, hour_, minute_, second_);
+                            //DateTime fecha = new DateTime(year_, month_, day_, hour_, minute_, second_);
 
                             //Otiene urgencia
                             int IdPrioridad = catalogos.GetUrgenciaInvgate(Convert.ToInt32(request.Urgencia));
@@ -99,7 +100,8 @@ namespace Inter_ServiceDesk_PM
                             IncidentesPostRequest VarInter = new IncidentesPostRequest();
                             VarInter.customer_id = 1;
                             VarInter.attachments = null;
-                            VarInter.date = ConvertToTimestamp(fecha).ToString();
+                            //VarInter.date = ConvertToTimestamp(fecha).ToString();
+                            VarInter.date = ConvertToTimestamp(request.FechaCreacion).ToString();
                             VarInter.related_to = null;
                             VarInter.priority_id = IdPrioridad;
                             VarInter.creator_id = 1240;
@@ -117,30 +119,43 @@ namespace Inter_ServiceDesk_PM
                             VarInter.category_id = ci.GetCategoria(concat);
                             VarInter.description = request.Descripcion;
                             VarInter.title = request.Resumen;
-                            VarInter.source_id = 2;
+                            VarInter.source_id = 2;                     
 
                             response_ = incidentes.PostIncidente(VarInter);
+
+                            log.LogMsg("Ticket Invgate: " + response_.Ticket);
                             ///////////Attachments
                             ///
                             //incidentes.PostAttachments()
                             List<HttpPostedFileBase> files_ = new List<HttpPostedFileBase>();
-                            byte[] img1 = request.Adjunto01 != String.Empty ? Convert.FromBase64String(request.Adjunto01) : null;
-                            byte[] img2 = request.Adjunto02 != String.Empty ? Convert.FromBase64String(request.Adjunto02) : null;
-                            byte[] img3 = request.Adjunto03 != String.Empty ? Convert.FromBase64String(request.Adjunto03) : null;
 
-
-
-                            if (img1 != null)
+                            if (!string.IsNullOrEmpty(request.Adjunto01) && !string.IsNullOrEmpty(request.AdjuntoName01))
                             {
-                                files_.Add((HttpPostedFileBase)new MemoryPostedFile(img1, request.AdjuntoName01));
+                                byte[] img1 = request.Adjunto01 != String.Empty ? Convert.FromBase64String(request.Adjunto01) : null;
+
+                                if (img1 != null)
+                                {
+                                    files_.Add((HttpPostedFileBase)new MemoryPostedFile(img1, request.AdjuntoName01));
+                                }
                             }
-                            if (img2 != null)
+
+                            if (!string.IsNullOrEmpty(request.Adjunto02) && !string.IsNullOrEmpty(request.AdjuntoName02))
                             {
-                                files_.Add((HttpPostedFileBase)new MemoryPostedFile(img2, request.AdjuntoName02));
+                                byte[] img2 = request.Adjunto02 != String.Empty ? Convert.FromBase64String(request.Adjunto02) : null;
+                                if (img2 != null)
+                                {
+                                    files_.Add((HttpPostedFileBase)new MemoryPostedFile(img2, request.AdjuntoName02));
+                                }
                             }
-                            if (img3 != null)
+
+                            if (!string.IsNullOrEmpty(request.Adjunto02) && !string.IsNullOrEmpty(request.AdjuntoName02))
                             {
-                                files_.Add((HttpPostedFileBase)new MemoryPostedFile(img3, request.AdjuntoName03));
+                                byte[] img3 = request.Adjunto03 != String.Empty ? Convert.FromBase64String(request.Adjunto03) : null;
+
+                                if (img3 != null)
+                                {
+                                    files_.Add((HttpPostedFileBase)new MemoryPostedFile(img3, request.AdjuntoName03));
+                                }
                             }
 
                             incidentes.PostAttachments(files_.ToArray(), Convert.ToInt32(response_.Ticket));
@@ -185,6 +200,7 @@ namespace Inter_ServiceDesk_PM
             {
                 response_.Estado = "Error";
                 response_.Resultado = ex.Message;
+                log.LogMsg("Error|Incident_Add: " + ex.Message);
             }
 
             return response_;
@@ -293,6 +309,7 @@ namespace Inter_ServiceDesk_PM
             {
                 response_.Estado = "Error";
                 response_.Resultado = ex.Message;
+
             }
 
             return response_;
@@ -317,7 +334,7 @@ namespace Inter_ServiceDesk_PM
                         if (data.TicketInvgate > 0)
                         {
                             IncidentPutRequest VarInter = new IncidentPutRequest();
-                            DateTime dt = Convert.ToDateTime(Convert.ToDateTime(request.FechaCambio.ToUpper().Replace("P.M", "").Replace("A.M", "")).ToShortDateString());
+                            //DateTime dt = Convert.ToDateTime(Convert.ToDateTime(request.FechaCambio.ToUpper().Replace("P.M", "").Replace("A.M", "")).ToShortDateString());
 
                             if(!string.IsNullOrEmpty(request.Urgencia))
                             {
@@ -509,19 +526,19 @@ namespace Inter_ServiceDesk_PM
                         if (!bitacoraWO.Existe(request.TicketIMSS))
                         {
                             //Tratamiento de fecha
-                            string[] dataFecha = request.FechaCreacion.Split(' ');
+                            //string[] dataFecha = request.FechaCreacion.Split(' ');
 
-                            string[] fecha_ = dataFecha[0].Split('/');
-                            string[] hora_ = dataFecha[1].Split(':');
+                            //string[] fecha_ = dataFecha[0].Split('/');
+                            //string[] hora_ = dataFecha[1].Split(':');
 
-                            int day_ = Convert.ToInt32(fecha_[0]);
-                            int month_ = Convert.ToInt32(fecha_[1]);
-                            int year_ = Convert.ToInt32(fecha_[2]);
-                            int hour_ = Convert.ToInt32(hora_[0]);
-                            int minute_ = Convert.ToInt32(hora_[1]);
-                            int second_ = Convert.ToInt32(hora_[2]);
+                            //int day_ = Convert.ToInt32(fecha_[0]);
+                            //int month_ = Convert.ToInt32(fecha_[1]);
+                            //int year_ = Convert.ToInt32(fecha_[2]);
+                            //int hour_ = Convert.ToInt32(hora_[0]);
+                            //int minute_ = Convert.ToInt32(hora_[1]);
+                            //int second_ = Convert.ToInt32(hora_[2]);
 
-                            DateTime fecha = new DateTime(year_, month_, day_, hour_, minute_, second_);
+                            //DateTime fecha = new DateTime(year_, month_, day_, hour_, minute_, second_);
 
                             //Otiene prioridad
                             int IdPrioridad = catalogos.GetPrioridadInvgate(Convert.ToInt32(request.Prioridad));
@@ -529,7 +546,8 @@ namespace Inter_ServiceDesk_PM
                             IncidentesPostRequest VarInter = new IncidentesPostRequest();
                             VarInter.customer_id = 1;
                             VarInter.attachments = null;
-                            VarInter.date = ConvertToTimestamp(fecha).ToString();
+                            //VarInter.date = ConvertToTimestamp(fecha).ToString();
+                            VarInter.date = ConvertToTimestamp(request.FechaCreacion).ToString();
                             VarInter.related_to = null;
                             VarInter.priority_id = IdPrioridad;
                             VarInter.creator_id = 1240;
@@ -557,23 +575,34 @@ namespace Inter_ServiceDesk_PM
                                 ///
                                 //incidentes.PostAttachments()
                                 List<HttpPostedFileBase> files_ = new List<HttpPostedFileBase>();
-                                byte[] img1 = request.Adjunto01 != String.Empty ? Convert.FromBase64String(request.Adjunto01) : null;
-                                byte[] img2 = request.Adjunto02 != String.Empty ? Convert.FromBase64String(request.Adjunto02) : null;
-                                byte[] img3 = request.Adjunto03 != String.Empty ? Convert.FromBase64String(request.Adjunto03) : null;
 
-
-
-                                if (img1 != null)
+                                if (!string.IsNullOrEmpty(request.Adjunto01) && !string.IsNullOrEmpty(request.AdjuntoName01))
                                 {
-                                    files_.Add((HttpPostedFileBase)new MemoryPostedFile(img1, request.AdjuntoName01));
+                                    byte[] img1 = request.Adjunto01 != String.Empty ? Convert.FromBase64String(request.Adjunto01) : null;
+
+                                    if (img1 != null)
+                                    {
+                                        files_.Add((HttpPostedFileBase)new MemoryPostedFile(img1, request.AdjuntoName01));
+                                    }
                                 }
-                                if (img2 != null)
+
+                                if (!string.IsNullOrEmpty(request.Adjunto02) && !string.IsNullOrEmpty(request.AdjuntoName02))
                                 {
-                                    files_.Add((HttpPostedFileBase)new MemoryPostedFile(img2, request.AdjuntoName02));
+                                    byte[] img2 = request.Adjunto02 != String.Empty ? Convert.FromBase64String(request.Adjunto02) : null;
+                                    if (img2 != null)
+                                    {
+                                        files_.Add((HttpPostedFileBase)new MemoryPostedFile(img2, request.AdjuntoName02));
+                                    }
                                 }
-                                if (img3 != null)
+
+                                if (!string.IsNullOrEmpty(request.Adjunto02) && !string.IsNullOrEmpty(request.AdjuntoName02))
                                 {
-                                    files_.Add((HttpPostedFileBase)new MemoryPostedFile(img3, request.AdjuntoName03));
+                                    byte[] img3 = request.Adjunto03 != String.Empty ? Convert.FromBase64String(request.Adjunto03) : null;
+
+                                    if (img3 != null)
+                                    {
+                                        files_.Add((HttpPostedFileBase)new MemoryPostedFile(img3, request.AdjuntoName03));
+                                    }
                                 }
 
                                 incidentes.PostAttachments(files_.ToArray(), Convert.ToInt32(response_.Ticket));
@@ -622,6 +651,7 @@ namespace Inter_ServiceDesk_PM
             {
                 response_.Estado = "Error";
                 response_.Resultado = ex.Message;
+                log.LogMsg("Error|Orden_Add: " + ex.Message);
             }
 
             return response_;

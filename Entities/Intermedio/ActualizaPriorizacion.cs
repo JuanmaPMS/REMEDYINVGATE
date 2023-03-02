@@ -14,6 +14,6 @@ namespace Entities.Intermedio
         public string Impacto { get; set; }
         public string Urgencia { get; set; }
         public string Prioridad { get; set; }
-        public string FechaCambio { get; set; }
+        public DateTime FechaCambio { get; set; }
     }
 }

@@ -30,6 +30,6 @@ namespace Entities.Intermedio
         [XmlElement(IsNullable = true)]
         public string CategoriaPro03 { get; set; }
         public string GrupoSoporte { get; set; }
-        public string FechaCambio { get; set; }
+        public DateTime FechaCambio { get; set; }
     }
 }

@@ -16,7 +16,7 @@ namespace Entities.Intermedio
         public string Prioridad { get; set; }
         public string EstadoNuevo { get; set; }
         public string Motivo { get; set; }
-        public string FechaCambio { get; set; }
+        public DateTime FechaCambio { get; set; }
         public string Notas { get; set; }
         
     }
