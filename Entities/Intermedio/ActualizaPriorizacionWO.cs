@@ -10,7 +10,7 @@ namespace Entities.Intermedio
 {
     public class ActualizaPriorizacionWO
     {
-        [XmlElement(IsNullable = true)]
+        [XmlElement(IsNullable = false)]
         public string TicketIMSS { get; set; }
         public int Prioridad { get; set; }
         public DateTime FechaCambio { get; set; }

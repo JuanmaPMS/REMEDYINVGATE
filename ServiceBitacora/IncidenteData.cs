@@ -75,7 +75,7 @@ namespace ServiceBitacora
                                     new SqlParameter("@Descripcion", ticket.Descripcion == null ? string.Empty : ticket.Descripcion),
                                     new SqlParameter("@Resumen", ticket.Resumen == null ? string.Empty : ticket.Resumen),
                                     new SqlParameter("@Impacto", ticket.Impacto == null ? 0 : ticket.Impacto),
-                                    new SqlParameter("@Urgencia", ticket.Urgencia == null ? 0 : ticket.Urgencia),
+                                    new SqlParameter("@Urgencia", ticket.Urgencia),
                                     new SqlParameter("@TipoIncidencia", ticket.TipoIncidencia == null ? string.Empty : ticket.TipoIncidencia),
                                     new SqlParameter("@FuenteReportada", ticket.FuenteReportada== null ? string.Empty : ticket.FuenteReportada),
                                     new SqlParameter("@NombreProducto", ticket.NombreProducto == null ? string.Empty : ticket.NombreProducto),

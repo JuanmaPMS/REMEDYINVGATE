@@ -10,7 +10,7 @@ namespace Entities.Intermedio
 {
     public class ActualizaTicketWO
     {
-        [XmlElement(IsNullable = true)]
+        [XmlElement(IsNullable = false)]
         public string TicketIMSS { get; set; }
 
         [XmlElement(IsNullable = true)]

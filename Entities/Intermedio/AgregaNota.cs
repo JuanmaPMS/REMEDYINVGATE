@@ -9,7 +9,7 @@ namespace Entities.Intermedio
 {
     public class AgregaNota
     {
-        [XmlElement(IsNullable = true)] 
+        [XmlElement(IsNullable = false)] 
         public string TicketIMSS { get; set; }
         public string Notas { get; set; }
     }

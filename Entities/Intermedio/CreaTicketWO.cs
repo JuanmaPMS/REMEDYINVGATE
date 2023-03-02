@@ -13,15 +13,13 @@ namespace Entities.Intermedio
         public string TipoOperacion { get; set; }
         public string NombreProveedor { get; set; }
 
-        [XmlElement(IsNullable = true)]
+        [XmlElement(IsNullable = false)]
         public string TicketIMSS { get; set; }
         public string Descripcion { get; set; }
 
-        [XmlElement(IsNullable = true)]
+        [XmlElement(IsNullable = false)]
         public string Resumen { get; set; }
-
-        [XmlElement(IsNullable = true)]
-        public int? Prioridad { get; set; }
+        public int Prioridad { get; set; }
         public string TipoIncidencia { get; set; }
         public string FuenteReportada { get; set; }
         public string NombreProducto { get; set; }
