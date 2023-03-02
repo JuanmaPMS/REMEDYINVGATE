@@ -57,7 +57,7 @@ namespace Inter_ServiceDesk_PM
             //Registra bitacora
             if (result.Estatus)
             {
-                Entities.Intermedio.ActualizaTicket _cambio = new Entities.Intermedio.ActualizaTicket();
+                Entities.Intermedio.ActualizaTicketIN _cambio = new Entities.Intermedio.ActualizaTicketIN();
                 _cambio.TicketIMSS = incidente.IDTicketRemedy;
                 _cambio.EstadoNuevo = incidente.EstadoNuevo == 0 ? "" : incidente.EstadoNuevo.ToString();
                 _cambio.Motivo = incidente.MotivoEstado == 0 ? "" : incidente.MotivoEstado.ToString();
@@ -77,10 +77,10 @@ namespace Inter_ServiceDesk_PM
             //Registra bitacora
             if (result.Estatus)
             {
-                Entities.Intermedio.ActualizaPriorizacion _cambio = new Entities.Intermedio.ActualizaPriorizacion();
+                Entities.Intermedio.ActualizaPriorizacionIN _cambio = new Entities.Intermedio.ActualizaPriorizacionIN();
                 _cambio.TicketIMSS = prioridad.IDTicketRemedy;
-                _cambio.Impacto = prioridad.Impacto == 0 ? "" : prioridad.Impacto.ToString();
-                _cambio.Urgencia = prioridad.Urgencia == 0 ? "" : prioridad.Urgencia.ToString();
+                _cambio.Impacto = prioridad.Impacto;
+                _cambio.Urgencia = prioridad.Urgencia;
                 _cambio.FechaCambio = DateTime.Now;
 
                 bitacora.ActualizaPriorizacion(_cambio, Convert.ToInt32(prioridad.IDTicketInvgate), out string msg);
@@ -139,7 +139,7 @@ namespace Inter_ServiceDesk_PM
             //Registra bitacora
             if (result.Estatus)
             {
-                Entities.Intermedio.ActualizaTicket _cambio = new Entities.Intermedio.ActualizaTicket();
+                Entities.Intermedio.ActualizaTicketWO _cambio = new Entities.Intermedio.ActualizaTicketWO();
                 _cambio.TicketIMSS = ordenTrabajo.IDTicketRemedy;
                 _cambio.EstadoNuevo = ordenTrabajo.EstadoNuevo == 0 ? "" : ordenTrabajo.EstadoNuevo.ToString();
                 _cambio.Motivo = ordenTrabajo.MotivoEstado == 0 ? "" : ordenTrabajo.MotivoEstado.ToString();
@@ -159,9 +159,9 @@ namespace Inter_ServiceDesk_PM
             //Registra bitacora
             if (result.Estatus)
             {
-                Entities.Intermedio.ActualizaPriorizacion _cambio = new Entities.Intermedio.ActualizaPriorizacion();
+                Entities.Intermedio.ActualizaPriorizacionWO _cambio = new Entities.Intermedio.ActualizaPriorizacionWO();
                 _cambio.TicketIMSS = prioridad.IDTicketRemedy;
-                _cambio.Prioridad = prioridad.Prioridad == 0 ? "" : prioridad.Prioridad.ToString();
+                _cambio.Prioridad = prioridad.Prioridad;
                 _cambio.FechaCambio = DateTime.Now;
 
                 bitacoraWO.ActualizaPriorizacion(_cambio, Convert.ToInt32(prioridad.IDTicketInvgate), out string msg);

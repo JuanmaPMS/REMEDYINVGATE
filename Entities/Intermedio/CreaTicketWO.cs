@@ -8,20 +8,20 @@ using System.Xml.Serialization;
 
 namespace Entities.Intermedio
 {
-    public class CreaTicket
+    public class CreaTicketWO
     {
         public string TipoOperacion { get; set; }
         public string NombreProveedor { get; set; }
 
-        [XmlElement(IsNullable = true)] 
+        [XmlElement(IsNullable = true)]
         public string TicketIMSS { get; set; }
         public string Descripcion { get; set; }
 
         [XmlElement(IsNullable = true)]
         public string Resumen { get; set; }
-        public string Impacto { get; set; }
-        public string Urgencia { get; set; }
-        public string Prioridad { get; set; }
+
+        [XmlElement(IsNullable = true)]
+        public int? Prioridad { get; set; }
         public string TipoIncidencia { get; set; }
         public string FuenteReportada { get; set; }
         public string NombreProducto { get; set; }
@@ -47,6 +47,5 @@ namespace Entities.Intermedio
         public string Cliente { get; set; }
         public string VIP { get; set; }
         public string Sensibilidad { get; set; }
-
     }
 }

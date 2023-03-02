@@ -7,13 +7,16 @@ using System.Xml.Serialization;
 
 namespace Entities.Intermedio
 {
-    public class ActualizaTicket
+    public class ActualizaTicketIN
     {
         [XmlElement(IsNullable = true)]
         public string TicketIMSS { get; set; }
-        public string Impacto { get; set; }
-        public string Urgencia { get; set; }
-        public string Prioridad { get; set; }
+
+        [XmlElement(IsNullable = true)] 
+        public int? Impacto { get; set; }
+
+        [XmlElement(IsNullable = true)] 
+        public int? Urgencia { get; set; }
         public string EstadoNuevo { get; set; }
         public string Motivo { get; set; }
         public DateTime FechaCambio { get; set; }

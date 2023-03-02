@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,13 +8,16 @@ using System.Xml.Serialization;
 
 namespace Entities.Intermedio
 {
-    public class ActualizaPriorizacion
+    public class ActualizaTicketWO
     {
         [XmlElement(IsNullable = true)]
         public string TicketIMSS { get; set; }
-        public string Impacto { get; set; }
-        public string Urgencia { get; set; }
-        public string Prioridad { get; set; }
+
+        [XmlElement(IsNullable = true)]
+        public int? Prioridad { get; set; }
+        public string EstadoNuevo { get; set; }
+        public string Motivo { get; set; }
         public DateTime FechaCambio { get; set; }
+        public string Notas { get; set; }
     }
 }

@@ -64,7 +64,7 @@ namespace ServiceBitacora
             }
         }
 
-        public int Crear(CreaTicket ticket, int idInvgate, out string Result)
+        public int Crear(CreaTicketIN ticket, int idInvgate, out string Result)
         {
             int id = 0;
             try
@@ -74,8 +74,8 @@ namespace ServiceBitacora
                                     new SqlParameter("@TicketInvgate", idInvgate),
                                     new SqlParameter("@Descripcion", ticket.Descripcion == null ? string.Empty : ticket.Descripcion),
                                     new SqlParameter("@Resumen", ticket.Resumen == null ? string.Empty : ticket.Resumen),
-                                    new SqlParameter("@Impacto", ticket.Impacto == null ? string.Empty : ticket.Impacto),
-                                    new SqlParameter("@Urgencia", ticket.Urgencia == null ? string.Empty : ticket.Urgencia),
+                                    new SqlParameter("@Impacto", ticket.Impacto == null ? 0 : ticket.Impacto),
+                                    new SqlParameter("@Urgencia", ticket.Urgencia == null ? 0 : ticket.Urgencia),
                                     new SqlParameter("@TipoIncidencia", ticket.TipoIncidencia == null ? string.Empty : ticket.TipoIncidencia),
                                     new SqlParameter("@FuenteReportada", ticket.FuenteReportada== null ? string.Empty : ticket.FuenteReportada),
                                     new SqlParameter("@NombreProducto", ticket.NombreProducto == null ? string.Empty : ticket.NombreProducto),
@@ -116,7 +116,7 @@ namespace ServiceBitacora
             return id;
         }
 
-        public int ActualizaIncidente(ActualizaTicket ticket, int idInvgate, out string Result)
+        public int ActualizaIncidente(ActualizaTicketIN ticket, int idInvgate, out string Result)
         {
             int id = 0;
             try
@@ -130,15 +130,15 @@ namespace ServiceBitacora
                                     
                 };
 
-                if (!string.IsNullOrEmpty(ticket.Impacto))
+                if (ticket.Impacto == null)
+                    sqParam.Add(new SqlParameter("@Impacto", DBNull.Value)); 
+                else
                     sqParam.Add(new SqlParameter("@Impacto", ticket.Impacto));
-                else
-                    sqParam.Add(new SqlParameter("@Impacto", DBNull.Value));
 
-                if (!string.IsNullOrEmpty(ticket.Urgencia))
-                    sqParam.Add(new SqlParameter("@Urgencia", ticket.Urgencia));
+                if (ticket.Urgencia == null)
+                    sqParam.Add(new SqlParameter("@Urgencia", DBNull.Value)); 
                 else
-                    sqParam.Add(new SqlParameter("@Urgencia", DBNull.Value));
+                    sqParam.Add(new SqlParameter("@Urgencia", ticket.Urgencia));
 
                 if (!string.IsNullOrEmpty(ticket.EstadoNuevo))
                     sqParam.Add(new SqlParameter("@Estado", ticket.EstadoNuevo));
@@ -197,7 +197,7 @@ namespace ServiceBitacora
             return id;
         }
 
-        public int ActualizaPriorizacion(ActualizaPriorizacion ticket, int idInvgate, out string Result)
+        public int ActualizaPriorizacion(ActualizaPriorizacionIN ticket, int idInvgate, out string Result)
         {
             int id = 0;
             try
@@ -206,19 +206,11 @@ namespace ServiceBitacora
                                     new SqlParameter("@TicketRemedy", ticket.TicketIMSS),
                                     new SqlParameter("@TicketInvgate", idInvgate),
                                     new SqlParameter("@FechaCambio", ticket.FechaCambio == null ? string.Empty : ticket.FechaCambio.ToString()),
+                                    new SqlParameter("@Impacto", ticket.Impacto),
+                                    new SqlParameter("@Urgencia", ticket.Urgencia),
                                     new SqlParameter("@Usuario", "WsIntermediario")
                 };
 
-                if (!string.IsNullOrEmpty(ticket.Impacto))
-                    sqParam.Add(new SqlParameter("@Impacto", ticket.Impacto));
-                else
-                    sqParam.Add(new SqlParameter("@Impacto", DBNull.Value));
-                if (!string.IsNullOrEmpty(ticket.Urgencia))
-                    sqParam.Add(new SqlParameter("@Urgencia", ticket.Urgencia));
-                else
-                    sqParam.Add(new SqlParameter("@Urgencia", DBNull.Value));
-
-                id = ctx.Database.ExecuteSqlCommand("EXEC [dbo].[SP_UPDATE_PRIORIDAD_INCIDENTE] @TicketRemedy,@TicketInvgate,@FechaCambio,@Impacto,@Urgencia,@Usuario ", sqParam.ToArray());
                 Result = "Exito: Actualización de incidente registrado en bitácora.";
             }
             catch (Exception ex)

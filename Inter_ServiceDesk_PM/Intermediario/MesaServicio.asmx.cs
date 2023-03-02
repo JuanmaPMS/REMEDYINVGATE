@@ -66,10 +66,10 @@ namespace Inter_ServiceDesk_PM
 
         [WebMethod]
         [SoapHeader("Autenticacion")]
-        public Entities.Intermedio.Result Incidente_Add(CreaTicket request)
+        public Entities.Intermedio.Result Incidente_Add(CreaTicketIN request)
         {
             Entities.Intermedio.Result response_ = new Entities.Intermedio.Result();
-            log.LogCreaTicket(request);
+            log.LogCreaTicketIN(request);
             try
             {
                 if (Autenticacion != null)
@@ -209,7 +209,7 @@ namespace Inter_ServiceDesk_PM
 
         [WebMethod]
         [SoapHeader("Autenticacion")]
-        public Entities.Intermedio.Result Incidente_Update(ActualizaTicket request)
+        public Entities.Intermedio.Result Incidente_Update(ActualizaTicketIN request)
         {
             Entities.Intermedio.Result response_ = new Entities.Intermedio.Result();
 
@@ -254,7 +254,7 @@ namespace Inter_ServiceDesk_PM
                                 }
 
                                 //Obtiene urgencia
-                                if (!string.IsNullOrEmpty(request.Urgencia))
+                                if (request.Urgencia != null)
                                 {
                                     int IdPrioridad = catalogos.GetUrgenciaInvgate(Convert.ToInt32(request.Urgencia));
                                                                         
@@ -318,7 +318,7 @@ namespace Inter_ServiceDesk_PM
 
         [WebMethod]
         [SoapHeader("Autenticacion")]
-        public Entities.Intermedio.Result Incidente_Update_Prioridad(ActualizaPriorizacion request)
+        public Entities.Intermedio.Result Incidente_Update_Prioridad(ActualizaPriorizacionIN request)
         {
             Entities.Intermedio.Result response_ = new Entities.Intermedio.Result();
 
@@ -336,18 +336,15 @@ namespace Inter_ServiceDesk_PM
                             IncidentPutRequest VarInter = new IncidentPutRequest();
                             //DateTime dt = Convert.ToDateTime(Convert.ToDateTime(request.FechaCambio.ToUpper().Replace("P.M", "").Replace("A.M", "")).ToShortDateString());
 
-                            if(!string.IsNullOrEmpty(request.Urgencia))
-                            {
-                                //Otiene urgencia
-                                int IdPrioridad = catalogos.GetUrgenciaInvgate(Convert.ToInt32(request.Urgencia));
-                                
-                                VarInter.id = data.TicketInvgate;
-                                VarInter.priorityId = IdPrioridad;
-                                
-                                //VarInter.date = ConvertToTimestamp(dt).ToString();
+                            //Otiene urgencia
+                            int IdPrioridad = catalogos.GetUrgenciaInvgate(Convert.ToInt32(request.Urgencia));
 
-                                response_ = incidentes.PutIncidentePriority(VarInter);
-                            }               
+                            VarInter.id = data.TicketInvgate;
+                            VarInter.priorityId = IdPrioridad;
+
+                            //VarInter.date = ConvertToTimestamp(dt).ToString();
+
+                            response_ = incidentes.PutIncidentePriority(VarInter);
 
                             //Bitacora
                             bitacora.ActualizaPriorizacion(request, data.TicketInvgate, out string Result);
@@ -512,10 +509,10 @@ namespace Inter_ServiceDesk_PM
 
         [WebMethod]
         [SoapHeader("Autenticacion")]
-        public Entities.Intermedio.Result Orden_Add(CreaTicket request)
+        public Entities.Intermedio.Result Orden_Add(CreaTicketWO request)
         {
             Entities.Intermedio.Result response_ = new Entities.Intermedio.Result();
-
+            log.LogCreaTicketWO(request);
             try
             {
                 if (Autenticacion != null)
@@ -660,7 +657,7 @@ namespace Inter_ServiceDesk_PM
 
         [WebMethod]
         [SoapHeader("Autenticacion")]
-        public Entities.Intermedio.Result Orden_Update(ActualizaTicket request)
+        public Entities.Intermedio.Result Orden_Update(ActualizaTicketWO request)
         {
             Entities.Intermedio.Result response_ = new Entities.Intermedio.Result();
 
@@ -704,7 +701,7 @@ namespace Inter_ServiceDesk_PM
                                     response_ = comments.PostIncidenteComment(VarComent);
                                 }
 
-                                if (!string.IsNullOrEmpty(request.Prioridad))
+                                if (request.Prioridad != null)
                                 {
                                     //Otiene urgencia
                                     int IdPrioridad = catalogos.GetPrioridadInvgate(Convert.ToInt32(request.Prioridad));
@@ -769,7 +766,7 @@ namespace Inter_ServiceDesk_PM
 
         [WebMethod]
         [SoapHeader("Autenticacion")]
-        public Entities.Intermedio.Result Orden_Update_Prioridad(ActualizaPriorizacion request)
+        public Entities.Intermedio.Result Orden_Update_Prioridad(ActualizaPriorizacionWO request)
         {
             Entities.Intermedio.Result response_ = new Entities.Intermedio.Result();
 
@@ -785,18 +782,15 @@ namespace Inter_ServiceDesk_PM
                         if (data.TicketInvgate > 0)
                         {
                             IncidentPutRequest VarInter = new IncidentPutRequest();
-                            
-                            if (!string.IsNullOrEmpty(request.Prioridad))
-                            {
-                                //Otiene prioridad
-                                int IdPrioridad = catalogos.GetPrioridadInvgate(Convert.ToInt32(request.Prioridad));
 
-                                VarInter.id = data.TicketInvgate; 
-                                VarInter.priorityId = IdPrioridad;
+                            //Otiene prioridad
+                            int IdPrioridad = catalogos.GetPrioridadInvgate(Convert.ToInt32(request.Prioridad));
 
-                                response_ = incidentes.PutIncidentePriority(VarInter);
-                            }
-                                
+                            VarInter.id = data.TicketInvgate;
+                            VarInter.priorityId = IdPrioridad;
+
+                            response_ = incidentes.PutIncidentePriority(VarInter);
+
                             //Bitacora
                             bitacoraWO.ActualizaPriorizacion(request, data.TicketInvgate, out string Result);
 

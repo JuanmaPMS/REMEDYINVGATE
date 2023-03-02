@@ -63,7 +63,7 @@ namespace ServiceBitacora
             }
         }
 
-        public int Crear(CreaTicket ticket, int idInvgate, out string Result)
+        public int Crear(CreaTicketWO ticket, int idInvgate, out string Result)
         {
             int id = 0;
             try
@@ -73,7 +73,7 @@ namespace ServiceBitacora
                                     new SqlParameter("@TicketInvgate", idInvgate),
                                     new SqlParameter("@Descripcion", ticket.Descripcion == null ? string.Empty : ticket.Descripcion),
                                     new SqlParameter("@Resumen", ticket.Resumen == null ? string.Empty : ticket.Resumen),
-                                    new SqlParameter("@Prioridad", ticket.Prioridad == null ? string.Empty : ticket.Prioridad),
+                                    new SqlParameter("@Prioridad", ticket.Prioridad == null ? 0 : ticket.Prioridad),
                                     new SqlParameter("@FuenteReportada", ticket.FuenteReportada == null ? string.Empty : ticket.FuenteReportada),
                                     new SqlParameter("@NombreProducto", ticket.NombreProducto == null ? string.Empty : ticket.NombreProducto),
                                     new SqlParameter("@GrupoSoporte", ticket.GrupoSoporte == null ? string.Empty : ticket.GrupoSoporte),
@@ -113,7 +113,7 @@ namespace ServiceBitacora
             return id;
         }
 
-        public int ActualizaOrdenTrabajo(ActualizaTicket ticket, int idInvgate, out string Result)
+        public int ActualizaOrdenTrabajo(ActualizaTicketWO ticket, int idInvgate, out string Result)
         {
             int id = 0;
             try
@@ -127,11 +127,10 @@ namespace ServiceBitacora
 
                 };
 
-                if (!string.IsNullOrEmpty(ticket.Prioridad))
-                    sqParam.Add(new SqlParameter("@Prioridad", ticket.Prioridad));
-                else
+                if (ticket.Prioridad == null)
                     sqParam.Add(new SqlParameter("@Prioridad", DBNull.Value));
-
+                else
+                    sqParam.Add(new SqlParameter("@Prioridad", ticket.Prioridad));
                 if (!string.IsNullOrEmpty(ticket.EstadoNuevo))
                     sqParam.Add(new SqlParameter("@Estado", ticket.EstadoNuevo));
                 else
@@ -189,7 +188,7 @@ namespace ServiceBitacora
             return id;
         }
 
-        public int ActualizaPriorizacion(ActualizaPriorizacion ticket, int idInvgate, out string Result)
+        public int ActualizaPriorizacion(ActualizaPriorizacionWO ticket, int idInvgate, out string Result)
         {
             int id = 0;
             try
@@ -198,7 +197,7 @@ namespace ServiceBitacora
                                     new SqlParameter("@TicketRemedy", ticket.TicketIMSS),
                                     new SqlParameter("@TicketInvgate", idInvgate),
                                     new SqlParameter("@FechaCambio", ticket.FechaCambio == null ? string.Empty : ticket.FechaCambio.ToString()),
-                                    new SqlParameter("@Prioridad", ticket.Prioridad == null ? string.Empty : ticket.Prioridad),
+                                    new SqlParameter("@Prioridad", ticket.Prioridad),
                                     new SqlParameter("@Usuario", "WsIntermediario")
                 };
 
