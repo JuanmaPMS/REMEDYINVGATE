@@ -33,15 +33,21 @@ namespace Entities.Intermedio
         public string EstadoNuevo { get; set; }
         public string Notas { get; set; }
         public DateTime FechaCreacion { get; set; }
-        public string Adjunto01 { get; set; }
+        public byte[] Adjunto01 { get; set; }
         public string AdjuntoName01 { get; set; }
-        public string AdjuntoSize01 { get; set; }
-        public string Adjunto02 { get; set; }
+
+        [XmlElement(IsNullable = true)] 
+        public int? AdjuntoSize01 { get; set; }
+        public byte[] Adjunto02 { get; set; }
         public string AdjuntoName02 { get; set; }
-        public string AdjuntoSize02 { get; set; }
-        public string Adjunto03 { get; set; }
+
+        [XmlElement(IsNullable = true)]
+        public int? AdjuntoSize02 { get; set; }
+        public byte[] Adjunto03 { get; set; }
         public string AdjuntoName03 { get; set; }
-        public string AdjuntoSize03 { get; set; }
+
+        [XmlElement(IsNullable = true)]
+        public int? AdjuntoSize03 { get; set; }
         public string Cliente { get; set; }
         public string VIP { get; set; }
         public string Sensibilidad { get; set; }

@@ -12,5 +12,14 @@ namespace Entities.Intermedio
         [XmlElement(IsNullable = false)] 
         public string TicketIMSS { get; set; }
         public string Notas { get; set; }
+        public byte[] Adjunto01 { get; set; }
+        public string AdjuntoName01 { get; set; }
+        public int AdjuntoSize01 { get; set; }
+        public byte[] Adjunto02 { get; set; }
+        public string AdjuntoName02 { get; set; }
+        public int AdjuntoSize02 { get; set; }
+        public byte[] Adjunto03 { get; set; }
+        public string AdjuntoName03 { get; set; }
+        public int AdjuntoSize03 { get; set; }
     }
 }

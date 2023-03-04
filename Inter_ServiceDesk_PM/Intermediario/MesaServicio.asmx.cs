@@ -13,6 +13,7 @@ using Inter_ServiceDesk_PM.Helper;
 using System.Web.Services.Protocols;
 using System.Globalization;
 using Entities.Invgate;
+using static System.Net.WebRequestMethods;
 
 namespace Inter_ServiceDesk_PM
 {
@@ -124,59 +125,69 @@ namespace Inter_ServiceDesk_PM
                             response_ = incidentes.PostIncidente(VarInter);
 
                             log.LogMsg("Ticket Invgate: " + response_.Ticket);
-                            ///////////Attachments
-                            ///
-                            //incidentes.PostAttachments()
-                            List<HttpPostedFileBase> files_ = new List<HttpPostedFileBase>();
 
-                            if (!string.IsNullOrEmpty(request.Adjunto01) && !string.IsNullOrEmpty(request.AdjuntoName01))
+                            if (response_.Estado == "Exito")
                             {
-                                byte[] img1 = request.Adjunto01 != String.Empty ? Convert.FromBase64String(request.Adjunto01) : null;
+                                List<HttpPostedFileBase> files_ = new List<HttpPostedFileBase>();
+                                #region BeforeFiles
+                                //if (!string.IsNullOrEmpty(request.Adjunto01) && !string.IsNullOrEmpty(request.AdjuntoName01))
+                                //{
+                                //    byte[] img1 = request.Adjunto01 != String.Empty ? Convert.FromBase64String(request.Adjunto01) : null;
 
-                                if (img1 != null)
+                                //    if (img1 != null)
+                                //    {
+                                //        files_.Add((HttpPostedFileBase)new MemoryPostedFile(img1, request.AdjuntoName01));
+                                //    }
+                                //}
+
+                                //if (!string.IsNullOrEmpty(request.Adjunto02) && !string.IsNullOrEmpty(request.AdjuntoName02))
+                                //{
+                                //    byte[] img2 = request.Adjunto02 != String.Empty ? Convert.FromBase64String(request.Adjunto02) : null;
+                                //    if (img2 != null)
+                                //    {
+                                //        files_.Add((HttpPostedFileBase)new MemoryPostedFile(img2, request.AdjuntoName02));
+                                //    }
+                                //}
+
+                                //if (!string.IsNullOrEmpty(request.Adjunto02) && !string.IsNullOrEmpty(request.AdjuntoName02))
+                                //{
+                                //    byte[] img3 = request.Adjunto03 != String.Empty ? Convert.FromBase64String(request.Adjunto03) : null;
+
+                                //    if (img3 != null)
+                                //    {
+                                //        files_.Add((HttpPostedFileBase)new MemoryPostedFile(img3, request.AdjuntoName03));
+                                //    }
+                                //}
+                                #endregion
+
+                                if (request.Adjunto01 != null && !string.IsNullOrEmpty(request.AdjuntoName01))
+                                    files_.Add(new MemoryPostedFile(request.Adjunto01, request.AdjuntoName01));
+
+                                if (request.Adjunto02 != null && !string.IsNullOrEmpty(request.AdjuntoName02))
+                                    files_.Add(new MemoryPostedFile(request.Adjunto02, request.AdjuntoName02));
+
+                                if (request.Adjunto03 != null && !string.IsNullOrEmpty(request.AdjuntoName03))
+                                    files_.Add(new MemoryPostedFile(request.Adjunto03, request.AdjuntoName03));
+
+                                if(files_.Count > 0)
+                                    incidentes.PostAttachments(files_.ToArray(), Convert.ToInt32(response_.Ticket));
+
+                                //AgregaNotas
+                                if (!string.IsNullOrEmpty(request.Notas))
                                 {
-                                    files_.Add((HttpPostedFileBase)new MemoryPostedFile(img1, request.AdjuntoName01));
+                                    IncidentesCommentPostRequest VarComent = new IncidentesCommentPostRequest();
+
+                                    VarComent.request_id = Convert.ToInt32(response_.Ticket);
+                                    VarComent.comment = request.Notas;
+                                    VarComent.author_id = 1240;
+                                    VarComent.is_solution = false;
+
+                                    response_ = comments.PostIncidenteComment(VarComent);
                                 }
+
+                                //Bitacora
+                                bitacora.Crear(request, Convert.ToInt32(response_.Ticket), out string Result);
                             }
-
-                            if (!string.IsNullOrEmpty(request.Adjunto02) && !string.IsNullOrEmpty(request.AdjuntoName02))
-                            {
-                                byte[] img2 = request.Adjunto02 != String.Empty ? Convert.FromBase64String(request.Adjunto02) : null;
-                                if (img2 != null)
-                                {
-                                    files_.Add((HttpPostedFileBase)new MemoryPostedFile(img2, request.AdjuntoName02));
-                                }
-                            }
-
-                            if (!string.IsNullOrEmpty(request.Adjunto02) && !string.IsNullOrEmpty(request.AdjuntoName02))
-                            {
-                                byte[] img3 = request.Adjunto03 != String.Empty ? Convert.FromBase64String(request.Adjunto03) : null;
-
-                                if (img3 != null)
-                                {
-                                    files_.Add((HttpPostedFileBase)new MemoryPostedFile(img3, request.AdjuntoName03));
-                                }
-                            }
-
-                            incidentes.PostAttachments(files_.ToArray(), Convert.ToInt32(response_.Ticket));
-
-                            //AgregaNotas
-                            if (!string.IsNullOrEmpty(request.Notas))
-                            {
-                                IncidentesCommentPostRequest VarComent = new IncidentesCommentPostRequest();
-
-                                VarComent.request_id = Convert.ToInt32(response_.Ticket);
-                                VarComent.comment = request.Notas;
-                                VarComent.author_id = 1240;
-                                VarComent.is_solution = false;
-
-                                response_ = comments.PostIncidenteComment(VarComent);
-                            }
-
-                            //Bitacora
-                            //IncidenteData bitacora = new IncidenteData();
-                            bitacora.Crear(request, Convert.ToInt32(response_.Ticket), out string Result);
-
                         }
                         else
                         {
@@ -476,6 +487,20 @@ namespace Inter_ServiceDesk_PM
 
                             response_ = comments.PostIncidenteComment(VarInter);
 
+                            List<HttpPostedFileBase> files_ = new List<HttpPostedFileBase>();
+                            if (request.Adjunto01 != null && !string.IsNullOrEmpty(request.AdjuntoName01))
+                                files_.Add(new MemoryPostedFile(request.Adjunto01, request.AdjuntoName01));
+
+                            if (request.Adjunto02 != null && !string.IsNullOrEmpty(request.AdjuntoName02))
+                                files_.Add(new MemoryPostedFile(request.Adjunto02, request.AdjuntoName02));
+
+                            if (request.Adjunto03 != null && !string.IsNullOrEmpty(request.AdjuntoName03))
+                                files_.Add(new MemoryPostedFile(request.Adjunto03, request.AdjuntoName03));
+
+                            if (files_.Count > 0)
+                                incidentes.PostAttachments(files_.ToArray(), Convert.ToInt32(response_.Ticket));
+
+
                             //Bitacora
                             bitacora.AgregaNota(request, data.TicketInvgate, out string Result);
                         }
@@ -568,39 +593,16 @@ namespace Inter_ServiceDesk_PM
 
                             if(response_.Estado == "Exito")
                             {
-                                ///////////Attachments
-                                ///
-                                //incidentes.PostAttachments()
                                 List<HttpPostedFileBase> files_ = new List<HttpPostedFileBase>();
 
-                                if (!string.IsNullOrEmpty(request.Adjunto01) && !string.IsNullOrEmpty(request.AdjuntoName01))
-                                {
-                                    byte[] img1 = request.Adjunto01 != String.Empty ? Convert.FromBase64String(request.Adjunto01) : null;
+                                if (request.Adjunto01 != null && !string.IsNullOrEmpty(request.AdjuntoName01))
+                                    files_.Add(new MemoryPostedFile(request.Adjunto01, request.AdjuntoName01));
 
-                                    if (img1 != null)
-                                    {
-                                        files_.Add((HttpPostedFileBase)new MemoryPostedFile(img1, request.AdjuntoName01));
-                                    }
-                                }
+                                if (request.Adjunto02 != null && !string.IsNullOrEmpty(request.AdjuntoName02))
+                                    files_.Add(new MemoryPostedFile(request.Adjunto02, request.AdjuntoName02));
 
-                                if (!string.IsNullOrEmpty(request.Adjunto02) && !string.IsNullOrEmpty(request.AdjuntoName02))
-                                {
-                                    byte[] img2 = request.Adjunto02 != String.Empty ? Convert.FromBase64String(request.Adjunto02) : null;
-                                    if (img2 != null)
-                                    {
-                                        files_.Add((HttpPostedFileBase)new MemoryPostedFile(img2, request.AdjuntoName02));
-                                    }
-                                }
-
-                                if (!string.IsNullOrEmpty(request.Adjunto02) && !string.IsNullOrEmpty(request.AdjuntoName02))
-                                {
-                                    byte[] img3 = request.Adjunto03 != String.Empty ? Convert.FromBase64String(request.Adjunto03) : null;
-
-                                    if (img3 != null)
-                                    {
-                                        files_.Add((HttpPostedFileBase)new MemoryPostedFile(img3, request.AdjuntoName03));
-                                    }
-                                }
+                                if (request.Adjunto03 != null && !string.IsNullOrEmpty(request.AdjuntoName03))
+                                    files_.Add(new MemoryPostedFile(request.Adjunto03, request.AdjuntoName03));
 
                                 incidentes.PostAttachments(files_.ToArray(), Convert.ToInt32(response_.Ticket));
 
@@ -620,10 +622,6 @@ namespace Inter_ServiceDesk_PM
                                 //Bitacora
                                 //IncidenteData bitacora = new IncidenteData();
                                 bitacoraWO.Crear(request, Convert.ToInt32(response_.Ticket), out string Result);
-                            } 
-                            else
-                            {
-                                response_.Estado = "Error";
                             }
                         }
                         else
