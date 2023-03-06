@@ -36,23 +36,32 @@ namespace Entities.Intermedio
         public string EstadoNuevo { get; set; }
         public string Notas { get; set; }
         public DateTime FechaCreacion { get; set; }
-        //public string Adjunto01 { get; set; }
+
+        [XmlElement(IsNullable = true)]
         public byte[] Adjunto01 { get; set; }
+
+        [XmlElement(IsNullable = true)]
         public string AdjuntoName01 { get; set; }
 
-        [XmlElement(IsNullable = true)] 
+        [XmlElement(IsNullable = true)]
         public int? AdjuntoSize01 { get; set; }
-        //public string Adjunto02 { get; set; }
+
+        [XmlElement(IsNullable = true)]
         public byte[] Adjunto02 { get; set; }
+
+        [XmlElement(IsNullable = true)]
         public string AdjuntoName02 { get; set; }
 
-        [XmlElement(IsNullable = true)] 
+        [XmlElement(IsNullable = true)]
         public int? AdjuntoSize02 { get; set; }
-        //public string Adjunto03 { get; set; }
+
+        [XmlElement(IsNullable = true)]
         public byte[] Adjunto03 { get; set; }
+
+        [XmlElement(IsNullable = true)]
         public string AdjuntoName03 { get; set; }
 
-        [XmlElement(IsNullable = true)] 
+        [XmlElement(IsNullable = true)]
         public int? AdjuntoSize03 { get; set; }
         public string Cliente { get; set; }
         public string VIP { get; set; }

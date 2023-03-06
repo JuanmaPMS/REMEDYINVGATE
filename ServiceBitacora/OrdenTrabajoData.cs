@@ -227,14 +227,33 @@ namespace ServiceBitacora
             int id = 0;
             try
             {
-                SqlParameter[] sqParam = new SqlParameter[] {
+                List<SqlParameter> sqParam = new List<SqlParameter> {
                                     new SqlParameter("@TicketRemedy", ticket.TicketIMSS),
                                     new SqlParameter("@TicketInvgate", idInvgate),
                                     new SqlParameter("@Nota", ticket.Notas == null ? string.Empty : ticket.Notas),
-                                    new SqlParameter("@Usuario", "WsIntermediario")
+                                    new SqlParameter("@Usuario", "WsIntermediario"),
+                                    new SqlParameter("@ArchivoName01", ticket.AdjuntoName01 == null ? string.Empty : ticket.AdjuntoName01),
+                                    new SqlParameter("@ArchivoSize01", ticket.AdjuntoSize01 == null ? 0 : ticket.AdjuntoSize01),
+                                    new SqlParameter("@ArchivoName02", ticket.AdjuntoName02 == null ? string.Empty : ticket.AdjuntoName02),
+                                    new SqlParameter("@ArchivoSize02", ticket.AdjuntoSize02 == null ? 0 : ticket.AdjuntoSize02),
+                                    new SqlParameter("@ArchivoName03", ticket.AdjuntoName03 == null ? string.Empty : ticket.AdjuntoName03),
+                                    new SqlParameter("@ArchivoSize03", ticket.AdjuntoSize03 == null ? 0 : ticket.AdjuntoSize03)
                 };
 
-                id = ctx.Database.ExecuteSqlCommand("EXEC [dbo].[SP_INSERT_NOTA_WO] @TicketRemedy,@TicketInvgate,@Nota,@Usuario ", sqParam);
+                if (ticket.Adjunto01 == null)
+                    sqParam.Add(new SqlParameter("@Archivo01", DBNull.Value));
+                else
+                    sqParam.Add(new SqlParameter("@Archivo01", ticket.Adjunto01));
+                if (ticket.Adjunto02 == null)
+                    sqParam.Add(new SqlParameter("@Archivo02", DBNull.Value));
+                else
+                    sqParam.Add(new SqlParameter("@Archivo02", ticket.Adjunto02));
+                if (ticket.Adjunto03 == null)
+                    sqParam.Add(new SqlParameter("@Archivo03", DBNull.Value));
+                else
+                    sqParam.Add(new SqlParameter("@Archivo03", ticket.Adjunto03));
+
+                id = ctx.Database.ExecuteSqlCommand("EXEC [dbo].[SP_INSERT_NOTA_WO] @TicketRemedy,@TicketInvgate,@Nota,@Usuario,@Archivo01,@ArchivoName01,@ArchivoSize01,@Archivo02,@ArchivoName02,@ArchivoSize02,@Archivo03,@ArchivoName03,@ArchivoSize03 ", sqParam.ToArray());
                 Result = "Exito: Nota registrada en bitácora.";
             }
             catch (Exception ex)

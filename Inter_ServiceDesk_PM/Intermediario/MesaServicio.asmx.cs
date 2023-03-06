@@ -230,17 +230,19 @@ namespace Inter_ServiceDesk_PM
                 {
                     if (Autenticacion.IsValid())
                     {
-                        //Obtiene id Invgate
-                        Ticket data = bitacora.Get(request.TicketIMSS);
+                        int idTicketInvgate = 0;
+                        ServiceBitacora.Incidente data = bitacora.GetIdInvgate(request.TicketIMSS);
+                        if (data != null)
+                            idTicketInvgate = Convert.ToInt32(data.TicketInvgate);
 
-                        if (data.TicketInvgate > 0)
+                        if (idTicketInvgate > 0)
                         {
                             //Valida el estatus, si es Resuelto
                             if (request.EstadoNuevo == "4")//Resuelto
                             {
                                 IncidentesCommentPostRequest VarComent = new IncidentesCommentPostRequest();
 
-                                VarComent.request_id = data.TicketInvgate;
+                                VarComent.request_id = idTicketInvgate;
                                 VarComent.comment = request.Notas == string.Empty ? "Ticket Solucionado" : request.Notas;
                                 VarComent.author_id = 2;
                                 VarComent.is_solution = true;
@@ -269,7 +271,7 @@ namespace Inter_ServiceDesk_PM
                                 {
                                     int IdPrioridad = catalogos.GetUrgenciaInvgate(Convert.ToInt32(request.Urgencia));
                                                                         
-                                    VarInter.id = data.TicketInvgate;
+                                    VarInter.id = idTicketInvgate;
                                     VarInter.priorityId = IdPrioridad;
 
                                     response_ = incidentes.PutIncidentePriority(VarInter);
@@ -280,7 +282,7 @@ namespace Inter_ServiceDesk_PM
                                 {
                                     int IdEstatus = catalogos.GetEstatusIncidenteInvgate(Convert.ToInt32(request.EstadoNuevo));
 
-                                    VarInter.id = data.TicketInvgate;
+                                    VarInter.id = idTicketInvgate;
                                     VarInter.statusId = IdEstatus;
 
                                     response_ = incidentes.PutIncidenteStatus(VarInter);
@@ -288,12 +290,12 @@ namespace Inter_ServiceDesk_PM
                             }
 
                             //Bitacora
-                            bitacora.ActualizaIncidente(request, data.TicketInvgate, out string Result);
+                            bitacora.ActualizaIncidente(request, idTicketInvgate, out string Result);
 
                             //Si no actualizamos nada en Invgate
                             if (string.IsNullOrEmpty(response_.Estado))
                             {
-                                response_.Ticket = data.TicketInvgate.ToString();
+                                response_.Ticket = idTicketInvgate.ToString();
                                 response_.Resultado = "Transacción exitosa, registro actualizado en Invgate People Media";
                                 response_.Estado = "Exito";
                             }
@@ -340,9 +342,12 @@ namespace Inter_ServiceDesk_PM
                     if (Autenticacion.IsValid())
                     {
                         //Obtiene id Invgate
-                        Ticket data = bitacora.Get(request.TicketIMSS);
+                        int idTicketInvgate = 0;
+                        ServiceBitacora.Incidente data = bitacora.GetIdInvgate(request.TicketIMSS);
+                        if (data != null)
+                            idTicketInvgate = Convert.ToInt32(data.TicketInvgate);
 
-                        if (data.TicketInvgate > 0)
+                        if (idTicketInvgate > 0)
                         {
                             IncidentPutRequest VarInter = new IncidentPutRequest();
                             //DateTime dt = Convert.ToDateTime(Convert.ToDateTime(request.FechaCambio.ToUpper().Replace("P.M", "").Replace("A.M", "")).ToShortDateString());
@@ -350,7 +355,7 @@ namespace Inter_ServiceDesk_PM
                             //Otiene urgencia
                             int IdPrioridad = catalogos.GetUrgenciaInvgate(Convert.ToInt32(request.Urgencia));
 
-                            VarInter.id = data.TicketInvgate;
+                            VarInter.id = idTicketInvgate;
                             VarInter.priorityId = IdPrioridad;
 
                             //VarInter.date = ConvertToTimestamp(dt).ToString();
@@ -358,12 +363,12 @@ namespace Inter_ServiceDesk_PM
                             response_ = incidentes.PutIncidentePriority(VarInter);
 
                             //Bitacora
-                            bitacora.ActualizaPriorizacion(request, data.TicketInvgate, out string Result);
+                            bitacora.ActualizaPriorizacion(request, idTicketInvgate, out string Result);
 
                             //Si no actualizamos nada en Invgate
                             if (string.IsNullOrEmpty(response_.Estado))
                             {
-                                response_.Ticket = data.TicketInvgate.ToString();
+                                response_.Ticket = idTicketInvgate.ToString();
                                 response_.Resultado = "Transacción exitosa, registro actualizado en Invgate People Media";
                                 response_.Estado = "Exito";
                             }
@@ -409,9 +414,12 @@ namespace Inter_ServiceDesk_PM
                     if (Autenticacion.IsValid())
                     {
                         //Obtiene id Invgate
-                        Ticket data = bitacora.Get(request.TicketIMSS);
+                        int idTicketInvgate = 0;
+                        ServiceBitacora.Incidente data = bitacora.GetIdInvgate(request.TicketIMSS);
+                        if (data != null)
+                            idTicketInvgate = Convert.ToInt32(data.TicketInvgate);
 
-                        if (data.TicketInvgate > 0)
+                        if (idTicketInvgate > 0)
                         {
                             IncidentPutRequest VarInter = new IncidentPutRequest();
                             
@@ -426,13 +434,13 @@ namespace Inter_ServiceDesk_PM
                                     request.CategoriaPro03 + "|" +
                                     data.NombreProducto;
                
-                            VarInter.id = data.TicketInvgate;
+                            VarInter.id = idTicketInvgate;
                             VarInter.categoryId = ci.GetCategoria(concat);
                             
                             response_ = incidentes.PutIncidenteCategory(VarInter);
 
                             //Bitacora
-                            bitacora.ActualizaCategoria(request, data.TicketInvgate, out string Result);
+                            bitacora.ActualizaCategoria(request, idTicketInvgate, out string Result);
                         }
                         else
                         {
@@ -474,19 +482,14 @@ namespace Inter_ServiceDesk_PM
                     if (Autenticacion.IsValid())
                     {
                         //Obtiene id Invgate
-                        Ticket data = bitacora.Get(request.TicketIMSS);
+                        int idTicketInvgate = 0;
+                        ServiceBitacora.Incidente data = bitacora.GetIdInvgate(request.TicketIMSS);
+                        if (data != null)
+                            idTicketInvgate = Convert.ToInt32(data.TicketInvgate);
 
-                        if (data.TicketInvgate > 0)
+                        if (idTicketInvgate > 0)
                         {
-                            IncidentesCommentPostRequest VarInter = new IncidentesCommentPostRequest();
-
-                            VarInter.request_id = data.TicketInvgate;
-                            VarInter.comment = request.Notas;
-                            VarInter.author_id = 1240;
-                            VarInter.is_solution = false;
-
-                            response_ = comments.PostIncidenteComment(VarInter);
-
+                            //Agrega los adjuntos
                             List<HttpPostedFileBase> files_ = new List<HttpPostedFileBase>();
                             if (request.Adjunto01 != null && !string.IsNullOrEmpty(request.AdjuntoName01))
                                 files_.Add(new MemoryPostedFile(request.Adjunto01, request.AdjuntoName01));
@@ -500,9 +503,18 @@ namespace Inter_ServiceDesk_PM
                             if (files_.Count > 0)
                                 incidentes.PostAttachments(files_.ToArray(), Convert.ToInt32(response_.Ticket));
 
+                            //Envia la nota
+                            IncidentesCommentPostRequest VarInter = new IncidentesCommentPostRequest();
+
+                            VarInter.request_id = idTicketInvgate;
+                            VarInter.comment = request.Notas;
+                            VarInter.author_id = 1240;
+                            VarInter.is_solution = false;
+
+                            response_ = comments.PostIncidenteComment(VarInter);
 
                             //Bitacora
-                            bitacora.AgregaNota(request, data.TicketInvgate, out string Result);
+                            bitacora.AgregaNota(request, idTicketInvgate, out string Result);
                         }
                         else
                         {
@@ -911,6 +923,21 @@ namespace Inter_ServiceDesk_PM
 
                         if (data.TicketInvgate > 0)
                         {
+                            //Agrega adjuntos
+                            List<HttpPostedFileBase> files_ = new List<HttpPostedFileBase>();
+
+                            if (request.Adjunto01 != null && !string.IsNullOrEmpty(request.AdjuntoName01))
+                                files_.Add(new MemoryPostedFile(request.Adjunto01, request.AdjuntoName01));
+
+                            if (request.Adjunto02 != null && !string.IsNullOrEmpty(request.AdjuntoName02))
+                                files_.Add(new MemoryPostedFile(request.Adjunto02, request.AdjuntoName02));
+
+                            if (request.Adjunto03 != null && !string.IsNullOrEmpty(request.AdjuntoName03))
+                                files_.Add(new MemoryPostedFile(request.Adjunto03, request.AdjuntoName03));
+
+                            incidentes.PostAttachments(files_.ToArray(), Convert.ToInt32(response_.Ticket));
+
+                            //Agrega nota
                             IncidentesCommentPostRequest VarInter = new IncidentesCommentPostRequest();
 
                             VarInter.request_id = data.TicketInvgate;

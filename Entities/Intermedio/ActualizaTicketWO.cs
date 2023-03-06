@@ -13,8 +13,8 @@ namespace Entities.Intermedio
         [XmlElement(IsNullable = false)]
         public string TicketIMSS { get; set; }
 
-        [XmlElement(IsNullable = true)]
-        public int? Prioridad { get; set; }
+        //[XmlElement(IsNullable = true)]
+        public string Prioridad { get; set; }
         public string EstadoNuevo { get; set; }
         public string Motivo { get; set; }
         public DateTime FechaCambio { get; set; }

@@ -19,7 +19,7 @@ namespace Entities.Intermedio
 
         [XmlElement(IsNullable = false)]
         public string Resumen { get; set; }
-        public int Prioridad { get; set; }
+        public string Prioridad { get; set; }
         public string TipoIncidencia { get; set; }
         public string FuenteReportada { get; set; }
         public string NombreProducto { get; set; }
@@ -33,17 +33,29 @@ namespace Entities.Intermedio
         public string EstadoNuevo { get; set; }
         public string Notas { get; set; }
         public DateTime FechaCreacion { get; set; }
+
+        [XmlElement(IsNullable = true)]
         public byte[] Adjunto01 { get; set; }
+
+        [XmlElement(IsNullable = true)]
         public string AdjuntoName01 { get; set; }
 
-        [XmlElement(IsNullable = true)] 
+        [XmlElement(IsNullable = true)]
         public int? AdjuntoSize01 { get; set; }
+
+        [XmlElement(IsNullable = true)]
         public byte[] Adjunto02 { get; set; }
+
+        [XmlElement(IsNullable = true)]
         public string AdjuntoName02 { get; set; }
 
         [XmlElement(IsNullable = true)]
         public int? AdjuntoSize02 { get; set; }
+
+        [XmlElement(IsNullable = true)]
         public byte[] Adjunto03 { get; set; }
+
+        [XmlElement(IsNullable = true)]
         public string AdjuntoName03 { get; set; }
 
         [XmlElement(IsNullable = true)]

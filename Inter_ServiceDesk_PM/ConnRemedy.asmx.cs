@@ -161,7 +161,7 @@ namespace Inter_ServiceDesk_PM
             {
                 Entities.Intermedio.ActualizaPriorizacionWO _cambio = new Entities.Intermedio.ActualizaPriorizacionWO();
                 _cambio.TicketIMSS = prioridad.IDTicketRemedy;
-                _cambio.Prioridad = prioridad.Prioridad;
+                _cambio.Prioridad = prioridad.Prioridad.ToString();
                 _cambio.FechaCambio = DateTime.Now;
 
                 bitacoraWO.ActualizaPriorizacion(_cambio, Convert.ToInt32(prioridad.IDTicketInvgate), out string msg);

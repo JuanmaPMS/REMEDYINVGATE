@@ -12,7 +12,7 @@ namespace Entities.Intermedio
     {
         [XmlElement(IsNullable = false)]
         public string TicketIMSS { get; set; }
-        public int Prioridad { get; set; }
+        public string Prioridad { get; set; }
         public DateTime FechaCambio { get; set; }
     }
 }

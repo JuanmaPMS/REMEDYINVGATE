@@ -25,7 +25,7 @@ namespace TaskIncidencias
                 //Consulta incidente en bitacora
                 SB.IncidenteData data = new SB.IncidenteData();
                 SB.CatalogosData catalogos = new SB.CatalogosData();
-                SB.Incidente bitacora = data.Get(id);
+                SB.Incidente bitacora = data.GetIdIMSS(id);
 
                 if (bitacora.TicketInvgate != null)
                 {
@@ -95,7 +95,7 @@ namespace TaskIncidencias
                 //Consulta incidente en bitacora
                 SB.IncidenteData data = new SB.IncidenteData();
                 SB.CatalogosData catalogos = new SB.CatalogosData();
-                SB.Incidente bitacora = data.Get(id);
+                SB.Incidente bitacora = data.GetIdIMSS(id);
 
                 if (bitacora.TicketInvgate != null)
                 {
@@ -143,7 +143,7 @@ namespace TaskIncidencias
                 //Consulta incidente en bitacora
                 SB.IncidenteData data = new SB.IncidenteData();
                 SB.CatalogosData catalogos = new SB.CatalogosData();
-                SB.Incidente bitacora = data.Get(id);
+                SB.Incidente bitacora = data.GetIdIMSS(id);
 
                 if (bitacora.TicketInvgate != null)
                 {
@@ -212,7 +212,7 @@ namespace TaskIncidencias
                 //Consulta incidente en bitacora
                 SB.IncidenteData data = new SB.IncidenteData();
                 SB.CatalogosData catalogos = new SB.CatalogosData();
-                SB.Incidente bitacora = data.Get(id);
+                SB.Incidente bitacora = data.GetIdIMSS(id);
 
                 if (bitacora.TicketInvgate != null)
                 {
