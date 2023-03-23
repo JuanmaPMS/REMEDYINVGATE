@@ -22,12 +22,12 @@ namespace ServiceIMSS
 
             try
             {
-                var client = new RestClient(UrCliente + "?server=remedy&webService=NXR_WS_GestionDeOrdenesIMSS_PM");
+                var client = new RestClient(UrCliente + "&webService=IMSS_WS_GestionDeOrdenesIMSS_PM");
                 var request = new RestRequest("", Method.Post);
                 request.AddHeader("Content-Type", "text/xml charset=utf-8");
-                request.AddHeader("SOAPAction", "urn:NXR_WS_GestionDeOrdenesIMSS_PM/Actualiza_Categorizacion_IMSS");
+                request.AddHeader("SOAPAction", "urn:IMSS_WS_GestionDeOrdenesIMSS_PM/Actualiza_Categorizacion_IMSS");
                 var body = @"<?xml version=""1.0"" encoding=""utf-8""?>" +
-                @"<soap:Envelope xmlns:soap=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:urn=""urn:NXR_WS_GestionDeOrdenesIMSS_PM"">" +
+                @"<soap:Envelope xmlns:soap=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:urn=""urn:IMSS_WS_GestionDeOrdenesIMSS_PM"">" +
                 @"  <soap:Header>" +
                 @"      <urn:AuthenticationInfo>" +
                 @"         <urn:userName>" + user + "</urn:userName>" +
@@ -100,12 +100,12 @@ namespace ServiceIMSS
 
             try
             {
-                var client = new RestClient(UrCliente + "?server=remedy&webService=NXR_WS_GestionDeOrdenesIMSS_PM");
+                var client = new RestClient(UrCliente + "&webService=IMSS_WS_GestionDeOrdenesIMSS_PM");
                 var request = new RestRequest("", Method.Post);
                 request.AddHeader("Content-Type", "text/xml charset=utf-8");
-                request.AddHeader("SOAPAction", "urn:NXR_WS_GestionDeOrdenesIMSS_PM/Actualiza_Ordenes_IMSS");
+                request.AddHeader("SOAPAction", "urn:IMSS_WS_GestionDeOrdenesIMSS_PM/Actualiza_Ordenes_IMSS");
                 var body = @"<?xml version=""1.0"" encoding=""utf-8""?>" +
-                @"<soap:Envelope xmlns:soap=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:urn=""urn:NXR_WS_GestionDeOrdenesIMSS_PM"">" +
+                @"<soap:Envelope xmlns:soap=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:urn=""urn:IMSS_WS_GestionDeOrdenesIMSS_PM"">" +
                 @"  <soap:Header>" +
                 @"      <urn:AuthenticationInfo>" +
                 @"         <urn:userName>" + user + "</urn:userName>" +
@@ -169,12 +169,12 @@ namespace ServiceIMSS
 
             try
             {
-                var client = new RestClient(UrCliente + "?server=remedy&webService=NXR_WS_GestionDeOrdenesIMSS_PM");
+                var client = new RestClient(UrCliente + "&webService=IMSS_WS_GestionDeOrdenesIMSS_PM");
                 var request = new RestRequest("", Method.Post);
                 request.AddHeader("Content-Type", "text/xml charset=utf-8");
-                request.AddHeader("SOAPAction", "urn:NXR_WS_GestionDeOrdenesIMSS_PM/Actualiza_Prioridad_IMSS");
+                request.AddHeader("SOAPAction", "urn:IMSS_WS_GestionDeOrdenesIMSS_PM/Actualiza_Prioridad_IMSS");
                 var body = @"<?xml version=""1.0"" encoding=""utf-8""?>" +
-                @"<soap:Envelope xmlns:soap=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:urn=""urn:NXR_WS_GestionDeOrdenesIMSS_PM"">" +
+                @"<soap:Envelope xmlns:soap=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:urn=""urn:IMSS_WS_GestionDeOrdenesIMSS_PM"">" +
                 @"  <soap:Header>" +
                 @"      <urn:AuthenticationInfo>" +
                 @"         <urn:userName>" + user + "</urn:userName>" +
@@ -237,12 +237,12 @@ namespace ServiceIMSS
 
             try
             {
-                var client = new RestClient(UrCliente + "?server=remedy&webService=NXR_WS_GestionDeOrdenesIMSS_PM");
+                var client = new RestClient(UrCliente + "&webService=IMSS_WS_GestionDeOrdenesIMSS_PM");
                 var request = new RestRequest("", Method.Post);
                 request.AddHeader("Content-Type", "text/xml charset=utf-8");
-                request.AddHeader("SOAPAction", "urn:NXR_WS_GestionDeOrdenesIMSS_PM/Adiciona_Notas_Ordenes_IMSS");
+                request.AddHeader("SOAPAction", "urn:IMSS_WS_GestionDeOrdenesIMSS_PM/Adiciona_Notas_Ordenes_IMSS");
                 var body = @"<?xml version=""1.0"" encoding=""utf-8""?>" +
-                @"<soap:Envelope xmlns:soap=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:urn=""urn:NXR_WS_GestionDeOrdenesIMSS_PM"">" +
+                @"<soap:Envelope xmlns:soap=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:urn=""urn:IMSS_WS_GestionDeOrdenesIMSS_PM"">" +
                 @"  <soap:Header>" +
                 @"      <urn:AuthenticationInfo>" +
                 @"         <urn:userName>" + user + "</urn:userName>" +

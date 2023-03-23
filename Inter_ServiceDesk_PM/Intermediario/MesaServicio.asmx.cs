@@ -70,6 +70,10 @@ namespace Inter_ServiceDesk_PM
         public Entities.Intermedio.Result Incidente_Add(CreaTicketIN request)
         {
             Entities.Intermedio.Result response_ = new Entities.Intermedio.Result();
+            if (string.IsNullOrEmpty(request.VIP))
+            {
+                request.VIP = "NO";
+            }
             log.LogCreaTicketIN(request);
             try
             {
@@ -501,7 +505,7 @@ namespace Inter_ServiceDesk_PM
                                 files_.Add(new MemoryPostedFile(request.Adjunto03, request.AdjuntoName03));
 
                             if (files_.Count > 0)
-                                incidentes.PostAttachments(files_.ToArray(), Convert.ToInt32(response_.Ticket));
+                                incidentes.PostAttachments(files_.ToArray(), idTicketInvgate);
 
                             //Envia la nota
                             IncidentesCommentPostRequest VarInter = new IncidentesCommentPostRequest();
@@ -549,6 +553,11 @@ namespace Inter_ServiceDesk_PM
         public Entities.Intermedio.Result Orden_Add(CreaTicketWO request)
         {
             Entities.Intermedio.Result response_ = new Entities.Intermedio.Result();
+            if (string.IsNullOrEmpty(request.VIP))
+            {
+                request.VIP = "NO";
+            }
+                
             log.LogCreaTicketWO(request);
             try
             {
@@ -921,6 +930,12 @@ namespace Inter_ServiceDesk_PM
                         //Obtiene id Invgate
                         Ticket data = bitacoraWO.Get(request.TicketIMSS);
 
+                        //Obtiene id Invgate
+                        //int idTicketInvgate = 0;
+                        //ServiceBitacora.Incidente data = bitacoraWO.get(request.TicketIMSS);
+                        //if (data != null)
+                        //    idTicketInvgate = Convert.ToInt32(data.TicketInvgate);
+
                         if (data.TicketInvgate > 0)
                         {
                             //Agrega adjuntos
@@ -935,7 +950,7 @@ namespace Inter_ServiceDesk_PM
                             if (request.Adjunto03 != null && !string.IsNullOrEmpty(request.AdjuntoName03))
                                 files_.Add(new MemoryPostedFile(request.Adjunto03, request.AdjuntoName03));
 
-                            incidentes.PostAttachments(files_.ToArray(), Convert.ToInt32(response_.Ticket));
+                            incidentes.PostAttachments(files_.ToArray(), data.TicketInvgate);
 
                             //Agrega nota
                             IncidentesCommentPostRequest VarInter = new IncidentesCommentPostRequest();
