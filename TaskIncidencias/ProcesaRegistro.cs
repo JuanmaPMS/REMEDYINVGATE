@@ -195,8 +195,6 @@ namespace TaskIncidencias
                 return Regex.Replace(strIn, "<.*?>", string.Empty);
 
             }
-            // If we timeout when replacing invalid characters,
-            // we should return Empty.
             catch (RegexMatchTimeoutException)
             {
                 return String.Empty;
@@ -261,7 +259,7 @@ namespace TaskIncidencias
                 //Consulta orden de trabajo en bitacora
                 SB.OrdenTrabajoData data = new SB.OrdenTrabajoData();
                 SB.CatalogosData catalogos = new SB.CatalogosData();
-                SB.OrdenTrabajo bitacora = data.Get(id);
+                SB.OrdenTrabajo bitacora = data.GetIdIMSS(id);
 
                 if (bitacora.TicketInvgate != null)
                 {
@@ -321,7 +319,7 @@ namespace TaskIncidencias
                 //Consulta incidente en bitacora
                 SB.OrdenTrabajoData data = new SB.OrdenTrabajoData();
                 SB.CatalogosData catalogos = new SB.CatalogosData();
-                SB.OrdenTrabajo bitacora = data.Get(id);
+                SB.OrdenTrabajo bitacora = data.GetIdIMSS(id);
 
                 if (bitacora.TicketInvgate != null)
                 {
@@ -369,7 +367,7 @@ namespace TaskIncidencias
                 //Consulta incidente en bitacora
                 SB.OrdenTrabajoData data = new SB.OrdenTrabajoData();
                 SB.CatalogosData catalogos = new SB.CatalogosData();
-                SB.OrdenTrabajo bitacora = data.Get(id);
+                SB.OrdenTrabajo bitacora = data.GetIdIMSS(id);
 
                 if (bitacora.TicketInvgate != null)
                 {
@@ -418,7 +416,7 @@ namespace TaskIncidencias
                 //Consulta incidente en bitacora
                 SB.OrdenTrabajoData data = new SB.OrdenTrabajoData();
                 SB.CatalogosData catalogos = new SB.CatalogosData();
-                SB.OrdenTrabajo bitacora = data.Get(id);
+                SB.OrdenTrabajo bitacora = data.GetIdIMSS(id);
 
                 if (bitacora.TicketInvgate != null)
                 {

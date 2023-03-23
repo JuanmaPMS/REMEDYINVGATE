@@ -14,6 +14,7 @@ using System.Web.Services.Protocols;
 using System.Globalization;
 using Entities.Invgate;
 using static System.Net.WebRequestMethods;
+using System.Configuration;
 
 namespace Inter_ServiceDesk_PM
 {
@@ -51,6 +52,7 @@ namespace Inter_ServiceDesk_PM
         IncidentesInvgate incidentes = new IncidentesInvgate();
         IncidentesCommentInvgate comments = new IncidentesCommentInvgate();
         Log log = new Log();
+        string MesaInvgate = ConfigurationManager.AppSettings["MesaInvgate"];
         private long ConvertToTimestamp(DateTime value)
         {
             long epoch = (value.Ticks - 621355968000000000) / 10000000;
@@ -70,10 +72,8 @@ namespace Inter_ServiceDesk_PM
         public Entities.Intermedio.Result Incidente_Add(CreaTicketIN request)
         {
             Entities.Intermedio.Result response_ = new Entities.Intermedio.Result();
-            if (string.IsNullOrEmpty(request.VIP))
-            {
-                request.VIP = "NO";
-            }
+            
+            if (string.IsNullOrEmpty(request.VIP)) { request.VIP = "NO"; }
             log.LogCreaTicketIN(request);
             try
             {
@@ -84,21 +84,6 @@ namespace Inter_ServiceDesk_PM
                         //Valida que no exista el ticket de IMSS
                         if (!bitacora.Existe(request.TicketIMSS))
                         {
-                            //Tratamiento de fecha
-                            //string[] dataFecha = request.FechaCreacion.Split(' ');
-
-                            //string[] fecha_ = dataFecha[0].Split('/');
-                            //string[] hora_ = dataFecha[1].Split(':');
-
-                            //int day_ = Convert.ToInt32(fecha_[0]);
-                            //int month_ = Convert.ToInt32(fecha_[1]);
-                            //int year_ = Convert.ToInt32(fecha_[2]);
-                            //int hour_ = Convert.ToInt32(hora_[0]);
-                            //int minute_ = Convert.ToInt32(hora_[1]);
-                            //int second_ = Convert.ToInt32(hora_[2]);
-
-                            //DateTime fecha = new DateTime(year_, month_, day_, hour_, minute_, second_);
-
                             //Otiene urgencia
                             int IdPrioridad = catalogos.GetUrgenciaInvgate(Convert.ToInt32(request.Urgencia));
 
@@ -112,7 +97,7 @@ namespace Inter_ServiceDesk_PM
                             VarInter.creator_id = 1240;
                             VarInter.type_id = 1;//Incidente
                             CategoriastInvgate ci = new CategoriastInvgate();
-                            string concat = "CAT PROD" + "|" +//"MESA DE SERVICIO IMSS" + "|" +
+                            string concat = MesaInvgate + "|" +
                                     request.CategoriaOpe01 + "|" +
                                     request.CategoriaOpe02 + "|" +
                                     request.CategoriaOpe03 + "|" +
@@ -165,16 +150,16 @@ namespace Inter_ServiceDesk_PM
                                 #endregion
 
                                 if (request.Adjunto01 != null && !string.IsNullOrEmpty(request.AdjuntoName01))
-                                    files_.Add(new MemoryPostedFile(request.Adjunto01, request.AdjuntoName01));
+                                { files_.Add(new MemoryPostedFile(request.Adjunto01, request.AdjuntoName01)); }
 
                                 if (request.Adjunto02 != null && !string.IsNullOrEmpty(request.AdjuntoName02))
-                                    files_.Add(new MemoryPostedFile(request.Adjunto02, request.AdjuntoName02));
+                                { files_.Add(new MemoryPostedFile(request.Adjunto02, request.AdjuntoName02)); }
 
                                 if (request.Adjunto03 != null && !string.IsNullOrEmpty(request.AdjuntoName03))
-                                    files_.Add(new MemoryPostedFile(request.Adjunto03, request.AdjuntoName03));
+                                { files_.Add(new MemoryPostedFile(request.Adjunto03, request.AdjuntoName03)); }
 
-                                if(files_.Count > 0)
-                                    incidentes.PostAttachments(files_.ToArray(), Convert.ToInt32(response_.Ticket));
+                                if (files_.Count > 0)
+                                { incidentes.PostAttachments(files_.ToArray(), Convert.ToInt32(response_.Ticket)); }
 
                                 //AgregaNotas
                                 if (!string.IsNullOrEmpty(request.Notas))
@@ -237,7 +222,7 @@ namespace Inter_ServiceDesk_PM
                         int idTicketInvgate = 0;
                         ServiceBitacora.Incidente data = bitacora.GetIdInvgate(request.TicketIMSS);
                         if (data != null)
-                            idTicketInvgate = Convert.ToInt32(data.TicketInvgate);
+                        { idTicketInvgate = data.TicketInvgate == null ? 0 : Convert.ToInt32(data.TicketInvgate); }
 
                         if (idTicketInvgate > 0)
                         {
@@ -262,7 +247,7 @@ namespace Inter_ServiceDesk_PM
                                 {
                                     IncidentesCommentPostRequest VarComent = new IncidentesCommentPostRequest();
 
-                                    VarComent.request_id = Convert.ToInt32(response_.Ticket);
+                                    VarComent.request_id = idTicketInvgate;
                                     VarComent.comment = request.Notas;
                                     VarComent.author_id = 1240;
                                     VarComent.is_solution = false;
@@ -349,7 +334,7 @@ namespace Inter_ServiceDesk_PM
                         int idTicketInvgate = 0;
                         ServiceBitacora.Incidente data = bitacora.GetIdInvgate(request.TicketIMSS);
                         if (data != null)
-                            idTicketInvgate = Convert.ToInt32(data.TicketInvgate);
+                        { idTicketInvgate = data.TicketInvgate == null ? 0 : Convert.ToInt32(data.TicketInvgate); }
 
                         if (idTicketInvgate > 0)
                         {
@@ -421,7 +406,7 @@ namespace Inter_ServiceDesk_PM
                         int idTicketInvgate = 0;
                         ServiceBitacora.Incidente data = bitacora.GetIdInvgate(request.TicketIMSS);
                         if (data != null)
-                            idTicketInvgate = Convert.ToInt32(data.TicketInvgate);
+                        { idTicketInvgate = data.TicketInvgate == null ? 0 : Convert.ToInt32(data.TicketInvgate); }
 
                         if (idTicketInvgate > 0)
                         {
@@ -429,7 +414,7 @@ namespace Inter_ServiceDesk_PM
                             
                             //Obtiene Categoria
                             CategoriastInvgate ci = new CategoriastInvgate();
-                            string concat = "CAT PROD" + "|" +//"MESA DE SERVICIO IMSS" + "|" +
+                            string concat = MesaInvgate + "|" +
                                     request.CategoriaOpe01 + "|" +
                                     request.CategoriaOpe02 + "|" +
                                     request.CategoriaOpe03 + "|" +
@@ -489,23 +474,23 @@ namespace Inter_ServiceDesk_PM
                         int idTicketInvgate = 0;
                         ServiceBitacora.Incidente data = bitacora.GetIdInvgate(request.TicketIMSS);
                         if (data != null)
-                            idTicketInvgate = Convert.ToInt32(data.TicketInvgate);
+                        { idTicketInvgate = data.TicketInvgate == null ? 0 : Convert.ToInt32(data.TicketInvgate); }
 
                         if (idTicketInvgate > 0)
                         {
                             //Agrega los adjuntos
                             List<HttpPostedFileBase> files_ = new List<HttpPostedFileBase>();
                             if (request.Adjunto01 != null && !string.IsNullOrEmpty(request.AdjuntoName01))
-                                files_.Add(new MemoryPostedFile(request.Adjunto01, request.AdjuntoName01));
+                            { files_.Add(new MemoryPostedFile(request.Adjunto01, request.AdjuntoName01)); }
 
                             if (request.Adjunto02 != null && !string.IsNullOrEmpty(request.AdjuntoName02))
-                                files_.Add(new MemoryPostedFile(request.Adjunto02, request.AdjuntoName02));
+                            { files_.Add(new MemoryPostedFile(request.Adjunto02, request.AdjuntoName02)); }
 
                             if (request.Adjunto03 != null && !string.IsNullOrEmpty(request.AdjuntoName03))
-                                files_.Add(new MemoryPostedFile(request.Adjunto03, request.AdjuntoName03));
+                            { files_.Add(new MemoryPostedFile(request.Adjunto03, request.AdjuntoName03)); }
 
                             if (files_.Count > 0)
-                                incidentes.PostAttachments(files_.ToArray(), idTicketInvgate);
+                            { incidentes.PostAttachments(files_.ToArray(), idTicketInvgate); }
 
                             //Envia la nota
                             IncidentesCommentPostRequest VarInter = new IncidentesCommentPostRequest();
@@ -553,11 +538,9 @@ namespace Inter_ServiceDesk_PM
         public Entities.Intermedio.Result Orden_Add(CreaTicketWO request)
         {
             Entities.Intermedio.Result response_ = new Entities.Intermedio.Result();
-            if (string.IsNullOrEmpty(request.VIP))
-            {
-                request.VIP = "NO";
-            }
-                
+
+            if (string.IsNullOrEmpty(request.VIP)) { request.VIP = "NO"; }
+
             log.LogCreaTicketWO(request);
             try
             {
@@ -568,21 +551,6 @@ namespace Inter_ServiceDesk_PM
                         //Valida que no exista el ticket de IMSS
                         if (!bitacoraWO.Existe(request.TicketIMSS))
                         {
-                            //Tratamiento de fecha
-                            //string[] dataFecha = request.FechaCreacion.Split(' ');
-
-                            //string[] fecha_ = dataFecha[0].Split('/');
-                            //string[] hora_ = dataFecha[1].Split(':');
-
-                            //int day_ = Convert.ToInt32(fecha_[0]);
-                            //int month_ = Convert.ToInt32(fecha_[1]);
-                            //int year_ = Convert.ToInt32(fecha_[2]);
-                            //int hour_ = Convert.ToInt32(hora_[0]);
-                            //int minute_ = Convert.ToInt32(hora_[1]);
-                            //int second_ = Convert.ToInt32(hora_[2]);
-
-                            //DateTime fecha = new DateTime(year_, month_, day_, hour_, minute_, second_);
-
                             //Otiene prioridad
                             int IdPrioridad = catalogos.GetPrioridadInvgate(Convert.ToInt32(request.Prioridad));
 
@@ -596,7 +564,7 @@ namespace Inter_ServiceDesk_PM
                             VarInter.creator_id = 1240;
                             VarInter.type_id = 2; //Orden Trabajo
                             CategoriastInvgate ci = new CategoriastInvgate();
-                            string concat = "CAT PROD" + "|" +//"MESA DE SERVICIO IMSS" + "|" +
+                            string concat = MesaInvgate + "|" +
                                     request.CategoriaOpe01 + "|" +
                                     request.CategoriaOpe02 + "|" +
                                     request.CategoriaOpe03 + "|" +
@@ -617,15 +585,16 @@ namespace Inter_ServiceDesk_PM
                                 List<HttpPostedFileBase> files_ = new List<HttpPostedFileBase>();
 
                                 if (request.Adjunto01 != null && !string.IsNullOrEmpty(request.AdjuntoName01))
-                                    files_.Add(new MemoryPostedFile(request.Adjunto01, request.AdjuntoName01));
+                                { files_.Add(new MemoryPostedFile(request.Adjunto01, request.AdjuntoName01)); }
 
                                 if (request.Adjunto02 != null && !string.IsNullOrEmpty(request.AdjuntoName02))
-                                    files_.Add(new MemoryPostedFile(request.Adjunto02, request.AdjuntoName02));
+                                { files_.Add(new MemoryPostedFile(request.Adjunto02, request.AdjuntoName02)); }
 
                                 if (request.Adjunto03 != null && !string.IsNullOrEmpty(request.AdjuntoName03))
-                                    files_.Add(new MemoryPostedFile(request.Adjunto03, request.AdjuntoName03));
+                                { files_.Add(new MemoryPostedFile(request.Adjunto03, request.AdjuntoName03)); }
 
-                                incidentes.PostAttachments(files_.ToArray(), Convert.ToInt32(response_.Ticket));
+                                if (files_.Count > 0)
+                                { incidentes.PostAttachments(files_.ToArray(), Convert.ToInt32(response_.Ticket)); }
 
                                 //AgregaNotas
                                 if (!string.IsNullOrEmpty(request.Notas))
@@ -687,16 +656,19 @@ namespace Inter_ServiceDesk_PM
                     if (Autenticacion.IsValid())
                     {
                         //Obtiene id Invgate
-                        Ticket data = bitacoraWO.Get(request.TicketIMSS);
+                        int idTicketInvgate = 0;
+                        ServiceBitacora.OrdenTrabajo data = bitacoraWO.GetIdInvgate(request.TicketIMSS);
+                        if (data != null)
+                        { idTicketInvgate = data.TicketInvgate == null ? 0 : Convert.ToInt32(data.TicketInvgate); }
 
-                        if (data.TicketInvgate > 0)
+                        if (idTicketInvgate > 0)
                         {
                             //Valida el estatus, si es Terminado
                             if (request.EstadoNuevo == "5")//Terminado
                             {
                                 IncidentesCommentPostRequest VarComent = new IncidentesCommentPostRequest();
 
-                                VarComent.request_id = data.TicketInvgate;
+                                VarComent.request_id = idTicketInvgate;
                                 VarComent.comment = request.Notas == string.Empty ? "Solicitud Terminada" : request.Notas; ;
                                 VarComent.author_id = 2;
                                 VarComent.is_solution = true;
@@ -712,7 +684,7 @@ namespace Inter_ServiceDesk_PM
                                 {
                                     IncidentesCommentPostRequest VarComent = new IncidentesCommentPostRequest();
 
-                                    VarComent.request_id = Convert.ToInt32(response_.Ticket);
+                                    VarComent.request_id = idTicketInvgate;
                                     VarComent.comment = request.Notas;
                                     VarComent.author_id = 1240;
                                     VarComent.is_solution = false;
@@ -725,7 +697,7 @@ namespace Inter_ServiceDesk_PM
                                     //Otiene urgencia
                                     int IdPrioridad = catalogos.GetPrioridadInvgate(Convert.ToInt32(request.Prioridad));
 
-                                    VarInter.id = data.TicketInvgate; 
+                                    VarInter.id = idTicketInvgate; 
                                     VarInter.priorityId = IdPrioridad;
                                     //VarInter.date = ConvertToTimestamp(dt).ToString();
 
@@ -737,7 +709,7 @@ namespace Inter_ServiceDesk_PM
                                 {
                                     int IdEstatus = catalogos.GetEstatusWOInvgate(Convert.ToInt32(request.EstadoNuevo));
 
-                                    VarInter.id = data.TicketInvgate;
+                                    VarInter.id = idTicketInvgate;
                                     VarInter.statusId = IdEstatus;
 
                                     response_ = incidentes.PutIncidenteStatus(VarInter);
@@ -745,12 +717,12 @@ namespace Inter_ServiceDesk_PM
                             }
 
                             //Bitacora
-                            bitacoraWO.ActualizaOrdenTrabajo(request, data.TicketInvgate, out string Result);
+                            bitacoraWO.ActualizaOrdenTrabajo(request, idTicketInvgate, out string Result);
 
                             //Si no actualizamos nada en Invgate
                             if (string.IsNullOrEmpty(response_.Estado))
                             {
-                                response_.Ticket = data.TicketInvgate.ToString();
+                                response_.Ticket = idTicketInvgate.ToString();
                                 response_.Resultado = "Transacción exitosa, registro actualizado en Invgate People Media";
                                 response_.Estado = "Exito";
                             }
@@ -796,27 +768,30 @@ namespace Inter_ServiceDesk_PM
                     if (Autenticacion.IsValid())
                     {
                         //Obtiene id Invgate
-                        Ticket data = bitacoraWO.Get(request.TicketIMSS);
+                        int idTicketInvgate = 0;
+                        ServiceBitacora.OrdenTrabajo data = bitacoraWO.GetIdInvgate(request.TicketIMSS);
+                        if (data != null)
+                        { idTicketInvgate = data.TicketInvgate == null ? 0 : Convert.ToInt32(data.TicketInvgate); }
 
-                        if (data.TicketInvgate > 0)
+                        if (idTicketInvgate > 0)
                         {
                             IncidentPutRequest VarInter = new IncidentPutRequest();
 
                             //Otiene prioridad
                             int IdPrioridad = catalogos.GetPrioridadInvgate(Convert.ToInt32(request.Prioridad));
 
-                            VarInter.id = data.TicketInvgate;
+                            VarInter.id = idTicketInvgate;
                             VarInter.priorityId = IdPrioridad;
 
                             response_ = incidentes.PutIncidentePriority(VarInter);
 
                             //Bitacora
-                            bitacoraWO.ActualizaPriorizacion(request, data.TicketInvgate, out string Result);
+                            bitacoraWO.ActualizaPriorizacion(request, idTicketInvgate, out string Result);
 
                             //Si no actualizamos nada en Invgate
                             if (string.IsNullOrEmpty(response_.Estado))
                             {
-                                response_.Ticket = data.TicketInvgate.ToString();
+                                response_.Ticket = idTicketInvgate.ToString();
                                 response_.Resultado = "Transacción exitosa, registro actualizado en Invgate People Media";
                                 response_.Estado = "Exito";
                             }
@@ -862,15 +837,18 @@ namespace Inter_ServiceDesk_PM
                     if (Autenticacion.IsValid())
                     {
                         //Obtiene id Invgate
-                        Ticket data = bitacoraWO.Get(request.TicketIMSS);
+                        int idTicketInvgate = 0;
+                        ServiceBitacora.OrdenTrabajo data = bitacoraWO.GetIdInvgate(request.TicketIMSS);
+                        if (data != null)
+                        { idTicketInvgate = data.TicketInvgate == null ? 0 : Convert.ToInt32(data.TicketInvgate); }
 
-                        if (data.TicketInvgate > 0)
+                        if (idTicketInvgate > 0)
                         {
                             IncidentPutRequest VarInter = new IncidentPutRequest();
                             
                             //Obtiene Categoria
                             CategoriastInvgate ci = new CategoriastInvgate();
-                            string concat = "CAT PROD" + "|" +//"MESA DE SERVICIO IMSS" + "|" +
+                            string concat = MesaInvgate + "|" +
                                     request.CategoriaOpe01 + "|" +
                                     request.CategoriaOpe02 + "|" +
                                     request.CategoriaOpe03 + "|" +
@@ -879,13 +857,13 @@ namespace Inter_ServiceDesk_PM
                                     request.CategoriaPro03 + "|" +
                                     data.NombreProducto;
 
-                            VarInter.id = data.TicketInvgate; 
+                            VarInter.id = idTicketInvgate; 
                             VarInter.categoryId = ci.GetCategoria(concat);
 
                             response_ = incidentes.PutIncidenteCategory(VarInter);
 
                             //Bitacora
-                            bitacoraWO.ActualizaCategoria(request, data.TicketInvgate, out string Result);
+                            bitacoraWO.ActualizaCategoria(request, idTicketInvgate, out string Result);
                         }
                         else
                         {
@@ -928,34 +906,32 @@ namespace Inter_ServiceDesk_PM
                     if (Autenticacion.IsValid())
                     {
                         //Obtiene id Invgate
-                        Ticket data = bitacoraWO.Get(request.TicketIMSS);
+                        int idTicketInvgate = 0;
+                        ServiceBitacora.OrdenTrabajo data = bitacoraWO.GetIdInvgate(request.TicketIMSS);
+                        if (data != null)
+                        { idTicketInvgate = data.TicketInvgate == null ? 0 : Convert.ToInt32(data.TicketInvgate); }
 
-                        //Obtiene id Invgate
-                        //int idTicketInvgate = 0;
-                        //ServiceBitacora.Incidente data = bitacoraWO.get(request.TicketIMSS);
-                        //if (data != null)
-                        //    idTicketInvgate = Convert.ToInt32(data.TicketInvgate);
-
-                        if (data.TicketInvgate > 0)
+                        if (idTicketInvgate > 0)
                         {
                             //Agrega adjuntos
                             List<HttpPostedFileBase> files_ = new List<HttpPostedFileBase>();
 
                             if (request.Adjunto01 != null && !string.IsNullOrEmpty(request.AdjuntoName01))
-                                files_.Add(new MemoryPostedFile(request.Adjunto01, request.AdjuntoName01));
+                            { files_.Add(new MemoryPostedFile(request.Adjunto01, request.AdjuntoName01)); }
 
                             if (request.Adjunto02 != null && !string.IsNullOrEmpty(request.AdjuntoName02))
-                                files_.Add(new MemoryPostedFile(request.Adjunto02, request.AdjuntoName02));
+                            { files_.Add(new MemoryPostedFile(request.Adjunto02, request.AdjuntoName02)); }
 
                             if (request.Adjunto03 != null && !string.IsNullOrEmpty(request.AdjuntoName03))
-                                files_.Add(new MemoryPostedFile(request.Adjunto03, request.AdjuntoName03));
+                            { files_.Add(new MemoryPostedFile(request.Adjunto03, request.AdjuntoName03)); }
 
-                            incidentes.PostAttachments(files_.ToArray(), data.TicketInvgate);
+                            if (files_.Count > 0)
+                            { incidentes.PostAttachments(files_.ToArray(), idTicketInvgate); }
 
                             //Agrega nota
                             IncidentesCommentPostRequest VarInter = new IncidentesCommentPostRequest();
 
-                            VarInter.request_id = data.TicketInvgate;
+                            VarInter.request_id = idTicketInvgate;
                             VarInter.comment = request.Notas;
                             VarInter.author_id = 1240;
                             VarInter.is_solution = false;
@@ -963,7 +939,7 @@ namespace Inter_ServiceDesk_PM
                             response_ = comments.PostIncidenteComment(VarInter);
 
                             //Bitacora
-                            bitacoraWO.AgregaNota(request, data.TicketInvgate, out string Result);
+                            bitacoraWO.AgregaNota(request, idTicketInvgate, out string Result);
                         }
                         else
                         {

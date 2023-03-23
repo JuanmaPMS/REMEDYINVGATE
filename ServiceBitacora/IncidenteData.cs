@@ -235,6 +235,7 @@ namespace ServiceBitacora
                                     new SqlParameter("@Usuario", "WsIntermediario")
                 };
 
+                id = ctx.Database.ExecuteSqlCommand("EXEC [dbo].[SP_UPDATE_PRIORIDAD_INCIDENTE] @TicketRemedy,@TicketInvgate,@FechaCambio,@Impacto,@Urgencia,@Usuario ", sqParam.ToArray());
                 Result = "Exito: Actualización de incidente registrado en bitácora.";
             }
             catch (Exception ex)

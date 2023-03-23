@@ -18,33 +18,61 @@ namespace ServiceBitacora
             this.ctx = new InterEntities();
         }
 
-        public Ticket Get(string ticketImss)
+        //public Ticket Get(string ticketImss)
+        //{
+        //    Ticket result = new Ticket();
+        //    try
+        //    {
+        //        result = ctx.Database.SqlQuery<Ticket>("EXEC [dbo].[SP_OBTIENE_TICKET_INVGATE_WO] @TicketIMSS", new SqlParameter("@TicketIMSS", ticketImss)).FirstOrDefault();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        log_.LogMsg("Error|Get Ticket Invgate BD:" + ex.Message);
+        //    }
+        //    return result;
+        //}
+
+        public OrdenTrabajo GetIdInvgate(string ticketImss)
         {
-            Ticket result = new Ticket();
+            OrdenTrabajo datos = new OrdenTrabajo();
             try
             {
-                result = ctx.Database.SqlQuery<Ticket>("EXEC [dbo].[SP_OBTIENE_TICKET_INVGATE_WO] @TicketIMSS", new SqlParameter("@TicketIMSS", ticketImss)).FirstOrDefault();
+                datos = ctx.OrdenTrabajo.Where(x => x.TicketRemedy == ticketImss).FirstOrDefault();
             }
             catch (Exception ex)
             {
                 log_.LogMsg("Error|Get Ticket Invgate BD:" + ex.Message);
             }
-            return result;
+            return datos;
         }
 
-        public OrdenTrabajo Get(int ticketInvgate)
+        public OrdenTrabajo GetIdIMSS(int ticketInvgate)
         {
             OrdenTrabajo datos = new OrdenTrabajo();
             try
             {
                 datos = ctx.OrdenTrabajo.Where(x => x.TicketInvgate == ticketInvgate).FirstOrDefault();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 log_.LogMsg("Error|Get Ticket IMSS BD:" + ex.Message);
             }
             return datos;
         }
+
+        //public OrdenTrabajo Get(int ticketInvgate)
+        //{
+        //    OrdenTrabajo datos = new OrdenTrabajo();
+        //    try
+        //    {
+        //        datos = ctx.OrdenTrabajo.Where(x => x.TicketInvgate == ticketInvgate).FirstOrDefault();
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        log_.LogMsg("Error|Get Ticket IMSS BD:" + ex.Message);
+        //    }
+        //    return datos;
+        //}
 
         public bool Existe(string ticketImss)
         {
