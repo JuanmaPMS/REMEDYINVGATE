@@ -15,6 +15,7 @@ using System.Globalization;
 using Entities.Invgate;
 using static System.Net.WebRequestMethods;
 using System.Configuration;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Inter_ServiceDesk_PM
 {
@@ -58,6 +59,18 @@ namespace Inter_ServiceDesk_PM
             long epoch = (value.Ticks - 621355968000000000) / 10000000;
             return epoch;
         }
+
+        //private byte[] ObjectToByteArray(object obj)
+        //{
+        //    if (obj == null)
+        //        return null;
+        //    BinaryFormatter bf = new BinaryFormatter();
+        //    using (MemoryStream ms = new MemoryStream())
+        //    {
+        //        bf.Serialize(ms, obj);
+        //        return ms.ToArray();
+        //    }
+        //}
 
         //public object Forbidden()
         //{
@@ -149,13 +162,13 @@ namespace Inter_ServiceDesk_PM
                                 //}
                                 #endregion
 
-                                if (request.Adjunto01 != null && !string.IsNullOrEmpty(request.AdjuntoName01))
+                                if (request.Adjunto01 != null && request.Adjunto01.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName01))
                                 { files_.Add(new MemoryPostedFile(request.Adjunto01, request.AdjuntoName01)); }
 
-                                if (request.Adjunto02 != null && !string.IsNullOrEmpty(request.AdjuntoName02))
+                                if (request.Adjunto02 != null && request.Adjunto02.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName02))
                                 { files_.Add(new MemoryPostedFile(request.Adjunto02, request.AdjuntoName02)); }
 
-                                if (request.Adjunto03 != null && !string.IsNullOrEmpty(request.AdjuntoName03))
+                                if (request.Adjunto03 != null && request.Adjunto03.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName03))
                                 { files_.Add(new MemoryPostedFile(request.Adjunto03, request.AdjuntoName03)); }
 
                                 if (files_.Count > 0)
@@ -480,13 +493,13 @@ namespace Inter_ServiceDesk_PM
                         {
                             //Agrega los adjuntos
                             List<HttpPostedFileBase> files_ = new List<HttpPostedFileBase>();
-                            if (request.Adjunto01 != null && !string.IsNullOrEmpty(request.AdjuntoName01))
-                            { files_.Add(new MemoryPostedFile(request.Adjunto01, request.AdjuntoName01)); }
+                            if (request.Adjunto01 != null && request.Adjunto01.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName01))
+                            {files_.Add(new MemoryPostedFile(request.Adjunto01, request.AdjuntoName01));  }
 
-                            if (request.Adjunto02 != null && !string.IsNullOrEmpty(request.AdjuntoName02))
+                            if (request.Adjunto02 != null && request.Adjunto02.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName02))
                             { files_.Add(new MemoryPostedFile(request.Adjunto02, request.AdjuntoName02)); }
 
-                            if (request.Adjunto03 != null && !string.IsNullOrEmpty(request.AdjuntoName03))
+                            if (request.Adjunto03 != null && request.Adjunto03.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName03))
                             { files_.Add(new MemoryPostedFile(request.Adjunto03, request.AdjuntoName03)); }
 
                             if (files_.Count > 0)
@@ -584,13 +597,13 @@ namespace Inter_ServiceDesk_PM
                             {
                                 List<HttpPostedFileBase> files_ = new List<HttpPostedFileBase>();
 
-                                if (request.Adjunto01 != null && !string.IsNullOrEmpty(request.AdjuntoName01))
+                                if (request.Adjunto01 != null && request.Adjunto01.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName01))
                                 { files_.Add(new MemoryPostedFile(request.Adjunto01, request.AdjuntoName01)); }
 
-                                if (request.Adjunto02 != null && !string.IsNullOrEmpty(request.AdjuntoName02))
+                                if (request.Adjunto02 != null && request.Adjunto02.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName02))
                                 { files_.Add(new MemoryPostedFile(request.Adjunto02, request.AdjuntoName02)); }
 
-                                if (request.Adjunto03 != null && !string.IsNullOrEmpty(request.AdjuntoName03))
+                                if (request.Adjunto03 != null && request.Adjunto03.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName03))
                                 { files_.Add(new MemoryPostedFile(request.Adjunto03, request.AdjuntoName03)); }
 
                                 if (files_.Count > 0)
@@ -916,13 +929,13 @@ namespace Inter_ServiceDesk_PM
                             //Agrega adjuntos
                             List<HttpPostedFileBase> files_ = new List<HttpPostedFileBase>();
 
-                            if (request.Adjunto01 != null && !string.IsNullOrEmpty(request.AdjuntoName01))
+                            if (request.Adjunto01 != null && request.Adjunto01.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName01))
                             { files_.Add(new MemoryPostedFile(request.Adjunto01, request.AdjuntoName01)); }
 
-                            if (request.Adjunto02 != null && !string.IsNullOrEmpty(request.AdjuntoName02))
+                            if (request.Adjunto02 != null && request.Adjunto02.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName02))
                             { files_.Add(new MemoryPostedFile(request.Adjunto02, request.AdjuntoName02)); }
 
-                            if (request.Adjunto03 != null && !string.IsNullOrEmpty(request.AdjuntoName03))
+                            if (request.Adjunto03 != null && request.Adjunto03.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName03))
                             { files_.Add(new MemoryPostedFile(request.Adjunto03, request.AdjuntoName03)); }
 
                             if (files_.Count > 0)

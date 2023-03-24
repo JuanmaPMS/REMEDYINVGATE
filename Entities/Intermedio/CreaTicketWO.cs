@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
@@ -35,31 +36,31 @@ namespace Entities.Intermedio
         public DateTime FechaCreacion { get; set; }
 
         [XmlElement(IsNullable = true)]
-        public byte[] Adjunto01 { get; set; }
+        public byte[] Adjunto01 = new byte[0];
 
         [XmlElement(IsNullable = true)]
         public string AdjuntoName01 { get; set; }
 
-        [XmlElement(IsNullable = true)]
-        public int? AdjuntoSize01 { get; set; }
+        [DefaultValueAttribute(0)]
+        public int AdjuntoSize01 = 0;
 
         [XmlElement(IsNullable = true)]
-        public byte[] Adjunto02 { get; set; }
+        public byte[] Adjunto02 = new byte[0];
 
         [XmlElement(IsNullable = true)]
         public string AdjuntoName02 { get; set; }
 
-        [XmlElement(IsNullable = true)]
-        public int? AdjuntoSize02 { get; set; }
+        [DefaultValueAttribute(0)]
+        public int AdjuntoSize02 = 0;
 
         [XmlElement(IsNullable = true)]
-        public byte[] Adjunto03 { get; set; }
+        public byte[] Adjunto03 = new byte[0];
 
         [XmlElement(IsNullable = true)]
         public string AdjuntoName03 { get; set; }
 
-        [XmlElement(IsNullable = true)]
-        public int? AdjuntoSize03 { get; set; }
+        [DefaultValueAttribute(0)]
+        public int AdjuntoSize03 = 0;
         public string Cliente { get; set; }
         public string VIP { get; set; }
         public string Sensibilidad { get; set; }

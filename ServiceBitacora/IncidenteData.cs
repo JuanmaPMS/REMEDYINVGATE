@@ -108,11 +108,11 @@ namespace ServiceBitacora
                                     new SqlParameter("@Usuario", "WsIntermediario"),
                                     new SqlParameter("@Nota", ticket.Notas == null ? string.Empty : ticket.Notas),
                                     new SqlParameter("@ArchivoName01", ticket.AdjuntoName01 == null ? string.Empty : ticket.AdjuntoName01),
-                                    new SqlParameter("@ArchivoSize01", ticket.AdjuntoSize01 == null ? 0 : ticket.AdjuntoSize01),
+                                    new SqlParameter("@ArchivoSize01", ticket.AdjuntoSize01),
                                     new SqlParameter("@ArchivoName02", ticket.AdjuntoName02 == null ? string.Empty : ticket.AdjuntoName02),
-                                    new SqlParameter("@ArchivoSize02", ticket.AdjuntoSize02 == null ? 0 : ticket.AdjuntoSize02),
+                                    new SqlParameter("@ArchivoSize02", ticket.AdjuntoSize02),
                                     new SqlParameter("@ArchivoName03", ticket.AdjuntoName03 == null ? string.Empty : ticket.AdjuntoName03),
-                                    new SqlParameter("@ArchivoSize03", ticket.AdjuntoSize03 == null ? 0 : ticket.AdjuntoSize03)
+                                    new SqlParameter("@ArchivoSize03", ticket.AdjuntoSize03)
                 };
 
                 if (ticket.Adjunto01 == null)
@@ -258,11 +258,11 @@ namespace ServiceBitacora
                                     new SqlParameter("@Nota", ticket.Notas == null ? string.Empty : ticket.Notas),
                                     new SqlParameter("@Usuario", "WsIntermediario"),
                                     new SqlParameter("@ArchivoName01", ticket.AdjuntoName01 == null ? string.Empty : ticket.AdjuntoName01),
-                                    new SqlParameter("@ArchivoSize01", ticket.AdjuntoSize01 == null ? 0 : ticket.AdjuntoSize01),
+                                    new SqlParameter("@ArchivoSize01", ticket.AdjuntoSize01),
                                     new SqlParameter("@ArchivoName02", ticket.AdjuntoName02 == null ? string.Empty : ticket.AdjuntoName02),
-                                    new SqlParameter("@ArchivoSize02", ticket.AdjuntoSize02 == null ? 0 : ticket.AdjuntoSize02),
+                                    new SqlParameter("@ArchivoSize02", ticket.AdjuntoSize02),
                                     new SqlParameter("@ArchivoName03", ticket.AdjuntoName03 == null ? string.Empty : ticket.AdjuntoName03),
-                                    new SqlParameter("@ArchivoSize03", ticket.AdjuntoSize03 == null ? 0 : ticket.AdjuntoSize03)
+                                    new SqlParameter("@ArchivoSize03", ticket.AdjuntoSize03)
                 };
 
                 if (ticket.Adjunto01 == null)
