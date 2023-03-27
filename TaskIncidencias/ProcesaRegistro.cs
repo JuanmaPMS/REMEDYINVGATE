@@ -9,6 +9,7 @@ using ServiceInvgate;
 using TaskIncidencias.WS_Remedy;
 using Entities;
 using System.Text.RegularExpressions;
+using System.Net.NetworkInformation;
 
 namespace TaskIncidencias
 {
@@ -16,7 +17,7 @@ namespace TaskIncidencias
     {
         ServiciosImss imss = new ServiciosImss();
 
-        public Resultado IncidenteActualiza(int id, int idEstatus, int idCategorizacion)
+        public Resultado IncidenteActualiza(int id, int idEstatus)
         {
             Resultado result = new Resultado();
 
@@ -29,46 +30,34 @@ namespace TaskIncidencias
 
                 if (bitacora.TicketInvgate != null)
                 {
-                    //Obtiene Estatus
-                    int idEstatusImss = catalogos.GetEstatusIncidenteIMSS(idEstatus);
-
-                    if(idEstatusImss > 0)
+                    //Solo se consideran Nuevo, Abierto, Pendiente
+                    if(idEstatus == 1 || idEstatus == 2 || idEstatus == 3)
                     {
-                        WS_Remedy.Incidente _request = new WS_Remedy.Incidente();
-                        _request.IDTicketInvgate = id.ToString();
-                        _request.IDTicketRemedy = bitacora.TicketRemedy;
-                        _request.EstadoNuevo = idEstatusImss;
+                        //Obtiene Estatus
+                        int idEstatusImss = catalogos.GetEstatusIncidenteIMSS(idEstatus);
 
-                        if (idEstatusImss == 3)//Pendiente
+                        if (idEstatusImss > 0)
                         {
-                            _request.MotivoEstado = 6000;//Retenc.de contacto de soporte
-                        }
+                            WS_Remedy.Incidente _request = new WS_Remedy.Incidente();
+                            _request.IDTicketInvgate = id.ToString();
+                            _request.IDTicketRemedy = bitacora.TicketRemedy;
+                            _request.EstadoNuevo = idEstatusImss;
 
-                        if (idEstatusImss == 4)//Cerrado
+                            WS_Remedy.Result exec = imss.IncidenteActualiza(_request);
+
+                            result.Success = exec.Estatus;
+                            result.Message = exec.Resultado;
+                        }
+                        else
                         {
-                            //Obtiene categorizacion de cierre
-                            CategoriastInvgate categoria = new CategoriastInvgate();
-                            Entities.Categorizacion _categorizacion = categoria.GetCategorizacion(idCategorizacion);
-
-                            _request.CatCierreOperacion01 = _categorizacion.CatOperacion01;
-                            _request.CatCierreOperacion02 = _categorizacion.CatOperacion02;
-                            _request.CatCierreOperacion03 = _categorizacion.CatOperacion03;
-                            _request.CatCierreProducto01 = _categorizacion.CatProducto01;
-                            _request.CatCierreProducto02 = _categorizacion.CatProducto02;
-                            _request.CatCierreProducto03 = _categorizacion.CatProducto03;
-                            _request.MotivoEstado = 21000; //Solucionado
-                            _request.Resolucion = "Solucionado";
+                            result.Success = true;
+                            result.Message = "El estatus no existe en IMSS.";
                         }
-
-                        WS_Remedy.Result exec = imss.IncidenteActualiza(_request);
-
-                        result.Success = exec.Estatus;
-                        result.Message = exec.Resultado;
                     }
                     else
                     {
                         result.Success = true;
-                        result.Message = "El estatus no existe en IMSS.";
+                        result.Message = "OK";
                     }
                 }
                 else
@@ -201,7 +190,7 @@ namespace TaskIncidencias
             }
         }
 
-        public Resultado IncidenteAdicionaNotas(int id, string nota)
+        public Resultado IncidenteAdicionaNotas(int id,  string nota, int idCategorizacion)
         {
             Resultado result = new Resultado();
 
@@ -214,26 +203,82 @@ namespace TaskIncidencias
 
                 if (bitacora.TicketInvgate != null)
                 {
-                    
-                    WS_Remedy.Comentario _request = new WS_Remedy.Comentario();
-                    _request.IDTicketInvgate = id.ToString();
-                    _request.IDTicketRemedy = bitacora.TicketRemedy;
-                    _request.Notas = CleanInput(nota);
-                    //_request.Adjunto01 = "";
-                    //_request.AdjuntoName01 = "";
-                    //_request.AdjuntoSize01 = "";
-                    //_request.Adjunto02 = "";
-                    //_request.AdjuntoName02 = "";
-                    //_request.AdjuntoSize02 = "";
-                    //_request.Adjunto03 = "";
-                    //_request.AdjuntoName03 = "";
-                    //_request.AdjuntoSize03 = "";
+                    //Tratamiento de texto
+                    string _nota = CleanInput(nota);
 
-                    WS_Remedy.Result exec = imss.IncidenteAdicionaNotas(_request);
+                    if(_nota.Contains("@@R"))//Resuelto
+                    {
+                        //Obtiene Estatus
+                        int idEstatusImss = catalogos.GetEstatusIncidenteIMSS(5); //5 = Solucionado
+                        //Obtiene Motivo Estado
+                        int idMotivo = Convert.ToInt32(_nota.Substring(3, 5).Trim());
+                        //Obtiene categorizacion de cierre
+                        CategoriastInvgate categoria = new CategoriastInvgate();
+                        Entities.Categorizacion _categorizacion = categoria.GetCategorizacion(idCategorizacion);
 
-                    result.Success = exec.Estatus;
-                    result.Message = exec.Resultado;
+                        WS_Remedy.Incidente _request = new WS_Remedy.Incidente();
+                        _request.IDTicketInvgate = id.ToString();
+                        _request.IDTicketRemedy = bitacora.TicketRemedy;
+                        _request.EstadoNuevo = idEstatusImss;        
+                        _request.CatCierreOperacion01 = _categorizacion.CatOperacion01;
+                        _request.CatCierreOperacion02 = _categorizacion.CatOperacion02;
+                        _request.CatCierreOperacion03 = _categorizacion.CatOperacion03;
+                        _request.CatCierreProducto01 = _categorizacion.CatProducto01;
+                        _request.CatCierreProducto02 = _categorizacion.CatProducto02;
+                        _request.CatCierreProducto03 = _categorizacion.CatProducto03;
+                        _request.MotivoEstado = idMotivo;
+                        _request.Resolucion = _nota.Substring(8).Trim();
 
+                        WS_Remedy.Result exec = imss.IncidenteActualiza(_request);
+
+                        result.Success = exec.Estatus;
+                        result.Message = exec.Resultado;
+                    }
+                    else if (_nota.Contains("@@P"))//Pendiente
+                    {
+                        //Obtiene Estatus
+                        int idEstatusImss = catalogos.GetEstatusIncidenteIMSS(4); //4 = En Espera
+                        //Obtiene Motivo Estado
+                        int idMotivo = Convert.ToInt32(_nota.Substring(3, 5).Trim());
+
+                        WS_Remedy.Incidente _request = new WS_Remedy.Incidente();
+                        _request.IDTicketInvgate = id.ToString();
+                        _request.IDTicketRemedy = bitacora.TicketRemedy;
+                        _request.EstadoNuevo = idEstatusImss;
+                        _request.MotivoEstado = idMotivo;
+                       
+                        WS_Remedy.Result exec = imss.IncidenteActualiza(_request);
+
+                        WS_Remedy.Comentario _coment = new WS_Remedy.Comentario();
+                        _coment.IDTicketInvgate = id.ToString();
+                        _coment.IDTicketRemedy = bitacora.TicketRemedy;
+                        _coment.Notas = _nota.Substring(8).Trim();
+
+                        WS_Remedy.Result exCom = imss.IncidenteAdicionaNotas(_coment);
+
+                        result.Success = exec.Estatus;
+                        result.Message = exec.Resultado;
+                    }
+                    else
+                    {
+                        WS_Remedy.Comentario _request = new WS_Remedy.Comentario();
+                        _request.IDTicketInvgate = id.ToString();
+                        _request.IDTicketRemedy = bitacora.TicketRemedy;
+                        _request.Notas = _nota;
+                        //_request.Adjunto01 = "";
+                        //_request.AdjuntoName01 = "";
+                        //_request.AdjuntoSize01 = "";
+                        //_request.Adjunto02 = "";
+                        //_request.AdjuntoName02 = "";
+                        //_request.AdjuntoSize02 = "";
+                        //_request.Adjunto03 = "";
+                        //_request.AdjuntoName03 = "";
+                        //_request.AdjuntoSize03 = "";
+
+                        WS_Remedy.Result exec = imss.IncidenteAdicionaNotas(_request);
+                        result.Success = exec.Estatus;
+                        result.Message = exec.Resultado;
+                    }
                 }
                 else
                 {
@@ -263,36 +308,34 @@ namespace TaskIncidencias
 
                 if (bitacora.TicketInvgate != null)
                 {
-                    //Obtiene Estatus
-                    int idEstatusImss = catalogos.GetEstatusWOIMSS(idEstatus);
-
-                    if(idEstatusImss > 0)
+                    //Solo se consideran Nuevo, Abierto, Pendiente
+                    if (idEstatus == 1 || idEstatus == 2 || idEstatus == 3)
                     {
-                        WS_Remedy.OrdenTrabajo _request = new WS_Remedy.OrdenTrabajo();
-                        _request.IDTicketInvgate = id.ToString();
-                        _request.IDTicketRemedy = bitacora.TicketRemedy;
-                        _request.EstadoNuevo = idEstatusImss;
+                        //Obtiene Estatus
+                        int idEstatusImss = catalogos.GetEstatusWOIMSS(idEstatus);
 
-                        if (idEstatusImss == 1)//Pendiente
+                        if (idEstatusImss > 0)
                         {
-                            _request.MotivoEstado = 31000;//En espera
-                        }
+                            WS_Remedy.OrdenTrabajo _request = new WS_Remedy.OrdenTrabajo();
+                            _request.IDTicketInvgate = id.ToString();
+                            _request.IDTicketRemedy = bitacora.TicketRemedy;
+                            _request.EstadoNuevo = idEstatusImss;
 
-                        if (idEstatusImss == 5)//Terminado
+                            WS_Remedy.Result exec = imss.OrdenTrabajoActualiza(_request);
+
+                            result.Success = exec.Estatus;
+                            result.Message = exec.Resultado;
+                        }
+                        else
                         {
-                            _request.MotivoEstado = 5000; //Con éxito
-                            _request.Resolucion = "Solucionado";
+                            result.Success = true;
+                            result.Message = "El estatus no existe en IMSS.";
                         }
-
-                        WS_Remedy.Result exec = imss.OrdenTrabajoActualiza(_request);
-
-                        result.Success = exec.Estatus;
-                        result.Message = exec.Resultado;
                     }
                     else
                     {
                         result.Success = true;
-                        result.Message = "El estatus no existe en IMSS.";
+                        result.Message = "OK";
                     }
                 }
                 else
@@ -420,24 +463,74 @@ namespace TaskIncidencias
 
                 if (bitacora.TicketInvgate != null)
                 {
-                    WS_Remedy.Comentario _request = new WS_Remedy.Comentario();
-                    _request.IDTicketInvgate = id.ToString();
-                    _request.IDTicketRemedy = bitacora.TicketRemedy;
-                    _request.Notas = CleanInput(nota);
-                    //_request.Adjunto01 = "";
-                    //_request.AdjuntoName01 = "";
-                    //_request.AdjuntoSize01 = "";
-                    //_request.Adjunto02 = "";
-                    //_request.AdjuntoName02 = "";
-                    //_request.AdjuntoSize02 = "";
-                    //_request.Adjunto03 = "";
-                    //_request.AdjuntoName03 = "";
-                    //_request.AdjuntoSize03 = "";
+                    //Tratamiento de texto
+                    string _nota = CleanInput(nota);
 
-                    WS_Remedy.Result exec = imss.OrdenTrabajoAdicionaNotas(_request);
+                    if (_nota.Contains("@@R"))//Resuelto
+                    {
+                        //Obtiene Estatus
+                        int idEstatusImss = catalogos.GetEstatusWOIMSS(5);//5 = Solucionado
+                        //Obtiene Motivo Estado
+                        int idMotivo = Convert.ToInt32(_nota.Substring(3, 5).Trim());
 
-                    result.Success = exec.Estatus;
-                    result.Message = exec.Resultado;
+                        WS_Remedy.OrdenTrabajo _request = new WS_Remedy.OrdenTrabajo();
+                        _request.IDTicketInvgate = id.ToString();
+                        _request.IDTicketRemedy = bitacora.TicketRemedy;
+                        _request.EstadoNuevo = idEstatusImss;
+                        _request.MotivoEstado = idMotivo;
+                        _request.Resolucion = _nota.Substring(8).Trim();
+
+                        WS_Remedy.Result exec = imss.OrdenTrabajoActualiza(_request);
+
+                        result.Success = exec.Estatus;
+                        result.Message = exec.Resultado;
+                    }
+                    else if (_nota.Contains("@@P"))//Pendiente
+                    {
+                        //Obtiene Estatus
+                        int idEstatusImss = catalogos.GetEstatusWOIMSS(4); //4 = En Espera
+                        //Obtiene Motivo Estado
+                        int idMotivo = Convert.ToInt32(_nota.Substring(3, 5).Trim());
+
+                        WS_Remedy.OrdenTrabajo _request = new WS_Remedy.OrdenTrabajo();
+                        _request.IDTicketInvgate = id.ToString();
+                        _request.IDTicketRemedy = bitacora.TicketRemedy;
+                        _request.EstadoNuevo = idEstatusImss;
+                        _request.MotivoEstado = idMotivo;
+
+                        WS_Remedy.Result exec = imss.OrdenTrabajoActualiza(_request);
+
+                        WS_Remedy.Comentario _coment = new WS_Remedy.Comentario();
+                        _coment.IDTicketInvgate = id.ToString();
+                        _coment.IDTicketRemedy = bitacora.TicketRemedy;
+                        _coment.Notas = _nota.Substring(8).Trim();
+
+                        WS_Remedy.Result exCom = imss.IncidenteAdicionaNotas(_coment);
+
+                        result.Success = exec.Estatus;
+                        result.Message = exec.Resultado;
+                    }
+                    else
+                    {
+                        WS_Remedy.Comentario _request = new WS_Remedy.Comentario();
+                        _request.IDTicketInvgate = id.ToString();
+                        _request.IDTicketRemedy = bitacora.TicketRemedy;
+                        _request.Notas = _nota;
+                        //_request.Adjunto01 = "";
+                        //_request.AdjuntoName01 = "";
+                        //_request.AdjuntoSize01 = "";
+                        //_request.Adjunto02 = "";
+                        //_request.AdjuntoName02 = "";
+                        //_request.AdjuntoSize02 = "";
+                        //_request.Adjunto03 = "";
+                        //_request.AdjuntoName03 = "";
+                        //_request.AdjuntoSize03 = "";
+
+                        WS_Remedy.Result exec = imss.OrdenTrabajoAdicionaNotas(_request);
+
+                        result.Success = exec.Estatus;
+                        result.Message = exec.Resultado;
+                    }                   
 
                 }
                 else

@@ -27,7 +27,7 @@ namespace TaskIncidencias
                     switch(req.tipoControl)
                     {
                         case "ESTATUS":
-                            resultado = procesa.IncidenteActualiza(req.idIncidencia, req.identificadorNum, Convert.ToInt32(req.identificadorAlfa));
+                            resultado = procesa.IncidenteActualiza(req.idIncidencia, req.identificadorNum);
                             break;
                         case "CATEGORIZACION":
                             resultado = procesa.IncidenteActualizaCategorizacion(req.idIncidencia, req.identificadorNum);
@@ -36,7 +36,7 @@ namespace TaskIncidencias
                             resultado = procesa.IncidenteActualizaPrioridad(req.idIncidencia, req.identificadorNum);
                             break;
                         case "NOTA":
-                            resultado = procesa.IncidenteAdicionaNotas(req.idIncidencia, req.identificadorAlfa);
+                            resultado = procesa.IncidenteAdicionaNotas(req.idIncidencia, req.identificadorAlfa, req.identificadorNum);
                             break;
                     }
                 }
