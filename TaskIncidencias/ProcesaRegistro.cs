@@ -233,7 +233,7 @@ namespace TaskIncidencias
                         _request.CatCierreProducto02 = _categorizacion.CatProducto02;
                         _request.CatCierreProducto03 = _categorizacion.CatProducto03;
                         _request.MotivoEstado = idMotivo;
-                        _request.Resolucion = arrNota[1].Substring(8).Trim();
+                        _request.Resolucion = arrNota[0].Substring(8).Trim();
 
                         WS_Remedy.Result exec = imss.IncidenteActualiza(_request);
 
@@ -354,7 +354,7 @@ namespace TaskIncidencias
                         _request.CatCierreProducto02 = _categorizacion.CatProducto02;
                         _request.CatCierreProducto03 = _categorizacion.CatProducto03;
                         _request.MotivoEstado = idMotivo;
-                        _request.Resolucion = arrNota[1].Substring(8).Trim();
+                        _request.Resolucion = arrNota[0].Substring(8).Trim();
 
                         WS_Remedy.Result exec = imss.IncidenteActualiza(_request);
 
@@ -496,7 +496,7 @@ namespace TaskIncidencias
                                 WS_Remedy.Comentario _coment = new WS_Remedy.Comentario();
                                 _coment.IDTicketInvgate = id.ToString();
                                 _coment.IDTicketRemedy = bitacora.TicketRemedy;
-                                _coment.Notas = "Adjuntos actualización estatus.";
+                                _coment.Notas = arrNota[0].Substring(8).Trim() == string.Empty ? "Adjuntos actualización estatus." : arrNota[0].Substring(8).Trim();
 
                                 string[] arrFiles = files.Split(',');
 
@@ -790,9 +790,19 @@ namespace TaskIncidencias
                             _request.EstadoNuevo = idEstatusImss;
 
                             WS_Remedy.Result exec = imss.OrdenTrabajoActualiza(_request);
+                            
 
-                            result.Success = exec.Estatus;
-                            result.Message = exec.Resultado;
+                            if (exec.Resultado.Contains("ERROR: El cambio de estado a 'En curso' no está permitido en la Orden de trabajo actual ( In Progress )"))
+                            { 
+                                result.Success = true;
+                                result.Message = exec.Resultado;
+                            }
+                            else
+                            {
+                                result.Success = exec.Estatus;
+                                result.Message = exec.Resultado;
+                            }
+
                         }
                         else
                         {
@@ -933,6 +943,7 @@ namespace TaskIncidencias
                 {
                     //Tratamiento de texto
                     string _nota = CleanInput(nota);
+                    string[] arrNota = _nota.Split(new[] { "||" }, StringSplitOptions.None);
 
                     if (_nota.Contains("@@R"))//Resuelto
                     {
@@ -940,14 +951,14 @@ namespace TaskIncidencias
                         int idEstatusInvgate = 5;//Solucionado
                         int idEstatusImss = catalogos.GetEstatusWOIMSS(idEstatusInvgate);
                         //Obtiene Motivo Estado
-                        int idMotivo = Convert.ToInt32(_nota.Substring(3, 5).Trim());
+                        int idMotivo = Convert.ToInt32(arrNota[0].Substring(3, 5).Trim());
 
                         WS_Remedy.OrdenTrabajo _request = new WS_Remedy.OrdenTrabajo();
                         _request.IDTicketInvgate = id.ToString();
                         _request.IDTicketRemedy = bitacora.TicketRemedy;
                         _request.EstadoNuevo = idEstatusImss;
                         _request.MotivoEstado = idMotivo;
-                        _request.Resolucion = _nota.Substring(8).Trim();
+                        _request.Resolucion = arrNota[0].Substring(8).Trim();
 
                         WS_Remedy.Result exec = imss.OrdenTrabajoActualiza(_request);
 
@@ -969,7 +980,7 @@ namespace TaskIncidencias
                         int idEstatusInvgate = 4;//En Espera
                         int idEstatusImss = catalogos.GetEstatusWOIMSS(4);
                         //Obtiene Motivo Estado
-                        int idMotivo = Convert.ToInt32(_nota.Substring(3, 5).Trim());
+                        int idMotivo = Convert.ToInt32(arrNota[0].Substring(3, 5).Trim());
 
                         WS_Remedy.OrdenTrabajo _request = new WS_Remedy.OrdenTrabajo();
                         _request.IDTicketInvgate = id.ToString();
@@ -987,7 +998,7 @@ namespace TaskIncidencias
                             WS_Remedy.Comentario _coment = new WS_Remedy.Comentario();
                             _coment.IDTicketInvgate = id.ToString();
                             _coment.IDTicketRemedy = bitacora.TicketRemedy;
-                            _coment.Notas = _nota.Substring(8).Trim();
+                            _coment.Notas = arrNota[0].Substring(8).Trim();
 
                             WS_Remedy.Result exCom = imss.OrdenTrabajoAdicionaNotas(_coment);
 
@@ -1003,7 +1014,7 @@ namespace TaskIncidencias
                         WS_Remedy.Comentario _request = new WS_Remedy.Comentario();
                         _request.IDTicketInvgate = id.ToString();
                         _request.IDTicketRemedy = bitacora.TicketRemedy;
-                        _request.Notas = _nota;
+                        _request.Notas = arrNota[0];
 
                         WS_Remedy.Result exec = imss.OrdenTrabajoAdicionaNotas(_request);
 
@@ -1059,7 +1070,7 @@ namespace TaskIncidencias
                         _request.IDTicketRemedy = bitacora.TicketRemedy;
                         _request.EstadoNuevo = idEstatusImss;
                         _request.MotivoEstado = idMotivo;
-                        _request.Resolucion = _nota.Substring(8).Trim();
+                        _request.Resolucion = arrNota[0].Substring(8).Trim();
 
                         WS_Remedy.Result exec = imss.OrdenTrabajoActualiza(_request);
 
@@ -1201,7 +1212,7 @@ namespace TaskIncidencias
                                 WS_Remedy.Comentario _coment = new WS_Remedy.Comentario();
                                 _coment.IDTicketInvgate = id.ToString();
                                 _coment.IDTicketRemedy = bitacora.TicketRemedy;
-                                _coment.Notas = "Adjuntos actualización estatus.";
+                                _coment.Notas = arrNota[0].Substring(8).Trim() == string.Empty ? "Adjuntos actualización estatus." : arrNota[0].Substring(8).Trim();
 
                                 string[] arrFiles = files.Split(',');
 
