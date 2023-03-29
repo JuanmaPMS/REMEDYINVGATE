@@ -36,7 +36,13 @@ namespace TaskIncidencias
                             resultado = procesa.IncidenteActualizaPrioridad(req.idIncidencia, req.identificadorNum);
                             break;
                         case "NOTA":
-                            resultado = procesa.IncidenteAdicionaNotas(req.idIncidencia, req.identificadorAlfa, req.identificadorNum);
+                            resultado = procesa.IncidenteAdicionaNotas(req.idIncidencia, req.identificadorAlfa);
+                            break;
+                        case "NOTA_ADJUNTO":
+                            resultado = procesa.IncidenteAdicionaNotasAdjunto(req.idIncidencia, req.identificadorAlfa);
+                            break;
+                        case "ADJUNTO":
+                            resultado = procesa.IncidenteAdicionaAdjunto(req.idIncidencia, req.identificadorNum);
                             break;
                     }
                 }
@@ -55,6 +61,12 @@ namespace TaskIncidencias
                             break;
                         case "NOTA":
                             resultado = procesa.WOAdicionaNotas(req.idIncidencia, req.identificadorAlfa);
+                            break;
+                        case "NOTA_ADJUNTO":
+                            resultado = procesa.WOAdicionaNotasAdjunto(req.idIncidencia, req.identificadorAlfa);
+                            break;
+                        case "ADJUNTO":
+                            resultado = procesa.WOAdicionaAdjunto(req.idIncidencia, req.identificadorNum);
                             break;
                     }
                 }

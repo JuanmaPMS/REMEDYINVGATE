@@ -13,6 +13,7 @@ using System.Configuration;
 using Entities.Intermedio;
 using System.Reflection;
 using Entities.Invgate;
+using System.Web.WebSockets;
 
 namespace ServiceInvgate
 {
@@ -121,6 +122,23 @@ namespace ServiceInvgate
             }
             var response = client.Execute(request);
             return response.StatusCode.ToString();
+        }
+
+        public dynamic GetAttachments(int idFile)
+        {
+            var client = new RestClient(ApiAttachments + "/GetFile");
+            var request = new RestRequest("", Method.Get);
+            request.AddParameter("idAtachment", idFile);
+           
+            var response = client.Execute(request);
+            dynamic result = null;
+
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                result = JsonConvert.DeserializeObject<dynamic>(response.Content);           
+            }
+
+            return result;
         }
 
 

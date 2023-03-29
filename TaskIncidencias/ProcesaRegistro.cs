@@ -10,12 +10,15 @@ using TaskIncidencias.WS_Remedy;
 using Entities;
 using System.Text.RegularExpressions;
 using System.Net.NetworkInformation;
+using Newtonsoft.Json;
+using Entities.Invgate;
 
 namespace TaskIncidencias
 {
     public class ProcesaRegistro
     {
         ServiciosImss imss = new ServiciosImss();
+        IncidentesInvgate incidentes = new IncidentesInvgate();
 
         public Resultado IncidenteActualiza(int id, int idEstatus)
         {
@@ -190,7 +193,7 @@ namespace TaskIncidencias
             }
         }
 
-        public Resultado IncidenteAdicionaNotas(int id,  string nota, int idCategorizacion)
+        public Resultado IncidenteAdicionaNotas(int id,  string nota)
         {
             Resultado result = new Resultado();
 
@@ -205,14 +208,17 @@ namespace TaskIncidencias
                 {
                     //Tratamiento de texto
                     string _nota = CleanInput(nota);
+                    string[] arrNota = _nota.Split(new[] { "||" }, StringSplitOptions.None);
 
                     if(_nota.Contains("@@R"))//Resuelto
                     {
                         //Obtiene Estatus
-                        int idEstatusImss = catalogos.GetEstatusIncidenteIMSS(5); //5 = Solucionado
+                        int idEstatusInvgate = 5; //Solucionado
+                        int idEstatusImss = catalogos.GetEstatusIncidenteIMSS(idEstatusInvgate); 
                         //Obtiene Motivo Estado
-                        int idMotivo = Convert.ToInt32(_nota.Substring(3, 5).Trim());
+                        int idMotivo = Convert.ToInt32(arrNota[0].Substring(3, 5).Trim());
                         //Obtiene categorizacion de cierre
+                        int idCategorizacion = Convert.ToInt32(arrNota[1].Replace("Categoria:","").Trim());
                         CategoriastInvgate categoria = new CategoriastInvgate();
                         Entities.Categorizacion _categorizacion = categoria.GetCategorizacion(idCategorizacion);
 
@@ -227,19 +233,29 @@ namespace TaskIncidencias
                         _request.CatCierreProducto02 = _categorizacion.CatProducto02;
                         _request.CatCierreProducto03 = _categorizacion.CatProducto03;
                         _request.MotivoEstado = idMotivo;
-                        _request.Resolucion = _nota.Substring(8).Trim();
+                        _request.Resolucion = arrNota[1].Substring(8).Trim();
 
                         WS_Remedy.Result exec = imss.IncidenteActualiza(_request);
 
                         result.Success = exec.Estatus;
                         result.Message = exec.Resultado;
+
+                        if (result.Success)//Actualiza estatus en Invgate
+                        {
+                            IncidentPutRequest VarInter = new IncidentPutRequest();
+                            VarInter.id = id;
+                            VarInter.statusId = idEstatusInvgate;
+
+                            Entities.Intermedio.Result response_ = incidentes.PutIncidenteStatus(VarInter);
+                        }
                     }
                     else if (_nota.Contains("@@P"))//Pendiente
                     {
                         //Obtiene Estatus
-                        int idEstatusImss = catalogos.GetEstatusIncidenteIMSS(4); //4 = En Espera
+                        int idEstatusInvgate = 4; //En Espera
+                        int idEstatusImss = catalogos.GetEstatusIncidenteIMSS(idEstatusInvgate); 
                         //Obtiene Motivo Estado
-                        int idMotivo = Convert.ToInt32(_nota.Substring(3, 5).Trim());
+                        int idMotivo = Convert.ToInt32(arrNota[0].Substring(3, 5).Trim());
 
                         WS_Remedy.Incidente _request = new WS_Remedy.Incidente();
                         _request.IDTicketInvgate = id.ToString();
@@ -247,38 +263,490 @@ namespace TaskIncidencias
                         _request.EstadoNuevo = idEstatusImss;
                         _request.MotivoEstado = idMotivo;
                        
-                        WS_Remedy.Result exec = imss.IncidenteActualiza(_request);
-
-                        WS_Remedy.Comentario _coment = new WS_Remedy.Comentario();
-                        _coment.IDTicketInvgate = id.ToString();
-                        _coment.IDTicketRemedy = bitacora.TicketRemedy;
-                        _coment.Notas = _nota.Substring(8).Trim();
-
-                        WS_Remedy.Result exCom = imss.IncidenteAdicionaNotas(_coment);
+                        WS_Remedy.Result exec = imss.IncidenteActualiza(_request);    
 
                         result.Success = exec.Estatus;
                         result.Message = exec.Resultado;
+
+                        if (result.Success)
+                        {
+                            WS_Remedy.Comentario _coment = new WS_Remedy.Comentario();
+                            _coment.IDTicketInvgate = id.ToString();
+                            _coment.IDTicketRemedy = bitacora.TicketRemedy;
+                            _coment.Notas = arrNota[0].Substring(8).Trim();
+
+                            WS_Remedy.Result exCom = imss.IncidenteAdicionaNotas(_coment);
+
+                            //Actualiza estatus en Invgate
+                            IncidentPutRequest VarInter = new IncidentPutRequest();
+                            VarInter.id = id;
+                            VarInter.statusId = idEstatusInvgate;
+
+                            Entities.Intermedio.Result response_ = incidentes.PutIncidenteStatus(VarInter);
+                        }
                     }
                     else
                     {
                         WS_Remedy.Comentario _request = new WS_Remedy.Comentario();
                         _request.IDTicketInvgate = id.ToString();
                         _request.IDTicketRemedy = bitacora.TicketRemedy;
-                        _request.Notas = _nota;
-                        //_request.Adjunto01 = "";
-                        //_request.AdjuntoName01 = "";
-                        //_request.AdjuntoSize01 = "";
-                        //_request.Adjunto02 = "";
-                        //_request.AdjuntoName02 = "";
-                        //_request.AdjuntoSize02 = "";
-                        //_request.Adjunto03 = "";
-                        //_request.AdjuntoName03 = "";
-                        //_request.AdjuntoSize03 = "";
+                        _request.Notas = arrNota[0];
 
                         WS_Remedy.Result exec = imss.IncidenteAdicionaNotas(_request);
                         result.Success = exec.Estatus;
                         result.Message = exec.Resultado;
                     }
+                }
+                else
+                {
+                    result.Success = false;
+                    result.Message = "No se encontró el ticket de Invgate en la bitácora.";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
+        public Resultado IncidenteAdicionaNotasAdjunto(int id, string nota)
+        {
+            Resultado result = new Resultado();
+
+            try
+            {
+                //Consulta incidente en bitacora
+                SB.IncidenteData data = new SB.IncidenteData();
+                SB.CatalogosData catalogos = new SB.CatalogosData();
+                SB.Incidente bitacora = data.GetIdIMSS(id);
+
+                if (bitacora.TicketInvgate != null)
+                {
+                    //Tratamiento de texto
+                    string _nota = CleanInput(nota);
+                    string[] arrNota = _nota.Split(new[] { "||" }, StringSplitOptions.None);
+                    string files = arrNota[2].Replace("Files:", "");
+                    files = files.Substring(0, files.Length - 1);
+
+                    if (_nota.Contains("@@R"))//Resuelto
+                    {
+                        //Obtiene Estatus
+                        int idEstatusInvgate = 5;//Solucionado
+                        int idEstatusImss = catalogos.GetEstatusIncidenteIMSS(idEstatusInvgate); 
+                        //Obtiene Motivo Estado
+                        int idMotivo = Convert.ToInt32(arrNota[0].Substring(3, 5).Trim());
+                        //Obtiene categorizacion de cierre
+                        int idCategorizacion = Convert.ToInt32(arrNota[1].Replace("Categoria:", "").Trim());
+                        CategoriastInvgate categoria = new CategoriastInvgate();
+                        Entities.Categorizacion _categorizacion = categoria.GetCategorizacion(idCategorizacion);
+
+                        WS_Remedy.Incidente _request = new WS_Remedy.Incidente();
+                        _request.IDTicketInvgate = id.ToString();
+                        _request.IDTicketRemedy = bitacora.TicketRemedy;
+                        _request.EstadoNuevo = idEstatusImss;
+                        _request.CatCierreOperacion01 = _categorizacion.CatOperacion01;
+                        _request.CatCierreOperacion02 = _categorizacion.CatOperacion02;
+                        _request.CatCierreOperacion03 = _categorizacion.CatOperacion03;
+                        _request.CatCierreProducto01 = _categorizacion.CatProducto01;
+                        _request.CatCierreProducto02 = _categorizacion.CatProducto02;
+                        _request.CatCierreProducto03 = _categorizacion.CatProducto03;
+                        _request.MotivoEstado = idMotivo;
+                        _request.Resolucion = arrNota[1].Substring(8).Trim();
+
+                        WS_Remedy.Result exec = imss.IncidenteActualiza(_request);
+
+                        result.Success = exec.Estatus;
+                        result.Message = exec.Resultado;
+
+                        if (result.Success)
+                        {
+                            //Si hay archivos, envia nota
+                            if (!string.IsNullOrEmpty(files))
+                            {
+                                WS_Remedy.Comentario _coment = new WS_Remedy.Comentario();
+                                _coment.IDTicketInvgate = id.ToString();
+                                _coment.IDTicketRemedy = bitacora.TicketRemedy;
+                                _coment.Notas = "Adjuntos cierrre de ticket.";
+
+                                string[] arrFiles = files.Split(',');
+
+                                if (arrFiles.Length >= 3)
+                                {
+                                    dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+
+                                    if (file1 != null)
+                                    {
+                                        if (Convert.ToBoolean(file1.success))
+                                        {
+                                            _coment.Adjunto01 = file1.attach;
+                                            _coment.AdjuntoName01 = file1.name;
+                                            _coment.AdjuntoSize01 = file1.size;
+                                        }
+                                    }
+
+
+                                    dynamic file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
+
+                                    if (file2 != null)
+                                    {
+                                        if (Convert.ToBoolean(file2.success))
+                                        {
+                                            _coment.Adjunto02 = file2.attach;
+                                            _coment.AdjuntoName02 = file2.name;
+                                            _coment.AdjuntoSize02 = file2.size;
+                                        }
+                                    }
+
+                                    dynamic file3 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[2]));
+
+                                    if (file3 != null)
+                                    {
+                                        if (Convert.ToBoolean(file3.success))
+                                        {
+                                            _coment.Adjunto03 = file3.attach;
+                                            _coment.AdjuntoName03 = file3.name;
+                                            _coment.AdjuntoSize03 = file3.size;
+                                        }
+                                    }
+
+                                }
+
+                                if (arrFiles.Length == 2)
+                                {
+                                    dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+
+                                    if (file1 != null)
+                                    {
+                                        if (Convert.ToBoolean(file1.success))
+                                        {
+                                            _coment.Adjunto01 = file1.attach;
+                                            _coment.AdjuntoName01 = file1.name;
+                                            _coment.AdjuntoSize01 = file1.size;
+                                        }
+                                    }
+
+
+                                    dynamic file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
+
+                                    if (file2 != null)
+                                    {
+                                        if (Convert.ToBoolean(file2.success))
+                                        {
+                                            _coment.Adjunto02 = file2.attach;
+                                            _coment.AdjuntoName02 = file2.name;
+                                            _coment.AdjuntoSize02 = file2.size;
+                                        }
+                                    }
+                                }
+
+                                if (arrFiles.Length == 1)
+                                {
+                                    dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+
+                                    if (file1 != null)
+                                    {
+                                        if (Convert.ToBoolean(file1.success))
+                                        {
+                                            _coment.Adjunto01 = file1.attach;
+                                            _coment.AdjuntoName01 = file1.name;
+                                            _coment.AdjuntoSize01 = file1.size;
+                                        }
+                                    }
+                                }
+
+                                WS_Remedy.Result exCom = imss.IncidenteAdicionaNotas(_coment);
+                            }
+
+                            //Actualiza estatus en Invgate
+                            IncidentPutRequest VarInter = new IncidentPutRequest();
+                            VarInter.id = id;
+                            VarInter.statusId = idEstatusInvgate;
+
+                            Entities.Intermedio.Result response_ = incidentes.PutIncidenteStatus(VarInter);
+                        }
+                    }
+                    else if (_nota.Contains("@@P"))//Pendiente
+                    {
+                        //Obtiene Estatus
+                        int idEstatusInvgate = 4;//En Espera
+                        int idEstatusImss = catalogos.GetEstatusIncidenteIMSS(idEstatusInvgate); 
+                        //Obtiene Motivo Estado
+                        int idMotivo = Convert.ToInt32(arrNota[0].Substring(3, 5).Trim());
+
+                        WS_Remedy.Incidente _request = new WS_Remedy.Incidente();
+                        _request.IDTicketInvgate = id.ToString();
+                        _request.IDTicketRemedy = bitacora.TicketRemedy;
+                        _request.EstadoNuevo = idEstatusImss;
+                        _request.MotivoEstado = idMotivo;
+
+                        WS_Remedy.Result exec = imss.IncidenteActualiza(_request);
+
+
+                        result.Success = exec.Estatus;
+                        result.Message = exec.Resultado;
+
+                        if (result.Success)
+                        {
+                            //Si hay archivos, envia nota
+                            if (!string.IsNullOrEmpty(files))
+                            {
+                                WS_Remedy.Comentario _coment = new WS_Remedy.Comentario();
+                                _coment.IDTicketInvgate = id.ToString();
+                                _coment.IDTicketRemedy = bitacora.TicketRemedy;
+                                _coment.Notas = "Adjuntos actualización estatus.";
+
+                                string[] arrFiles = files.Split(',');
+
+                                if (arrFiles.Length >= 3)
+                                {
+                                    dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+
+                                    if (file1 != null)
+                                    {
+                                        if (Convert.ToBoolean(file1.success))
+                                        {
+                                            _coment.Adjunto01 = file1.attach;
+                                            _coment.AdjuntoName01 = file1.name;
+                                            _coment.AdjuntoSize01 = file1.size;
+                                        }
+                                    }
+
+
+                                    dynamic file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
+
+                                    if (file2 != null)
+                                    {
+                                        if (Convert.ToBoolean(file2.success))
+                                        {
+                                            _coment.Adjunto02 = file2.attach;
+                                            _coment.AdjuntoName02 = file2.name;
+                                            _coment.AdjuntoSize02 = file2.size;
+                                        }
+                                    }
+
+                                    dynamic file3 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[2]));
+
+                                    if (file3 != null)
+                                    {
+                                        if (Convert.ToBoolean(file3.success))
+                                        {
+                                            _coment.Adjunto03 = file3.attach;
+                                            _coment.AdjuntoName03 = file3.name;
+                                            _coment.AdjuntoSize03 = file3.size;
+                                        }
+                                    }
+
+                                }
+
+                                if (arrFiles.Length == 2)
+                                {
+                                    dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+
+                                    if (file1 != null)
+                                    {
+                                        if (Convert.ToBoolean(file1.success))
+                                        {
+                                            _coment.Adjunto01 = file1.attach;
+                                            _coment.AdjuntoName01 = file1.name;
+                                            _coment.AdjuntoSize01 = file1.size;
+                                        }
+                                    }
+
+
+                                    dynamic file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
+
+                                    if (file2 != null)
+                                    {
+                                        if (Convert.ToBoolean(file2.success))
+                                        {
+                                            _coment.Adjunto02 = file2.attach;
+                                            _coment.AdjuntoName02 = file2.name;
+                                            _coment.AdjuntoSize02 = file2.size;
+                                        }
+                                    }
+                                }
+
+                                if (arrFiles.Length == 1)
+                                {
+                                    dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+
+                                    if (file1 != null)
+                                    {
+                                        if (Convert.ToBoolean(file1.success))
+                                        {
+                                            _coment.Adjunto01 = file1.attach;
+                                            _coment.AdjuntoName01 = file1.name;
+                                            _coment.AdjuntoSize01 = file1.size;
+                                        }
+                                    }
+                                }
+
+                                WS_Remedy.Result exCom = imss.IncidenteAdicionaNotas(_coment);
+                            }
+                            //Actualiza estatus en Invgate
+                            IncidentPutRequest VarInter = new IncidentPutRequest();
+                            VarInter.id = id;
+                            VarInter.statusId = idEstatusInvgate;
+
+                            Entities.Intermedio.Result response_ = incidentes.PutIncidenteStatus(VarInter);
+                        }
+                    }
+                    else
+                    {
+                        WS_Remedy.Comentario _request = new WS_Remedy.Comentario();
+                        _request.IDTicketInvgate = id.ToString();
+                        _request.IDTicketRemedy = bitacora.TicketRemedy;
+                        _request.Notas = arrNota[0];
+
+                        
+                        if (!string.IsNullOrEmpty(files))
+                        {
+                            string[] arrFiles = files.Split(',');
+
+                            if (arrFiles.Length >= 3)
+                            {
+                                dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+
+                                if (file1 != null)
+                                {
+                                    if (Convert.ToBoolean(file1.success))
+                                    {
+                                        _request.Adjunto01 = file1.attach;
+                                        _request.AdjuntoName01 = file1.name;
+                                        _request.AdjuntoSize01 = file1.size;
+                                    }
+                                }
+
+
+                                dynamic file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
+
+                                if (file2 != null)
+                                {
+                                    if (Convert.ToBoolean(file2.success))
+                                    {
+                                        _request.Adjunto02 = file2.attach;
+                                        _request.AdjuntoName02 = file2.name;
+                                        _request.AdjuntoSize02 = file2.size;
+                                    }
+                                }
+
+                                dynamic file3 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[2]));
+
+                                if (file3 != null)
+                                {
+                                    if (Convert.ToBoolean(file3.success))
+                                    {
+                                        _request.Adjunto03 = file3.attach;
+                                        _request.AdjuntoName03 = file3.name;
+                                        _request.AdjuntoSize03 = file3.size;
+                                    }
+                                }
+                            }
+
+                            if (arrFiles.Length == 2)
+                            {
+                                dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+
+                                if (file1 != null)
+                                {
+                                    if (Convert.ToBoolean(file1.success))
+                                    {
+                                        _request.Adjunto01 = file1.attach;
+                                        _request.AdjuntoName01 = file1.name;
+                                        _request.AdjuntoSize01 = file1.size;
+                                    }
+                                }
+
+
+                                dynamic file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
+
+                                if (file2 != null)
+                                {
+                                    if (Convert.ToBoolean(file2.success))
+                                    {
+                                        _request.Adjunto02 = file2.attach;
+                                        _request.AdjuntoName02 = file2.name;
+                                        _request.AdjuntoSize02 = file2.size;
+                                    }
+                                }
+                            }
+
+                            if (arrFiles.Length == 1)
+                            {
+                                dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+
+                                if (file1 != null)
+                                {
+                                    if (Convert.ToBoolean(file1.success))
+                                    {
+                                        _request.Adjunto01 = file1.attach;
+                                        _request.AdjuntoName01 = file1.name;
+                                        _request.AdjuntoSize01 = file1.size;
+                                    }
+                                }
+                            }
+
+                        }
+
+                        WS_Remedy.Result exec = imss.IncidenteAdicionaNotas(_request);
+                        result.Success = exec.Estatus;
+                        result.Message = exec.Resultado;
+                    }
+                }
+                else
+                {
+                    result.Success = false;
+                    result.Message = "No se encontró el ticket de Invgate en la bitácora.";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
+        public Resultado IncidenteAdicionaAdjunto(int id, int idFile)
+        {
+            Resultado result = new Resultado();
+
+            try
+            {
+                //Consulta incidente en bitacora
+                SB.IncidenteData data = new SB.IncidenteData();
+                SB.CatalogosData catalogos = new SB.CatalogosData();
+                SB.Incidente bitacora = data.GetIdIMSS(id);
+
+                if (bitacora.TicketInvgate != null)
+                {
+                    WS_Remedy.Comentario _request = new WS_Remedy.Comentario();
+                    _request.IDTicketInvgate = id.ToString();
+                    _request.IDTicketRemedy = bitacora.TicketRemedy;
+                    _request.Notas = "Adjuntos Ticket: " + bitacora.TicketRemedy;
+
+
+                    dynamic file = incidentes.GetAttachments(idFile);
+
+                    if (file != null)
+                    {
+                        if (Convert.ToBoolean(file.success))
+                        {
+                            _request.Adjunto01 = file.attach;
+                            _request.AdjuntoName01 = file.name;
+                            _request.AdjuntoSize01 = file.size;
+                        }
+                    }
+
+
+                    WS_Remedy.Result exec = imss.IncidenteAdicionaNotas(_request);
+                    result.Success = exec.Estatus;
+                    result.Message = exec.Resultado;
+                    
                 }
                 else
                 {
@@ -456,7 +924,7 @@ namespace TaskIncidencias
 
             try
             {
-                //Consulta incidente en bitacora
+                //Consulta orden en bitacora
                 SB.OrdenTrabajoData data = new SB.OrdenTrabajoData();
                 SB.CatalogosData catalogos = new SB.CatalogosData();
                 SB.OrdenTrabajo bitacora = data.GetIdIMSS(id);
@@ -469,7 +937,8 @@ namespace TaskIncidencias
                     if (_nota.Contains("@@R"))//Resuelto
                     {
                         //Obtiene Estatus
-                        int idEstatusImss = catalogos.GetEstatusWOIMSS(5);//5 = Solucionado
+                        int idEstatusInvgate = 5;//Solucionado
+                        int idEstatusImss = catalogos.GetEstatusWOIMSS(idEstatusInvgate);
                         //Obtiene Motivo Estado
                         int idMotivo = Convert.ToInt32(_nota.Substring(3, 5).Trim());
 
@@ -484,11 +953,21 @@ namespace TaskIncidencias
 
                         result.Success = exec.Estatus;
                         result.Message = exec.Resultado;
+
+                        if (result.Success)//Actualiza estatus en Invgate
+                        {
+                            IncidentPutRequest VarInter = new IncidentPutRequest();
+                            VarInter.id = id;
+                            VarInter.statusId = idEstatusInvgate;
+
+                            Entities.Intermedio.Result response_ = incidentes.PutIncidenteStatus(VarInter);
+                        }
                     }
                     else if (_nota.Contains("@@P"))//Pendiente
                     {
                         //Obtiene Estatus
-                        int idEstatusImss = catalogos.GetEstatusWOIMSS(4); //4 = En Espera
+                        int idEstatusInvgate = 4;//En Espera
+                        int idEstatusImss = catalogos.GetEstatusWOIMSS(4);
                         //Obtiene Motivo Estado
                         int idMotivo = Convert.ToInt32(_nota.Substring(3, 5).Trim());
 
@@ -500,15 +979,24 @@ namespace TaskIncidencias
 
                         WS_Remedy.Result exec = imss.OrdenTrabajoActualiza(_request);
 
-                        WS_Remedy.Comentario _coment = new WS_Remedy.Comentario();
-                        _coment.IDTicketInvgate = id.ToString();
-                        _coment.IDTicketRemedy = bitacora.TicketRemedy;
-                        _coment.Notas = _nota.Substring(8).Trim();
-
-                        WS_Remedy.Result exCom = imss.IncidenteAdicionaNotas(_coment);
-
                         result.Success = exec.Estatus;
                         result.Message = exec.Resultado;
+
+                        if (result.Success)//Actualiza estatus en Invgate
+                        {
+                            WS_Remedy.Comentario _coment = new WS_Remedy.Comentario();
+                            _coment.IDTicketInvgate = id.ToString();
+                            _coment.IDTicketRemedy = bitacora.TicketRemedy;
+                            _coment.Notas = _nota.Substring(8).Trim();
+
+                            WS_Remedy.Result exCom = imss.OrdenTrabajoAdicionaNotas(_coment);
+
+                            IncidentPutRequest VarInter = new IncidentPutRequest();
+                            VarInter.id = id;
+                            VarInter.statusId = idEstatusInvgate;
+
+                            Entities.Intermedio.Result response_ = incidentes.PutIncidenteStatus(VarInter);
+                        }
                     }
                     else
                     {
@@ -516,21 +1004,454 @@ namespace TaskIncidencias
                         _request.IDTicketInvgate = id.ToString();
                         _request.IDTicketRemedy = bitacora.TicketRemedy;
                         _request.Notas = _nota;
-                        //_request.Adjunto01 = "";
-                        //_request.AdjuntoName01 = "";
-                        //_request.AdjuntoSize01 = "";
-                        //_request.Adjunto02 = "";
-                        //_request.AdjuntoName02 = "";
-                        //_request.AdjuntoSize02 = "";
-                        //_request.Adjunto03 = "";
-                        //_request.AdjuntoName03 = "";
-                        //_request.AdjuntoSize03 = "";
 
                         WS_Remedy.Result exec = imss.OrdenTrabajoAdicionaNotas(_request);
 
                         result.Success = exec.Estatus;
                         result.Message = exec.Resultado;
                     }                   
+
+                }
+                else
+                {
+                    result.Success = false;
+                    result.Message = "No se encontró el ticket de Invgate en la bitácora.";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
+        public Resultado WOAdicionaNotasAdjunto(int id, string nota)
+        {
+            Resultado result = new Resultado();
+
+            try
+            {
+                //Consulta orden en bitacora
+                SB.OrdenTrabajoData data = new SB.OrdenTrabajoData();
+                SB.CatalogosData catalogos = new SB.CatalogosData();
+                SB.OrdenTrabajo bitacora = data.GetIdIMSS(id);
+
+                if (bitacora.TicketInvgate != null)
+                {
+                    //Tratamiento de texto
+                    string _nota = CleanInput(nota);
+                    string[] arrNota = _nota.Split(new[] { "||" }, StringSplitOptions.None);
+                    string files = arrNota[2].Replace("Files:", "");
+                    files = files.Substring(0, files.Length - 1);
+
+                    if (_nota.Contains("@@R"))//Resuelto
+                    {
+                        //Obtiene Estatus
+                        int idEstatusInvgate = 5;//Solucionado
+                        int idEstatusImss = catalogos.GetEstatusWOIMSS(idEstatusInvgate);
+                        //Obtiene Motivo Estado
+                        int idMotivo = Convert.ToInt32(arrNota[0].Substring(3, 5).Trim());
+                        
+                        WS_Remedy.OrdenTrabajo _request = new WS_Remedy.OrdenTrabajo();
+                        _request.IDTicketInvgate = id.ToString();
+                        _request.IDTicketRemedy = bitacora.TicketRemedy;
+                        _request.EstadoNuevo = idEstatusImss;
+                        _request.MotivoEstado = idMotivo;
+                        _request.Resolucion = _nota.Substring(8).Trim();
+
+                        WS_Remedy.Result exec = imss.OrdenTrabajoActualiza(_request);
+
+                        result.Success = exec.Estatus;
+                        result.Message = exec.Resultado;
+
+                        if (result.Success)
+                        {
+                            //Si hay archivos, envia nota
+                            if (!string.IsNullOrEmpty(files))
+                            {
+                                WS_Remedy.Comentario _coment = new WS_Remedy.Comentario();
+                                _coment.IDTicketInvgate = id.ToString();
+                                _coment.IDTicketRemedy = bitacora.TicketRemedy;
+                                _coment.Notas = "Adjuntos cierre de WO.";
+
+                                string[] arrFiles = files.Split(',');
+
+                                if (arrFiles.Length >= 3)
+                                {
+                                    dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+
+                                    if (file1 != null)
+                                    {
+                                        if (Convert.ToBoolean(file1.success))
+                                        {
+                                            _coment.Adjunto01 = file1.attach;
+                                            _coment.AdjuntoName01 = file1.name;
+                                            _coment.AdjuntoSize01 = file1.size;
+                                        }
+                                    }
+
+
+                                    dynamic file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
+
+                                    if (file2 != null)
+                                    {
+                                        if (Convert.ToBoolean(file2.success))
+                                        {
+                                            _coment.Adjunto02 = file2.attach;
+                                            _coment.AdjuntoName02 = file2.name;
+                                            _coment.AdjuntoSize02 = file2.size;
+                                        }
+                                    }
+
+                                    dynamic file3 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[2]));
+
+                                    if (file3 != null)
+                                    {
+                                        if (Convert.ToBoolean(file3.success))
+                                        {
+                                            _coment.Adjunto03 = file3.attach;
+                                            _coment.AdjuntoName03 = file3.name;
+                                            _coment.AdjuntoSize03 = file3.size;
+                                        }
+                                    }
+
+                                }
+
+                                if (arrFiles.Length == 2)
+                                {
+                                    dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+
+                                    if (file1 != null)
+                                    {
+                                        if (Convert.ToBoolean(file1.success))
+                                        {
+                                            _coment.Adjunto01 = file1.attach;
+                                            _coment.AdjuntoName01 = file1.name;
+                                            _coment.AdjuntoSize01 = file1.size;
+                                        }
+                                    }
+
+
+                                    dynamic file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
+
+                                    if (file2 != null)
+                                    {
+                                        if (Convert.ToBoolean(file2.success))
+                                        {
+                                            _coment.Adjunto02 = file2.attach;
+                                            _coment.AdjuntoName02 = file2.name;
+                                            _coment.AdjuntoSize02 = file2.size;
+                                        }
+                                    }
+                                }
+
+                                if (arrFiles.Length == 1)
+                                {
+                                    dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+
+                                    if (file1 != null)
+                                    {
+                                        if (Convert.ToBoolean(file1.success))
+                                        {
+                                            _coment.Adjunto01 = file1.attach;
+                                            _coment.AdjuntoName01 = file1.name;
+                                            _coment.AdjuntoSize01 = file1.size;
+                                        }
+                                    }
+                                }
+
+                                WS_Remedy.Result exCom = imss.OrdenTrabajoAdicionaNotas(_coment);
+
+                            }
+
+                            //Actualiza estatus en Invgate
+                            IncidentPutRequest VarInter = new IncidentPutRequest();
+                            VarInter.id = id;
+                            VarInter.statusId = idEstatusInvgate;
+
+                            Entities.Intermedio.Result response_ = incidentes.PutIncidenteStatus(VarInter);
+                        }
+                    }
+                    else if (_nota.Contains("@@P"))//Pendiente
+                    {
+                        //Obtiene Estatus
+                        int idEstatusInvgate = 4;//En Espera
+                        int idEstatusImss = catalogos.GetEstatusWOIMSS(idEstatusInvgate); 
+                        //Obtiene Motivo Estado
+                        int idMotivo = Convert.ToInt32(arrNota[0].Substring(3, 5).Trim());
+
+                        WS_Remedy.OrdenTrabajo _request = new WS_Remedy.OrdenTrabajo();
+                        _request.IDTicketInvgate = id.ToString();
+                        _request.IDTicketRemedy = bitacora.TicketRemedy;
+                        _request.EstadoNuevo = idEstatusImss;
+                        _request.MotivoEstado = idMotivo;
+
+                        WS_Remedy.Result exec = imss.OrdenTrabajoActualiza(_request);
+
+                        result.Success = exec.Estatus;
+                        result.Message = exec.Resultado;
+
+                        if (result.Success)
+                        {
+                            //Si hay archivos, envia nota
+                            if (!string.IsNullOrEmpty(files))
+                            {
+                                WS_Remedy.Comentario _coment = new WS_Remedy.Comentario();
+                                _coment.IDTicketInvgate = id.ToString();
+                                _coment.IDTicketRemedy = bitacora.TicketRemedy;
+                                _coment.Notas = "Adjuntos actualización estatus.";
+
+                                string[] arrFiles = files.Split(',');
+
+                                if (arrFiles.Length >= 3)
+                                {
+                                    dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+
+                                    if (file1 != null)
+                                    {
+                                        if (Convert.ToBoolean(file1.success))
+                                        {
+                                            _coment.Adjunto01 = file1.attach;
+                                            _coment.AdjuntoName01 = file1.name;
+                                            _coment.AdjuntoSize01 = file1.size;
+                                        }
+                                    }
+
+
+                                    dynamic file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
+
+                                    if (file2 != null)
+                                    {
+                                        if (Convert.ToBoolean(file2.success))
+                                        {
+                                            _coment.Adjunto02 = file2.attach;
+                                            _coment.AdjuntoName02 = file2.name;
+                                            _coment.AdjuntoSize02 = file2.size;
+                                        }
+                                    }
+
+                                    dynamic file3 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[2]));
+
+                                    if (file3 != null)
+                                    {
+                                        if (Convert.ToBoolean(file3.success))
+                                        {
+                                            _coment.Adjunto03 = file3.attach;
+                                            _coment.AdjuntoName03 = file3.name;
+                                            _coment.AdjuntoSize03 = file3.size;
+                                        }
+                                    }
+
+                                }
+
+                                if (arrFiles.Length == 2)
+                                {
+                                    dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+
+                                    if (file1 != null)
+                                    {
+                                        if (Convert.ToBoolean(file1.success))
+                                        {
+                                            _coment.Adjunto01 = file1.attach;
+                                            _coment.AdjuntoName01 = file1.name;
+                                            _coment.AdjuntoSize01 = file1.size;
+                                        }
+                                    }
+
+
+                                    dynamic file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
+
+                                    if (file2 != null)
+                                    {
+                                        if (Convert.ToBoolean(file2.success))
+                                        {
+                                            _coment.Adjunto02 = file2.attach;
+                                            _coment.AdjuntoName02 = file2.name;
+                                            _coment.AdjuntoSize02 = file2.size;
+                                        }
+                                    }
+                                }
+
+                                if (arrFiles.Length == 1)
+                                {
+                                    dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+
+                                    if (file1 != null)
+                                    {
+                                        if (Convert.ToBoolean(file1.success))
+                                        {
+                                            _coment.Adjunto01 = file1.attach;
+                                            _coment.AdjuntoName01 = file1.name;
+                                            _coment.AdjuntoSize01 = file1.size;
+                                        }
+                                    }
+                                }
+
+                                WS_Remedy.Result exCom = imss.OrdenTrabajoAdicionaNotas(_coment);
+                            }
+
+                            //Actualiza estatus en Invgate
+                            IncidentPutRequest VarInter = new IncidentPutRequest();
+                            VarInter.id = id;
+                            VarInter.statusId = idEstatusInvgate;
+
+                            Entities.Intermedio.Result response_ = incidentes.PutIncidenteStatus(VarInter);
+                        }
+                    }
+                    else
+                    {
+                        WS_Remedy.Comentario _request = new WS_Remedy.Comentario();
+                        _request.IDTicketInvgate = id.ToString();
+                        _request.IDTicketRemedy = bitacora.TicketRemedy;
+                        _request.Notas = arrNota[0];
+
+
+                        if (!string.IsNullOrEmpty(files))
+                        {
+                            string[] arrFiles = files.Split(',');
+
+                            if (arrFiles.Length >= 3)
+                            {
+                                dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+
+                                if (file1 != null)
+                                {
+                                    if (Convert.ToBoolean(file1.success))
+                                    {
+                                        _request.Adjunto01 = file1.attach;
+                                        _request.AdjuntoName01 = file1.name;
+                                        _request.AdjuntoSize01 = file1.size;
+                                    }
+                                }
+
+
+                                dynamic file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
+
+                                if (file2 != null)
+                                {
+                                    if (Convert.ToBoolean(file2.success))
+                                    {
+                                        _request.Adjunto02 = file2.attach;
+                                        _request.AdjuntoName02 = file2.name;
+                                        _request.AdjuntoSize02 = file2.size;
+                                    }
+                                }
+
+                                dynamic file3 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[2]));
+
+                                if (file3 != null)
+                                {
+                                    if (Convert.ToBoolean(file3.success))
+                                    {
+                                        _request.Adjunto03 = file3.attach;
+                                        _request.AdjuntoName03 = file3.name;
+                                        _request.AdjuntoSize03 = file3.size;
+                                    }
+                                }
+                            }
+
+                            if (arrFiles.Length == 2)
+                            {
+                                dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+
+                                if (file1 != null)
+                                {
+                                    if (Convert.ToBoolean(file1.success))
+                                    {
+                                        _request.Adjunto01 = file1.attach;
+                                        _request.AdjuntoName01 = file1.name;
+                                        _request.AdjuntoSize01 = file1.size;
+                                    }
+                                }
+
+
+                                dynamic file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
+
+                                if (file2 != null)
+                                {
+                                    if (Convert.ToBoolean(file2.success))
+                                    {
+                                        _request.Adjunto02 = file2.attach;
+                                        _request.AdjuntoName02 = file2.name;
+                                        _request.AdjuntoSize02 = file2.size;
+                                    }
+                                }
+                            }
+
+                            if (arrFiles.Length == 1)
+                            {
+                                dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+
+                                if (file1 != null)
+                                {
+                                    if (Convert.ToBoolean(file1.success))
+                                    {
+                                        _request.Adjunto01 = file1.attach;
+                                        _request.AdjuntoName01 = file1.name;
+                                        _request.AdjuntoSize01 = file1.size;
+                                    }
+                                }
+                            }
+
+                        }
+
+                        WS_Remedy.Result exec = imss.OrdenTrabajoAdicionaNotas(_request);
+                        result.Success = exec.Estatus;
+                        result.Message = exec.Resultado;
+                    }
+                }
+                else
+                {
+                    result.Success = false;
+                    result.Message = "No se encontró el ticket de Invgate en la bitácora.";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
+        public Resultado WOAdicionaAdjunto(int id, int idFile)
+        {
+            Resultado result = new Resultado();
+
+            try
+            {
+                //Consulta orden en bitacora
+                SB.OrdenTrabajoData data = new SB.OrdenTrabajoData();
+                SB.CatalogosData catalogos = new SB.CatalogosData();
+                SB.OrdenTrabajo bitacora = data.GetIdIMSS(id);
+
+                if (bitacora.TicketInvgate != null)
+                {
+                    WS_Remedy.Comentario _request = new WS_Remedy.Comentario();
+                    _request.IDTicketInvgate = id.ToString();
+                    _request.IDTicketRemedy = bitacora.TicketRemedy;
+                    _request.Notas = "Adjuntos Ticket: " + bitacora.TicketRemedy;
+
+
+                    dynamic file = incidentes.GetAttachments(idFile);
+
+                    if (file != null)
+                    {
+                        if (Convert.ToBoolean(file.success))
+                        {
+                            _request.Adjunto01 = file.attach;
+                            _request.AdjuntoName01 = file.name;
+                            _request.AdjuntoSize01 = file.size;
+                        }
+                    }
+
+
+                    WS_Remedy.Result exec = imss.OrdenTrabajoAdicionaNotas(_request);
+                    result.Success = exec.Estatus;
+                    result.Message = exec.Resultado;
 
                 }
                 else

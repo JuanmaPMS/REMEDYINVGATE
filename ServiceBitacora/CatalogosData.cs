@@ -52,7 +52,7 @@ namespace ServiceBitacora
 
             try
             {
-                CatEstadoIncidente catEstado = ctx.CatEstadoIncidente.Where(x => x.ClaveRemedy == estatus).FirstOrDefault();
+                CatEstadoIncidente catEstado = ctx.CatEstadoIncidente.Where(x => x.ClaveRemedy == estatus).OrderBy(x => x.id).FirstOrDefault();
                 if (catEstado != null)
                 {
                     id = catEstado.ClaveInvgate.Value;
@@ -71,7 +71,7 @@ namespace ServiceBitacora
 
             try
             {
-                CatEstadoWO catEstado = ctx.CatEstadoWO.Where(x => x.ClaveRemedy == idEstatus).FirstOrDefault();
+                CatEstadoWO catEstado = ctx.CatEstadoWO.Where(x => x.ClaveRemedy == idEstatus).OrderBy(x => x.id).FirstOrDefault();
                 if (catEstado != null)
                 {
                     id = catEstado.ClaveInvgate.Value;
@@ -126,7 +126,7 @@ namespace ServiceBitacora
 
             try
             {
-                CatEstadoIncidente catEstado = ctx.CatEstadoIncidente.Where(x => x.ClaveInvgate == idEstatus).FirstOrDefault();
+                CatEstadoIncidente catEstado = ctx.CatEstadoIncidente.Where(x => x.ClaveInvgate == idEstatus).OrderBy(x => x.id).FirstOrDefault();
                 if (catEstado != null)
                 {
                     id = catEstado.ClaveRemedy.Value;
@@ -145,7 +145,7 @@ namespace ServiceBitacora
 
             try
             {
-                CatEstadoWO catEstado = ctx.CatEstadoWO.Where(x => x.ClaveInvgate == idEstatus).FirstOrDefault();
+                CatEstadoWO catEstado = ctx.CatEstadoWO.Where(x => x.ClaveInvgate == idEstatus).OrderBy(x => x.id).FirstOrDefault();
                 if (catEstado != null)
                 {
                     id = catEstado.ClaveRemedy.Value;

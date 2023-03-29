@@ -483,45 +483,54 @@ namespace Inter_ServiceDesk_PM
                 {
                     if (Autenticacion.IsValid())
                     {
-                        //Obtiene id Invgate
-                        int idTicketInvgate = 0;
-                        ServiceBitacora.Incidente data = bitacora.GetIdInvgate(request.TicketIMSS);
-                        if (data != null)
-                        { idTicketInvgate = data.TicketInvgate == null ? 0 : Convert.ToInt32(data.TicketInvgate); }
-
-                        if (idTicketInvgate > 0)
+                        //Valida si es una nota automatica
+                        if(request.Notas.Contains("Status Marked"))
                         {
-                            //Agrega los adjuntos
-                            List<HttpPostedFileBase> files_ = new List<HttpPostedFileBase>();
-                            if (request.Adjunto01 != null && request.Adjunto01.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName01))
-                            {files_.Add(new MemoryPostedFile(request.Adjunto01, request.AdjuntoName01));  }
-
-                            if (request.Adjunto02 != null && request.Adjunto02.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName02))
-                            { files_.Add(new MemoryPostedFile(request.Adjunto02, request.AdjuntoName02)); }
-
-                            if (request.Adjunto03 != null && request.Adjunto03.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName03))
-                            { files_.Add(new MemoryPostedFile(request.Adjunto03, request.AdjuntoName03)); }
-
-                            if (files_.Count > 0)
-                            { incidentes.PostAttachments(files_.ToArray(), idTicketInvgate); }
-
-                            //Envia la nota
-                            IncidentesCommentPostRequest VarInter = new IncidentesCommentPostRequest();
-
-                            VarInter.request_id = idTicketInvgate;
-                            VarInter.comment = request.Notas;
-                            VarInter.author_id = 1240;
-                            VarInter.is_solution = false;
-
-                            response_ = comments.PostIncidenteComment(VarInter);
-
-                            //Bitacora
-                            bitacora.AgregaNota(request, idTicketInvgate, out string Result);
+                            response_.Estado = "Exito";
+                            response_.Resultado = "Comentario Automatico.";
                         }
                         else
                         {
-                            response_.Estado = "Error";
-                            response_.Resultado = "No se encontro Ticket solicitado, favor de validar";
+                            //Obtiene id Invgate
+                            int idTicketInvgate = 0;
+                            ServiceBitacora.Incidente data = bitacora.GetIdInvgate(request.TicketIMSS);
+                            if (data != null)
+                            { idTicketInvgate = data.TicketInvgate == null ? 0 : Convert.ToInt32(data.TicketInvgate); }
+
+                            if (idTicketInvgate > 0)
+                            {
+                                //Agrega los adjuntos
+                                List<HttpPostedFileBase> files_ = new List<HttpPostedFileBase>();
+                                if (request.Adjunto01 != null && request.Adjunto01.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName01))
+                                { files_.Add(new MemoryPostedFile(request.Adjunto01, request.AdjuntoName01)); }
+
+                                if (request.Adjunto02 != null && request.Adjunto02.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName02))
+                                { files_.Add(new MemoryPostedFile(request.Adjunto02, request.AdjuntoName02)); }
+
+                                if (request.Adjunto03 != null && request.Adjunto03.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName03))
+                                { files_.Add(new MemoryPostedFile(request.Adjunto03, request.AdjuntoName03)); }
+
+                                if (files_.Count > 0)
+                                { incidentes.PostAttachments(files_.ToArray(), idTicketInvgate); }
+
+                                //Envia la nota
+                                IncidentesCommentPostRequest VarInter = new IncidentesCommentPostRequest();
+
+                                VarInter.request_id = idTicketInvgate;
+                                VarInter.comment = request.Notas;
+                                VarInter.author_id = 1240;
+                                VarInter.is_solution = false;
+
+                                response_ = comments.PostIncidenteComment(VarInter);
+
+                                //Bitacora
+                                bitacora.AgregaNota(request, idTicketInvgate, out string Result);
+                            }
+                            else
+                            {
+                                response_.Estado = "Error";
+                                response_.Resultado = "No se encontro Ticket solicitado, favor de validar";
+                            }
                         }
                     }
                     else
@@ -918,47 +927,56 @@ namespace Inter_ServiceDesk_PM
                 {
                     if (Autenticacion.IsValid())
                     {
-                        //Obtiene id Invgate
-                        int idTicketInvgate = 0;
-                        ServiceBitacora.OrdenTrabajo data = bitacoraWO.GetIdInvgate(request.TicketIMSS);
-                        if (data != null)
-                        { idTicketInvgate = data.TicketInvgate == null ? 0 : Convert.ToInt32(data.TicketInvgate); }
-
-                        if (idTicketInvgate > 0)
+                        //Valida si es una nota automatica
+                        if (request.Notas.Contains("Status Marked"))
                         {
-                            //Agrega adjuntos
-                            List<HttpPostedFileBase> files_ = new List<HttpPostedFileBase>();
-
-                            if (request.Adjunto01 != null && request.Adjunto01.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName01))
-                            { files_.Add(new MemoryPostedFile(request.Adjunto01, request.AdjuntoName01)); }
-
-                            if (request.Adjunto02 != null && request.Adjunto02.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName02))
-                            { files_.Add(new MemoryPostedFile(request.Adjunto02, request.AdjuntoName02)); }
-
-                            if (request.Adjunto03 != null && request.Adjunto03.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName03))
-                            { files_.Add(new MemoryPostedFile(request.Adjunto03, request.AdjuntoName03)); }
-
-                            if (files_.Count > 0)
-                            { incidentes.PostAttachments(files_.ToArray(), idTicketInvgate); }
-
-                            //Agrega nota
-                            IncidentesCommentPostRequest VarInter = new IncidentesCommentPostRequest();
-
-                            VarInter.request_id = idTicketInvgate;
-                            VarInter.comment = request.Notas;
-                            VarInter.author_id = 1240;
-                            VarInter.is_solution = false;
-
-                            response_ = comments.PostIncidenteComment(VarInter);
-
-                            //Bitacora
-                            bitacoraWO.AgregaNota(request, idTicketInvgate, out string Result);
+                            response_.Estado = "Exito";
+                            response_.Resultado = "Comentario Automatico.";
                         }
                         else
                         {
-                            response_.Estado = "Error";
-                            response_.Resultado = "No se encontro Ticket solicitado, favor de validar";
-                        }
+                            //Obtiene id Invgate
+                            int idTicketInvgate = 0;
+                            ServiceBitacora.OrdenTrabajo data = bitacoraWO.GetIdInvgate(request.TicketIMSS);
+                            if (data != null)
+                            { idTicketInvgate = data.TicketInvgate == null ? 0 : Convert.ToInt32(data.TicketInvgate); }
+
+                            if (idTicketInvgate > 0)
+                            {
+                                //Agrega adjuntos
+                                List<HttpPostedFileBase> files_ = new List<HttpPostedFileBase>();
+
+                                if (request.Adjunto01 != null && request.Adjunto01.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName01))
+                                { files_.Add(new MemoryPostedFile(request.Adjunto01, request.AdjuntoName01)); }
+
+                                if (request.Adjunto02 != null && request.Adjunto02.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName02))
+                                { files_.Add(new MemoryPostedFile(request.Adjunto02, request.AdjuntoName02)); }
+
+                                if (request.Adjunto03 != null && request.Adjunto03.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName03))
+                                { files_.Add(new MemoryPostedFile(request.Adjunto03, request.AdjuntoName03)); }
+
+                                if (files_.Count > 0)
+                                { incidentes.PostAttachments(files_.ToArray(), idTicketInvgate); }
+
+                                //Agrega nota
+                                IncidentesCommentPostRequest VarInter = new IncidentesCommentPostRequest();
+
+                                VarInter.request_id = idTicketInvgate;
+                                VarInter.comment = request.Notas;
+                                VarInter.author_id = 1240;
+                                VarInter.is_solution = false;
+
+                                response_ = comments.PostIncidenteComment(VarInter);
+
+                                //Bitacora
+                                bitacoraWO.AgregaNota(request, idTicketInvgate, out string Result);
+                            }
+                            else
+                            {
+                                response_.Estado = "Error";
+                                response_.Resultado = "No se encontro Ticket solicitado, favor de validar";
+                            }
+                        }                        
                     }
                     else
                     {
