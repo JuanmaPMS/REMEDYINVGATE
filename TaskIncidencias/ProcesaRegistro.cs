@@ -48,8 +48,16 @@ namespace TaskIncidencias
 
                             WS_Remedy.Result exec = imss.IncidenteActualiza(_request);
 
-                            result.Success = exec.Estatus;
-                            result.Message = exec.Resultado;
+                            if(exec.Resultado.Contains("ERROR: El cambio de estado a 'En curso' no está permitido en el Incidente actual"))
+                            {
+                                result.Success = true;
+                                result.Message = exec.Resultado;
+                            }
+                            else
+                            {
+                                result.Success = exec.Estatus;
+                                result.Message = exec.Resultado;
+                            }                   
                         }
                         else
                         {
@@ -792,7 +800,7 @@ namespace TaskIncidencias
                             WS_Remedy.Result exec = imss.OrdenTrabajoActualiza(_request);
                             
 
-                            if (exec.Resultado.Contains("ERROR: El cambio de estado a 'En curso' no está permitido en la Orden de trabajo actual ( In Progress )"))
+                            if (exec.Resultado.Contains("ERROR: El cambio de estado a 'En curso' no está permitido en la Orden de trabajo actual"))
                             { 
                                 result.Success = true;
                                 result.Message = exec.Resultado;
