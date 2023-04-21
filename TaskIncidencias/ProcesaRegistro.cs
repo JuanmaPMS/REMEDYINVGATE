@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
 using System.Net.NetworkInformation;
 using Newtonsoft.Json;
 using Entities.Invgate;
+using ServiceBitacora;
 
 namespace TaskIncidencias
 {
@@ -19,6 +20,7 @@ namespace TaskIncidencias
     {
         ServiciosImss imss = new ServiciosImss();
         IncidentesInvgate incidentes = new IncidentesInvgate();
+        LogTask log = new LogTask();
 
         public Resultado IncidenteActualiza(int id, int idEstatus)
         {
@@ -81,11 +83,13 @@ namespace TaskIncidencias
             {
                 result.Success = false;
                 result.Message = ex.Message;
+                log.LogMsg("Error|IncidenteActualiza|Id: " + id.ToString() + "|" + ex.Message);
             }
 
             return result;
         }
 
+        //SE DEBE MODIFICA PARA ADAPTAR LA NUEVA FORMA DE RECATEGORIZAR DE INVGATE A IMSS
         public Resultado IncidenteActualizaCategorizacion(int id, int idCategorizacion)
         {
             Resultado result = new Resultado();
@@ -129,6 +133,7 @@ namespace TaskIncidencias
             {
                 result.Success = false;
                 result.Message = ex.Message;
+                log.LogMsg("Error|IncidenteActualizaCategorizacion|Id: " + id.ToString() + "|" + ex.Message);
             }
 
             return result;
@@ -180,6 +185,7 @@ namespace TaskIncidencias
             {
                 result.Success = false;
                 result.Message = ex.Message;
+                log.LogMsg("Error|IncidenteActualizaPrioridad|Id: " + id.ToString() + "|" + ex.Message);
             }
 
             return result;
@@ -224,24 +230,26 @@ namespace TaskIncidencias
                         int idEstatusInvgate = 5; //Solucionado
                         int idEstatusImss = catalogos.GetEstatusIncidenteIMSS(idEstatusInvgate); 
                         //Obtiene Motivo Estado
-                        int idMotivo = Convert.ToInt32(arrNota[0].Substring(3, 5).Trim());
+                        int idMotivo = Convert.ToInt32(arrNota[0].Substring(3).Trim());
                         //Obtiene categorizacion de cierre
-                        int idCategorizacion = Convert.ToInt32(arrNota[1].Replace("Categoria:","").Trim());
-                        CategoriastInvgate categoria = new CategoriastInvgate();
-                        Entities.Categorizacion _categorizacion = categoria.GetCategorizacion(idCategorizacion);
+                        string[] arrCategoria = arrNota[1].Split(new[] { "|" }, StringSplitOptions.None);
+                        //int idCategorizacion = Convert.ToInt32(arrNota[1].Replace("Categoria:","").Trim());
+                        //CategoriastInvgate categoria = new CategoriastInvgate();
+                        //Entities.Categorizacion _categorizacion = categoria.GetCategorizacion(idCategorizacion);
 
                         WS_Remedy.Incidente _request = new WS_Remedy.Incidente();
                         _request.IDTicketInvgate = id.ToString();
                         _request.IDTicketRemedy = bitacora.TicketRemedy;
-                        _request.EstadoNuevo = idEstatusImss;        
-                        _request.CatCierreOperacion01 = _categorizacion.CatOperacion01;
-                        _request.CatCierreOperacion02 = _categorizacion.CatOperacion02;
-                        _request.CatCierreOperacion03 = _categorizacion.CatOperacion03;
-                        _request.CatCierreProducto01 = _categorizacion.CatProducto01;
-                        _request.CatCierreProducto02 = _categorizacion.CatProducto02;
-                        _request.CatCierreProducto03 = _categorizacion.CatProducto03;
+                        _request.EstadoNuevo = idEstatusImss;
+                        //Se envia categorizacion que tenemos guardada
+                        _request.CatCierreOperacion01 = arrCategoria[1];
+                        _request.CatCierreOperacion02 = arrCategoria[2];
+                        _request.CatCierreOperacion03 = arrCategoria[3];
+                        _request.CatCierreProducto01 = arrCategoria[4];
+                        _request.CatCierreProducto02 = arrCategoria[5];
+                        _request.CatCierreProducto03 = arrCategoria[6];
                         _request.MotivoEstado = idMotivo;
-                        _request.Resolucion = arrNota[0].Substring(8).Trim();
+                        _request.Resolucion = arrNota[2].Trim();
 
                         WS_Remedy.Result exec = imss.IncidenteActualiza(_request);
 
@@ -315,6 +323,7 @@ namespace TaskIncidencias
             {
                 result.Success = false;
                 result.Message = ex.Message;
+                log.LogMsg("Error|IncidenteAdicionaNotas|Id: " + id.ToString() + "|" + ex.Message);
             }
 
             return result;
@@ -336,33 +345,36 @@ namespace TaskIncidencias
                     //Tratamiento de texto
                     string _nota = CleanInput(nota);
                     string[] arrNota = _nota.Split(new[] { "||" }, StringSplitOptions.None);
-                    string files = arrNota[2].Replace("Files:", "");
-                    files = files.Substring(0, files.Length - 1);
 
                     if (_nota.Contains("@@R"))//Resuelto
                     {
+                        string files = arrNota[3].Replace("Files:", "");
+                        files = files.Substring(0, files.Length - 1);
+
                         //Obtiene Estatus
                         int idEstatusInvgate = 5;//Solucionado
                         int idEstatusImss = catalogos.GetEstatusIncidenteIMSS(idEstatusInvgate); 
                         //Obtiene Motivo Estado
-                        int idMotivo = Convert.ToInt32(arrNota[0].Substring(3, 5).Trim());
-                        //Obtiene categorizacion de cierre
-                        int idCategorizacion = Convert.ToInt32(arrNota[1].Replace("Categoria:", "").Trim());
-                        CategoriastInvgate categoria = new CategoriastInvgate();
-                        Entities.Categorizacion _categorizacion = categoria.GetCategorizacion(idCategorizacion);
+                        int idMotivo = Convert.ToInt32(arrNota[0].Substring(3).Trim());
+                        ////Obtiene categorizacion de cierre
+                        string[] arrCategoria = arrNota[1].Split(new[] { "|" }, StringSplitOptions.None);
+                        //int idCategorizacion = Convert.ToInt32(arrNota[1].Replace("Categoria:", "").Trim());
+                        //CategoriastInvgate categoria = new CategoriastInvgate();
+                        //Entities.Categorizacion _categorizacion = categoria.GetCategorizacion(idCategorizacion);
 
                         WS_Remedy.Incidente _request = new WS_Remedy.Incidente();
                         _request.IDTicketInvgate = id.ToString();
                         _request.IDTicketRemedy = bitacora.TicketRemedy;
                         _request.EstadoNuevo = idEstatusImss;
-                        _request.CatCierreOperacion01 = _categorizacion.CatOperacion01;
-                        _request.CatCierreOperacion02 = _categorizacion.CatOperacion02;
-                        _request.CatCierreOperacion03 = _categorizacion.CatOperacion03;
-                        _request.CatCierreProducto01 = _categorizacion.CatProducto01;
-                        _request.CatCierreProducto02 = _categorizacion.CatProducto02;
-                        _request.CatCierreProducto03 = _categorizacion.CatProducto03;
+                        //Se envia categorizacion que tenemos guardada
+                        _request.CatCierreOperacion01 = arrCategoria[1];
+                        _request.CatCierreOperacion02 = arrCategoria[2];
+                        _request.CatCierreOperacion03 = arrCategoria[3];
+                        _request.CatCierreProducto01 = arrCategoria[4];
+                        _request.CatCierreProducto02 = arrCategoria[5];
+                        _request.CatCierreProducto03 = arrCategoria[6];
                         _request.MotivoEstado = idMotivo;
-                        _request.Resolucion = arrNota[0].Substring(8).Trim();
+                        _request.Resolucion = arrNota[2].Trim();
 
                         WS_Remedy.Result exec = imss.IncidenteActualiza(_request);
 
@@ -478,6 +490,8 @@ namespace TaskIncidencias
                     }
                     else if (_nota.Contains("@@P"))//Pendiente
                     {
+                        string files = arrNota[1].Replace("Files:", "");
+                        files = files.Substring(0, files.Length - 1);
                         //Obtiene Estatus
                         int idEstatusInvgate = 4;//En Espera
                         int idEstatusImss = catalogos.GetEstatusIncidenteIMSS(idEstatusInvgate); 
@@ -504,7 +518,7 @@ namespace TaskIncidencias
                                 WS_Remedy.Comentario _coment = new WS_Remedy.Comentario();
                                 _coment.IDTicketInvgate = id.ToString();
                                 _coment.IDTicketRemedy = bitacora.TicketRemedy;
-                                _coment.Notas = arrNota[0].Substring(8).Trim() == string.Empty ? "Adjuntos actualización estatus." : arrNota[0].Substring(8).Trim();
+                                _coment.Notas = arrNota[0].Substring(8).Trim() == string.Empty ? "Adjuntos actualización estatus." : arrNota[1].Trim();
 
                                 string[] arrFiles = files.Split(',');
 
@@ -604,6 +618,9 @@ namespace TaskIncidencias
                     }
                     else
                     {
+                        string files = arrNota[1].Replace("Files:", "");
+                        files = files.Substring(0, files.Length - 1);
+
                         WS_Remedy.Comentario _request = new WS_Remedy.Comentario();
                         _request.IDTicketInvgate = id.ToString();
                         _request.IDTicketRemedy = bitacora.TicketRemedy;
@@ -714,6 +731,7 @@ namespace TaskIncidencias
             {
                 result.Success = false;
                 result.Message = ex.Message;
+                log.LogMsg("Error|IncidenteAdicionaNotasAdjunto|Id: " + id.ToString() + "|" + ex.Message);
             }
 
             return result;
@@ -766,6 +784,7 @@ namespace TaskIncidencias
             {
                 result.Success = false;
                 result.Message = ex.Message;
+                log.LogMsg("Error|IncidenteAdicionaAdjunto|Id: " + id.ToString() + "|" + ex.Message);
             }
 
             return result;
@@ -798,7 +817,8 @@ namespace TaskIncidencias
                             _request.EstadoNuevo = idEstatusImss;
 
                             WS_Remedy.Result exec = imss.OrdenTrabajoActualiza(_request);
-                            
+                            Console.WriteLine(exec.Resultado);
+
 
                             if (exec.Resultado.Contains("ERROR: El cambio de estado a 'En curso' no está permitido en la Orden de trabajo actual"))
                             { 
@@ -834,11 +854,13 @@ namespace TaskIncidencias
             {
                 result.Success = false;
                 result.Message = ex.Message;
+                log.LogMsg("Error|WOActualiza|Id: " + id.ToString() + "|" + ex.Message);
             }
 
             return result;
         }
 
+        //SE DEBE MODIFICA PARA ADAPTAR LA NUEVA FORMA DE RECATEGORIZAR DE INVGATE A IMSS
         public Resultado WOActualizaCategorizacion(int id, int idCategorizacion)
         {
             Resultado result = new Resultado();
@@ -882,6 +904,7 @@ namespace TaskIncidencias
             {
                 result.Success = false;
                 result.Message = ex.Message;
+                log.LogMsg("Error|WOActualizaCategorizacion|Id: " + id.ToString() + "|" + ex.Message);
             }
 
             return result;
@@ -931,6 +954,7 @@ namespace TaskIncidencias
             {
                 result.Success = false;
                 result.Message = ex.Message;
+                log.LogMsg("Error|WOActualizaPrioridad|Id: " + id.ToString() + "|" + ex.Message);
             }
 
             return result;
@@ -959,14 +983,14 @@ namespace TaskIncidencias
                         int idEstatusInvgate = 5;//Solucionado
                         int idEstatusImss = catalogos.GetEstatusWOIMSS(idEstatusInvgate);
                         //Obtiene Motivo Estado
-                        int idMotivo = Convert.ToInt32(arrNota[0].Substring(3, 5).Trim());
+                        int idMotivo = Convert.ToInt32(arrNota[0].Substring(3).Trim());
 
                         WS_Remedy.OrdenTrabajo _request = new WS_Remedy.OrdenTrabajo();
                         _request.IDTicketInvgate = id.ToString();
                         _request.IDTicketRemedy = bitacora.TicketRemedy;
                         _request.EstadoNuevo = idEstatusImss;
                         _request.MotivoEstado = idMotivo;
-                        _request.Resolucion = arrNota[0].Substring(8).Trim();
+                        _request.Resolucion = arrNota[1].Trim();
 
                         WS_Remedy.Result exec = imss.OrdenTrabajoActualiza(_request);
 
@@ -988,7 +1012,7 @@ namespace TaskIncidencias
                         int idEstatusInvgate = 4;//En Espera
                         int idEstatusImss = catalogos.GetEstatusWOIMSS(4);
                         //Obtiene Motivo Estado
-                        int idMotivo = Convert.ToInt32(arrNota[0].Substring(3, 5).Trim());
+                        int idMotivo = Convert.ToInt32(arrNota[0].Substring(3).Trim());
 
                         WS_Remedy.OrdenTrabajo _request = new WS_Remedy.OrdenTrabajo();
                         _request.IDTicketInvgate = id.ToString();
@@ -1006,7 +1030,7 @@ namespace TaskIncidencias
                             WS_Remedy.Comentario _coment = new WS_Remedy.Comentario();
                             _coment.IDTicketInvgate = id.ToString();
                             _coment.IDTicketRemedy = bitacora.TicketRemedy;
-                            _coment.Notas = arrNota[0].Substring(8).Trim();
+                            _coment.Notas = arrNota[1].Trim();
 
                             WS_Remedy.Result exCom = imss.OrdenTrabajoAdicionaNotas(_coment);
 
@@ -1041,6 +1065,7 @@ namespace TaskIncidencias
             {
                 result.Success = false;
                 result.Message = ex.Message;
+                log.LogMsg("Error|WOAdicionaNotas|Id: " + id.ToString() + "|" + ex.Message);
             }
 
             return result;
@@ -1062,23 +1087,24 @@ namespace TaskIncidencias
                     //Tratamiento de texto
                     string _nota = CleanInput(nota);
                     string[] arrNota = _nota.Split(new[] { "||" }, StringSplitOptions.None);
-                    string files = arrNota[2].Replace("Files:", "");
-                    files = files.Substring(0, files.Length - 1);
 
                     if (_nota.Contains("@@R"))//Resuelto
                     {
+                        string files = arrNota[2].Replace("Files:", "");
+                        files = files.Substring(0, files.Length - 1);
+
                         //Obtiene Estatus
                         int idEstatusInvgate = 5;//Solucionado
                         int idEstatusImss = catalogos.GetEstatusWOIMSS(idEstatusInvgate);
                         //Obtiene Motivo Estado
-                        int idMotivo = Convert.ToInt32(arrNota[0].Substring(3, 5).Trim());
+                        int idMotivo = Convert.ToInt32(arrNota[0].Substring(3).Trim());
                         
                         WS_Remedy.OrdenTrabajo _request = new WS_Remedy.OrdenTrabajo();
                         _request.IDTicketInvgate = id.ToString();
                         _request.IDTicketRemedy = bitacora.TicketRemedy;
                         _request.EstadoNuevo = idEstatusImss;
                         _request.MotivoEstado = idMotivo;
-                        _request.Resolucion = arrNota[0].Substring(8).Trim();
+                        _request.Resolucion = arrNota[1].Trim();
 
                         WS_Remedy.Result exec = imss.OrdenTrabajoActualiza(_request);
 
@@ -1195,11 +1221,14 @@ namespace TaskIncidencias
                     }
                     else if (_nota.Contains("@@P"))//Pendiente
                     {
+                        string files = arrNota[2].Replace("Files:", "");
+                        files = files.Substring(0, files.Length - 1);
+
                         //Obtiene Estatus
                         int idEstatusInvgate = 4;//En Espera
                         int idEstatusImss = catalogos.GetEstatusWOIMSS(idEstatusInvgate); 
                         //Obtiene Motivo Estado
-                        int idMotivo = Convert.ToInt32(arrNota[0].Substring(3, 5).Trim());
+                        int idMotivo = Convert.ToInt32(arrNota[0].Substring(3).Trim());
 
                         WS_Remedy.OrdenTrabajo _request = new WS_Remedy.OrdenTrabajo();
                         _request.IDTicketInvgate = id.ToString();
@@ -1220,7 +1249,7 @@ namespace TaskIncidencias
                                 WS_Remedy.Comentario _coment = new WS_Remedy.Comentario();
                                 _coment.IDTicketInvgate = id.ToString();
                                 _coment.IDTicketRemedy = bitacora.TicketRemedy;
-                                _coment.Notas = arrNota[0].Substring(8).Trim() == string.Empty ? "Adjuntos actualización estatus." : arrNota[0].Substring(8).Trim();
+                                _coment.Notas = arrNota[1].Trim() == string.Empty ? "Adjuntos actualización estatus." : arrNota[1].Trim();
 
                                 string[] arrFiles = files.Split(',');
 
@@ -1321,6 +1350,9 @@ namespace TaskIncidencias
                     }
                     else
                     {
+                        string files = arrNota[1].Replace("Files:", "");
+                        files = files.Substring(0, files.Length - 1);
+
                         WS_Remedy.Comentario _request = new WS_Remedy.Comentario();
                         _request.IDTicketInvgate = id.ToString();
                         _request.IDTicketRemedy = bitacora.TicketRemedy;
@@ -1431,6 +1463,7 @@ namespace TaskIncidencias
             {
                 result.Success = false;
                 result.Message = ex.Message;
+                log.LogMsg("Error|WOAdicionaNotasAdjunto|Id: " + id.ToString() + "|" + ex.Message);
             }
 
             return result;
@@ -1483,6 +1516,7 @@ namespace TaskIncidencias
             {
                 result.Success = false;
                 result.Message = ex.Message;
+                log.LogMsg("Error|WOAdicionaAdjunto|Id: " + id.ToString() + "|" + ex.Message);
             }
 
             return result;

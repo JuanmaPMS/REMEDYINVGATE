@@ -1,21 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Web;
 using System.Web.Services;
-using System.Web.Services.Description;
 using Entities;
 using Entities.Intermedio;
 using ServiceInvgate;
 using ServiceBitacora;
 using Inter_ServiceDesk_PM.Helper;
 using System.Web.Services.Protocols;
-using System.Globalization;
 using Entities.Invgate;
-using static System.Net.WebRequestMethods;
 using System.Configuration;
-using System.Runtime.Serialization.Formatters.Binary;
+
 
 namespace Inter_ServiceDesk_PM
 {
@@ -53,7 +49,7 @@ namespace Inter_ServiceDesk_PM
         IncidentesInvgate incidentes = new IncidentesInvgate();
         IncidentesCommentInvgate comments = new IncidentesCommentInvgate();
         Log log = new Log();
-        string MesaInvgate = ConfigurationManager.AppSettings["MesaInvgate"];
+        int idCategorizacion = Convert.ToInt32(ConfigurationManager.AppSettings["MesaInvgate"]);
         private long ConvertToTimestamp(DateTime value)
         {
             long epoch = (value.Ticks - 621355968000000000) / 10000000;
@@ -100,6 +96,15 @@ namespace Inter_ServiceDesk_PM
                             //Otiene urgencia
                             int IdPrioridad = catalogos.GetUrgenciaInvgate(Convert.ToInt32(request.Urgencia));
 
+                            string concat =  "\r\n" + "||Categoria:" +
+                                    request.CategoriaOpe01 + "|" +
+                                    request.CategoriaOpe02 + "|" +
+                                    request.CategoriaOpe03 + "|" +
+                                    request.CategoriaPro01 + "|" +
+                                    request.CategoriaPro02 + "|" +
+                                    request.CategoriaPro03 + "|" +
+                                    request.NombreProducto;
+
                             IncidentesPostRequest VarInter = new IncidentesPostRequest();
                             VarInter.customer_id = 1;
                             VarInter.attachments = null;
@@ -109,19 +114,9 @@ namespace Inter_ServiceDesk_PM
                             VarInter.priority_id = IdPrioridad;
                             VarInter.creator_id = 1240;
                             VarInter.type_id = 1;//Incidente
-                            CategoriastInvgate ci = new CategoriastInvgate();
-                            string concat = MesaInvgate + "|" +
-                                    request.CategoriaOpe01 + "|" +
-                                    request.CategoriaOpe02 + "|" +
-                                    request.CategoriaOpe03 + "|" +
-                                    request.CategoriaPro01 + "|" +
-                                    request.CategoriaPro02 + "|" +
-                                    request.CategoriaPro03 + "|" +
-                                    request.NombreProducto;
-
-                            VarInter.category_id = ci.GetCategoria(concat);
-                            VarInter.description = request.Descripcion;
-                            VarInter.title = request.Resumen;
+                            VarInter.category_id = idCategorizacion;
+                            VarInter.description =  request.Descripcion + concat;
+                            VarInter.title = request.TicketIMSS + "|" + request.Resumen;
                             VarInter.source_id = 2;                     
 
                             response_ = incidentes.PostIncidente(VarInter);
@@ -324,7 +319,7 @@ namespace Inter_ServiceDesk_PM
             {
                 response_.Estado = "Error";
                 response_.Resultado = ex.Message;
-
+                log.LogMsg("Error|Incidente_Update: " + ex.Message);
             }
 
             return response_;
@@ -397,6 +392,7 @@ namespace Inter_ServiceDesk_PM
             {
                 response_.Estado = "Error";
                 response_.Resultado = ex.Message;
+                log.LogMsg("Error|Incidente_Update_Prioridad: " + ex.Message);
             }
 
             return response_;
@@ -420,14 +416,22 @@ namespace Inter_ServiceDesk_PM
                         ServiceBitacora.Incidente data = bitacora.GetIdInvgate(request.TicketIMSS);
                         if (data != null)
                         { idTicketInvgate = data.TicketInvgate == null ? 0 : Convert.ToInt32(data.TicketInvgate); }
-
+                        //idTicketInvgate = 7630;
                         if (idTicketInvgate > 0)
                         {
-                            IncidentPutRequest VarInter = new IncidentPutRequest();
+                            //Consulta incidente para actualizar descripcion
+                            IncidentesGetRequest getRequest = new IncidentesGetRequest();
+                            getRequest.id = idTicketInvgate;
+                            dynamic incident = incidentes.GetIncidente(getRequest);
+
+                            string descripcion = incident.description;
+
+                            string[] principal = descripcion.Split(new[] { "||" }, StringSplitOptions.None); 
+
+                            IncidentesPutRequest VarInter = new IncidentesPutRequest();
                             
                             //Obtiene Categoria
-                            CategoriastInvgate ci = new CategoriastInvgate();
-                            string concat = MesaInvgate + "|" +
+                            string concat = "\r\n" + "||Categoria:" +
                                     request.CategoriaOpe01 + "|" +
                                     request.CategoriaOpe02 + "|" +
                                     request.CategoriaOpe03 + "|" +
@@ -437,9 +441,9 @@ namespace Inter_ServiceDesk_PM
                                     data.NombreProducto;
                
                             VarInter.id = idTicketInvgate;
-                            VarInter.categoryId = ci.GetCategoria(concat);
+                            VarInter.description = principal[0] + concat;
                             
-                            response_ = incidentes.PutIncidenteCategory(VarInter);
+                            response_ = incidentes.PutIncidente(VarInter);
 
                             //Bitacora
                             bitacora.ActualizaCategoria(request, idTicketInvgate, out string Result);
@@ -466,6 +470,7 @@ namespace Inter_ServiceDesk_PM
             {
                 response_.Estado = "Error";
                 response_.Resultado = ex.Message;
+                log.LogMsg("Error|Incidente_Update_Categorizacion: " + ex.Message);
             }
 
             return response_;
@@ -483,21 +488,41 @@ namespace Inter_ServiceDesk_PM
                 {
                     if (Autenticacion.IsValid())
                     {
-                        //Valida si es una nota automatica
-                        if(request.Notas.Contains("Status Marked"))
-                        {
-                            response_.Estado = "Exito";
-                            response_.Resultado = "Comentario Automatico.";
-                        }
-                        else
-                        {
-                            //Obtiene id Invgate
-                            int idTicketInvgate = 0;
-                            ServiceBitacora.Incidente data = bitacora.GetIdInvgate(request.TicketIMSS);
-                            if (data != null)
-                            { idTicketInvgate = data.TicketInvgate == null ? 0 : Convert.ToInt32(data.TicketInvgate); }
+                        //Obtiene id Invgate
+                        int idTicketInvgate = 0;
+                        ServiceBitacora.Incidente data = bitacora.GetIdInvgate(request.TicketIMSS);
+                        if (data != null)
+                        { idTicketInvgate = data.TicketInvgate == null ? 0 : Convert.ToInt32(data.TicketInvgate); }
 
-                            if (idTicketInvgate > 0)
+                        if (idTicketInvgate > 0)
+                        {
+                            //Valida si es una nota automatica
+                            if (request.Notas.Contains("Status Marked"))
+                            {
+                                //Valida si es una reapertura de incidente mediante la nota
+                                IncidentesGetRequest getRequest = new IncidentesGetRequest();
+                                getRequest.id = idTicketInvgate;
+                                dynamic valida = incidentes.GetIncidente(getRequest);
+
+                                if(valida.status_id != null)
+                                {
+                                    int statusInvgate = Convert.ToInt32(valida.status_id);
+
+                                    if(statusInvgate == 5 && request.Notas.Contains("Status Marked: In Progress"))
+                                    {
+                                        //Si el ticket esta Solucionado y se detecta nota de reapertura, actualiza el estatus
+                                        IncidentPutRequest VarInter = new IncidentPutRequest(); 
+                                        VarInter.id = idTicketInvgate;
+                                        VarInter.statusId = 2;//Ticket Abierto
+
+                                        response_ = incidentes.PutIncidenteStatus(VarInter);
+                                    }
+                                }
+
+                                response_.Estado = "Exito";
+                                response_.Resultado = "Comentario Automatico.";
+                            }
+                            else
                             {
                                 //Agrega los adjuntos
                                 List<HttpPostedFileBase> files_ = new List<HttpPostedFileBase>();
@@ -526,11 +551,11 @@ namespace Inter_ServiceDesk_PM
                                 //Bitacora
                                 bitacora.AgregaNota(request, idTicketInvgate, out string Result);
                             }
-                            else
-                            {
-                                response_.Estado = "Error";
-                                response_.Resultado = "No se encontro Ticket solicitado, favor de validar";
-                            }
+                        }
+                        else
+                        {
+                            response_.Estado = "Error";
+                            response_.Resultado = "No se encontro Ticket solicitado, favor de validar";
                         }
                     }
                     else
@@ -549,6 +574,7 @@ namespace Inter_ServiceDesk_PM
             {
                 response_.Estado = "Error";
                 response_.Resultado = ex.Message;
+                log.LogMsg("Error|Incidente_Add_Notas: " + ex.Message);
             }
 
             return response_;
@@ -576,6 +602,15 @@ namespace Inter_ServiceDesk_PM
                             //Otiene prioridad
                             int IdPrioridad = catalogos.GetPrioridadInvgate(Convert.ToInt32(request.Prioridad));
 
+                            string concat = "\r\n" + "||Categoria:" +
+                                    request.CategoriaOpe01 + "|" +
+                                    request.CategoriaOpe02 + "|" +
+                                    request.CategoriaOpe03 + "|" +
+                                    request.CategoriaPro01 + "|" +
+                                    request.CategoriaPro02 + "|" +
+                                    request.CategoriaPro03 + "|" +
+                                    request.NombreProducto;
+
                             IncidentesPostRequest VarInter = new IncidentesPostRequest();
                             VarInter.customer_id = 1;
                             VarInter.attachments = null;
@@ -585,19 +620,9 @@ namespace Inter_ServiceDesk_PM
                             VarInter.priority_id = IdPrioridad;
                             VarInter.creator_id = 1240;
                             VarInter.type_id = 2; //Orden Trabajo
-                            CategoriastInvgate ci = new CategoriastInvgate();
-                            string concat = MesaInvgate + "|" +
-                                    request.CategoriaOpe01 + "|" +
-                                    request.CategoriaOpe02 + "|" +
-                                    request.CategoriaOpe03 + "|" +
-                                    request.CategoriaPro01 + "|" +
-                                    request.CategoriaPro02 + "|" +
-                                    request.CategoriaPro03 + "|" +
-                                    request.NombreProducto;
-
-                            VarInter.category_id = ci.GetCategoria(concat);
-                            VarInter.description = request.Descripcion;
-                            VarInter.title = request.Resumen;
+                            VarInter.category_id = idCategorizacion;
+                            VarInter.description = request.Descripcion + concat;
+                            VarInter.title = request.TicketIMSS + "|" + request.Resumen;
                             VarInter.source_id = 2;
 
                             response_ = incidentes.PostIncidente(VarInter);
@@ -771,6 +796,7 @@ namespace Inter_ServiceDesk_PM
             {
                 response_.Estado = "Error";
                 response_.Resultado = ex.Message;
+                log.LogMsg("Error|Orden_Update: " + ex.Message);
             }
 
             return response_;
@@ -840,6 +866,7 @@ namespace Inter_ServiceDesk_PM
             {
                 response_.Estado = "Error";
                 response_.Resultado = ex.Message;
+                log.LogMsg("Error|Orden_Update_Prioridad: " + ex.Message);
             }
 
             return response_;
@@ -866,11 +893,19 @@ namespace Inter_ServiceDesk_PM
 
                         if (idTicketInvgate > 0)
                         {
-                            IncidentPutRequest VarInter = new IncidentPutRequest();
-                            
+                            //Consulta incidente para actualizar descripcion
+                            IncidentesGetRequest getRequest = new IncidentesGetRequest();
+                            getRequest.id = idTicketInvgate;
+                            dynamic incident = incidentes.GetIncidente(getRequest);
+
+                            string descripcion = incident.description;
+
+                            string[] principal = descripcion.Split(new[] { "||" }, StringSplitOptions.None);
+
+                            IncidentesPutRequest VarInter = new IncidentesPutRequest();
+
                             //Obtiene Categoria
-                            CategoriastInvgate ci = new CategoriastInvgate();
-                            string concat = MesaInvgate + "|" +
+                            string concat = "\r\n" + "||Categoria:" +
                                     request.CategoriaOpe01 + "|" +
                                     request.CategoriaOpe02 + "|" +
                                     request.CategoriaOpe03 + "|" +
@@ -879,10 +914,10 @@ namespace Inter_ServiceDesk_PM
                                     request.CategoriaPro03 + "|" +
                                     data.NombreProducto;
 
-                            VarInter.id = idTicketInvgate; 
-                            VarInter.categoryId = ci.GetCategoria(concat);
+                            VarInter.id = idTicketInvgate;
+                            VarInter.description = principal[0] + concat;
 
-                            response_ = incidentes.PutIncidenteCategory(VarInter);
+                            response_ = incidentes.PutIncidente(VarInter);
 
                             //Bitacora
                             bitacoraWO.ActualizaCategoria(request, idTicketInvgate, out string Result);
@@ -909,6 +944,7 @@ namespace Inter_ServiceDesk_PM
             {
                 response_.Estado = "Error";
                 response_.Resultado = ex.Message;
+                log.LogMsg("Error|Orden_Update_Categorizacion: " + ex.Message);
             }
 
             return response_;
@@ -927,21 +963,41 @@ namespace Inter_ServiceDesk_PM
                 {
                     if (Autenticacion.IsValid())
                     {
-                        //Valida si es una nota automatica
-                        if (request.Notas.Contains("Status Marked"))
-                        {
-                            response_.Estado = "Exito";
-                            response_.Resultado = "Comentario Automatico.";
-                        }
-                        else
-                        {
-                            //Obtiene id Invgate
-                            int idTicketInvgate = 0;
-                            ServiceBitacora.OrdenTrabajo data = bitacoraWO.GetIdInvgate(request.TicketIMSS);
-                            if (data != null)
-                            { idTicketInvgate = data.TicketInvgate == null ? 0 : Convert.ToInt32(data.TicketInvgate); }
+                        //Obtiene id Invgate
+                        int idTicketInvgate = 0;
+                        ServiceBitacora.OrdenTrabajo data = bitacoraWO.GetIdInvgate(request.TicketIMSS);
+                        if (data != null)
+                        { idTicketInvgate = data.TicketInvgate == null ? 0 : Convert.ToInt32(data.TicketInvgate); }
 
-                            if (idTicketInvgate > 0)
+                        if (idTicketInvgate > 0)
+                        {
+                            //Valida si es una nota automatica
+                            if (request.Notas.Contains("Status Marked"))
+                            {
+                                //Valida si es una reapertura de orden mediante la nota
+                                IncidentesGetRequest getRequest = new IncidentesGetRequest();
+                                getRequest.id = idTicketInvgate;
+                                dynamic valida = incidentes.GetIncidente(getRequest);
+
+                                if (valida.status_id != null)
+                                {
+                                    int statusInvgate = Convert.ToInt32(valida.status_id);
+
+                                    if (statusInvgate == 5 && request.Notas.Contains("Status Marked: In Progress"))
+                                    {
+                                        //Si el ticket esta Solucionado y se detecta nota de reapertura, actualiza el estatus
+                                        IncidentPutRequest VarInter = new IncidentPutRequest();
+                                        VarInter.id = idTicketInvgate;
+                                        VarInter.statusId = 2;//Ticket Abierto
+
+                                        response_ = incidentes.PutIncidenteStatus(VarInter);
+                                    }
+                                }
+
+                                response_.Estado = "Exito";
+                                response_.Resultado = "Comentario Automatico.";
+                            }
+                            else
                             {
                                 //Agrega adjuntos
                                 List<HttpPostedFileBase> files_ = new List<HttpPostedFileBase>();
@@ -970,12 +1026,13 @@ namespace Inter_ServiceDesk_PM
 
                                 //Bitacora
                                 bitacoraWO.AgregaNota(request, idTicketInvgate, out string Result);
+
                             }
-                            else
-                            {
-                                response_.Estado = "Error";
-                                response_.Resultado = "No se encontro Ticket solicitado, favor de validar";
-                            }
+                        }
+                        else
+                        {
+                            response_.Estado = "Error";
+                            response_.Resultado = "No se encontro Ticket solicitado, favor de validar";
                         }                        
                     }
                     else
@@ -994,6 +1051,7 @@ namespace Inter_ServiceDesk_PM
             {
                 response_.Estado = "Error";
                 response_.Resultado = ex.Message;
+                log.LogMsg("Error|Orden_Add_Nota: " + ex.Message);
             }
 
             return response_;

@@ -114,6 +114,7 @@
       <DependentUpon>DBInter.tt</DependentUpon>
     </Compile>
     <Compile Include="LogData.cs" />
+    <Compile Include="LogTask.cs" />
     <Compile Include="OrdenTrabajo.cs">
       <DependentUpon>DBInter.tt</DependentUpon>
     </Compile>
