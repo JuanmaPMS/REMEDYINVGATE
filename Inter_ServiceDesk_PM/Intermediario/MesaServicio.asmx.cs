@@ -116,13 +116,13 @@ namespace Inter_ServiceDesk_PM
                             VarInter.type_id = 1;//Incidente
                             VarInter.category_id = idCategorizacion;
                             VarInter.description =  request.Descripcion + concat;
-                            VarInter.title = request.TicketIMSS + "|" + request.Resumen;
-                            VarInter.source_id = 2;                     
+                            VarInter.title = request.TicketIMSS + " - " + request.Resumen;
+                            VarInter.source_id = 2;
 
                             response_ = incidentes.PostIncidente(VarInter);
 
                             log.LogMsg("Ticket Invgate: " + response_.Ticket);
-
+                            
                             if (response_.Estado == "Exito")
                             {
                                 List<HttpPostedFileBase> files_ = new List<HttpPostedFileBase>();
@@ -158,13 +158,37 @@ namespace Inter_ServiceDesk_PM
                                 #endregion
 
                                 if (request.Adjunto01 != null && request.Adjunto01.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName01))
-                                { files_.Add(new MemoryPostedFile(request.Adjunto01, request.AdjuntoName01)); }
+                                { 
+                                    //Valida el nombre del archivo
+                                    if(request.AdjuntoName01.Length > 50)
+                                    {
+                                        string[] nombre = request.AdjuntoName01.Split('.');
+                                        request.AdjuntoName01 = nombre[0].Substring(0,45) + "." +nombre[1];
+                                    }
+                                    files_.Add(new MemoryPostedFile(request.Adjunto01, request.AdjuntoName01)); 
+                                }
 
                                 if (request.Adjunto02 != null && request.Adjunto02.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName02))
-                                { files_.Add(new MemoryPostedFile(request.Adjunto02, request.AdjuntoName02)); }
+                                {
+                                    //Valida el nombre del archivo
+                                    if (request.AdjuntoName02.Length > 50)
+                                    {
+                                        string[] nombre = request.AdjuntoName02.Split('.');
+                                        request.AdjuntoName02 = nombre[0].Substring(0, 45) + "." + nombre[1];
+                                    }
+                                    files_.Add(new MemoryPostedFile(request.Adjunto02, request.AdjuntoName02)); 
+                                }
 
                                 if (request.Adjunto03 != null && request.Adjunto03.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName03))
-                                { files_.Add(new MemoryPostedFile(request.Adjunto03, request.AdjuntoName03)); }
+                                {
+                                    //Valida el nombre del archivo
+                                    if (request.AdjuntoName03.Length > 50)
+                                    {
+                                        string[] nombre = request.AdjuntoName03.Split('.');
+                                        request.AdjuntoName03 = nombre[0].Substring(0, 45) + "." + nombre[1];
+                                    }
+                                    files_.Add(new MemoryPostedFile(request.Adjunto03, request.AdjuntoName03)); 
+                                }
 
                                 if (files_.Count > 0)
                                 { incidentes.PostAttachments(files_.ToArray(), Convert.ToInt32(response_.Ticket)); }
@@ -527,13 +551,37 @@ namespace Inter_ServiceDesk_PM
                                 //Agrega los adjuntos
                                 List<HttpPostedFileBase> files_ = new List<HttpPostedFileBase>();
                                 if (request.Adjunto01 != null && request.Adjunto01.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName01))
-                                { files_.Add(new MemoryPostedFile(request.Adjunto01, request.AdjuntoName01)); }
+                                {
+                                    //Valida el nombre del archivo
+                                    if (request.AdjuntoName01.Length > 50)
+                                    {
+                                        string[] nombre = request.AdjuntoName01.Split('.');
+                                        request.AdjuntoName01 = nombre[0].Substring(0, 45) + "." + nombre[1];
+                                    }          
+                                    files_.Add(new MemoryPostedFile(request.Adjunto01, request.AdjuntoName01)); 
+                                }
 
                                 if (request.Adjunto02 != null && request.Adjunto02.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName02))
-                                { files_.Add(new MemoryPostedFile(request.Adjunto02, request.AdjuntoName02)); }
+                                {
+                                    //Valida el nombre del archivo
+                                    if (request.AdjuntoName02.Length > 50)
+                                    {
+                                        string[] nombre = request.AdjuntoName02.Split('.');
+                                        request.AdjuntoName02 = nombre[0].Substring(0, 45) + "." + nombre[1];
+                                    }
+                                    files_.Add(new MemoryPostedFile(request.Adjunto02, request.AdjuntoName02)); 
+                                }
 
                                 if (request.Adjunto03 != null && request.Adjunto03.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName03))
-                                { files_.Add(new MemoryPostedFile(request.Adjunto03, request.AdjuntoName03)); }
+                                {
+                                    //Valida el nombre del archivo
+                                    if (request.AdjuntoName03.Length > 50)
+                                    {
+                                        string[] nombre = request.AdjuntoName03.Split('.');
+                                        request.AdjuntoName03 = nombre[0].Substring(0, 45) + "." + nombre[1];
+                                    }
+                                    files_.Add(new MemoryPostedFile(request.Adjunto03, request.AdjuntoName03)); 
+                                }
 
                                 if (files_.Count > 0)
                                 { incidentes.PostAttachments(files_.ToArray(), idTicketInvgate); }
@@ -622,7 +670,7 @@ namespace Inter_ServiceDesk_PM
                             VarInter.type_id = 2; //Orden Trabajo
                             VarInter.category_id = idCategorizacion;
                             VarInter.description = request.Descripcion + concat;
-                            VarInter.title = request.TicketIMSS + "|" + request.Resumen;
+                            VarInter.title = request.TicketIMSS + " - " + request.Resumen;
                             VarInter.source_id = 2;
 
                             response_ = incidentes.PostIncidente(VarInter);
@@ -632,13 +680,37 @@ namespace Inter_ServiceDesk_PM
                                 List<HttpPostedFileBase> files_ = new List<HttpPostedFileBase>();
 
                                 if (request.Adjunto01 != null && request.Adjunto01.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName01))
-                                { files_.Add(new MemoryPostedFile(request.Adjunto01, request.AdjuntoName01)); }
+                                {
+                                    //Valida el nombre del archivo
+                                    if (request.AdjuntoName01.Length > 50)
+                                    {
+                                        string[] nombre = request.AdjuntoName01.Split('.');
+                                        request.AdjuntoName01 = nombre[0].Substring(0, 45) + "." + nombre[1];
+                                    }
+                                    files_.Add(new MemoryPostedFile(request.Adjunto01, request.AdjuntoName01)); 
+                                }
 
                                 if (request.Adjunto02 != null && request.Adjunto02.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName02))
-                                { files_.Add(new MemoryPostedFile(request.Adjunto02, request.AdjuntoName02)); }
+                                {
+                                    //Valida el nombre del archivo
+                                    if (request.AdjuntoName02.Length > 50)
+                                    {
+                                        string[] nombre = request.AdjuntoName02.Split('.');
+                                        request.AdjuntoName02 = nombre[0].Substring(0, 45) + "." + nombre[1];
+                                    }
+                                    files_.Add(new MemoryPostedFile(request.Adjunto02, request.AdjuntoName02)); 
+                                }
 
                                 if (request.Adjunto03 != null && request.Adjunto03.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName03))
-                                { files_.Add(new MemoryPostedFile(request.Adjunto03, request.AdjuntoName03)); }
+                                {
+                                    //Valida el nombre del archivo
+                                    if (request.AdjuntoName03.Length > 50)
+                                    {
+                                        string[] nombre = request.AdjuntoName03.Split('.');
+                                        request.AdjuntoName03 = nombre[0].Substring(0, 45) + "." + nombre[1];
+                                    }
+                                    files_.Add(new MemoryPostedFile(request.Adjunto03, request.AdjuntoName03)); 
+                                }
 
                                 if (files_.Count > 0)
                                 { incidentes.PostAttachments(files_.ToArray(), Convert.ToInt32(response_.Ticket)); }
@@ -1003,13 +1075,37 @@ namespace Inter_ServiceDesk_PM
                                 List<HttpPostedFileBase> files_ = new List<HttpPostedFileBase>();
 
                                 if (request.Adjunto01 != null && request.Adjunto01.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName01))
-                                { files_.Add(new MemoryPostedFile(request.Adjunto01, request.AdjuntoName01)); }
+                                {
+                                    //Valida el nombre del archivo
+                                    if (request.AdjuntoName01.Length > 50)
+                                    {
+                                        string[] nombre = request.AdjuntoName01.Split('.');
+                                        request.AdjuntoName01 = nombre[0].Substring(0, 45) + "." + nombre[1];
+                                    }
+                                    files_.Add(new MemoryPostedFile(request.Adjunto01, request.AdjuntoName01)); 
+                                }
 
                                 if (request.Adjunto02 != null && request.Adjunto02.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName02))
-                                { files_.Add(new MemoryPostedFile(request.Adjunto02, request.AdjuntoName02)); }
+                                {
+                                    //Valida el nombre del archivo
+                                    if (request.AdjuntoName02.Length > 50)
+                                    {
+                                        string[] nombre = request.AdjuntoName02.Split('.');
+                                        request.AdjuntoName02 = nombre[0].Substring(0, 45) + "." + nombre[1];
+                                    }
+                                    files_.Add(new MemoryPostedFile(request.Adjunto02, request.AdjuntoName02)); 
+                                }
 
                                 if (request.Adjunto03 != null && request.Adjunto03.Length > 0 && !string.IsNullOrEmpty(request.AdjuntoName03))
-                                { files_.Add(new MemoryPostedFile(request.Adjunto03, request.AdjuntoName03)); }
+                                {
+                                    //Valida el nombre del archivo
+                                    if (request.AdjuntoName03.Length > 50)
+                                    {
+                                        string[] nombre = request.AdjuntoName03.Split('.');
+                                        request.AdjuntoName03 = nombre[0].Substring(0, 45) + "." + nombre[1];
+                                    }
+                                    files_.Add(new MemoryPostedFile(request.Adjunto03, request.AdjuntoName03)); 
+                                }
 
                                 if (files_.Count > 0)
                                 { incidentes.PostAttachments(files_.ToArray(), idTicketInvgate); }
