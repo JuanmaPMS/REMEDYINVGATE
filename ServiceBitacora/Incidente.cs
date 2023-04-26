@@ -46,6 +46,7 @@ namespace ServiceBitacora
         public string Sensibilidad { get; set; }
         public string Usuario { get; set; }
         public Nullable<System.DateTime> Inclusion { get; set; }
+        public string Req { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<IncidenteNotas> IncidenteNotas { get; set; }

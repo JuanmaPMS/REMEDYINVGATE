@@ -64,5 +64,6 @@ namespace Entities.Intermedio
         public string Cliente { get; set; }
         public string VIP { get; set; }
         public string Sensibilidad { get; set; }
+        public string? Req { get; set; }
     }
 }

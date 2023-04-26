@@ -47,7 +47,9 @@
     <Compile Include="Intermedio\AttachedFile.cs" />
     <Compile Include="Intermedio\CreaTicketWO.cs" />
     <Compile Include="Intermedio\Ticket.cs" />
+    <Compile Include="Invgate\AttachmentResponse.cs" />
     <Compile Include="Invgate\Class1.cs" />
+    <Compile Include="Invgate\IncidenteColaborador.cs" />
     <Compile Include="Invgate\IncidentPutRequest.cs" />
     <Compile Include="Invgate\RegistrosRequest.cs" />
     <Compile Include="Invgate\ResultCategorias.cs" />

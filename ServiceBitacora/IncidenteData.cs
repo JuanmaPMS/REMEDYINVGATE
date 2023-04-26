@@ -127,6 +127,10 @@ namespace ServiceBitacora
                     sqParam.Add(new SqlParameter("@Archivo03", DBNull.Value));
                 else
                     sqParam.Add(new SqlParameter("@Archivo03", ticket.Adjunto03));
+                if(string.IsNullOrEmpty(ticket.Req))
+                    sqParam.Add(new SqlParameter("@REQ", DBNull.Value));
+                else
+                    sqParam.Add(new SqlParameter("@REQ", ticket.Req));
 
                 id = ctx.Database.ExecuteSqlCommand("EXEC [dbo].[SP_INSERT_INCIDENTE] @TicketRemedy,@TicketInvgate,@Descripcion,@Resumen,@Impacto,@Urgencia,@TipoIncidencia,@FuenteReportada,@NombreProducto,@GrupoSoporte,@CategoriaOpe01,@CategoriaOpe02,@CategoriaOpe03,@CategoriaPro01,@CategoriaPro02,@CategoriaPro03,@Estado,@FechaCreacion,@Cliente,@VIP,@Sensibilidad,@Usuario,@Nota,@Archivo01,@ArchivoName01,@ArchivoSize01,@Archivo02,@ArchivoName02,@ArchivoSize02,@Archivo03,@ArchivoName03,@ArchivoSize03 ", sqParam.ToArray());
                 Result = "Exito: Incidente registrado en bitácora.";

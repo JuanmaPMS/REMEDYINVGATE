@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBitacora", "ServiceB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskIncidencias", "TaskIncidencias\TaskIncidencias.csproj", "{1301C4CD-53B5-4502-8706-10AA4BF52214}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Email", "Email\Email.csproj", "{77309D1E-A2EB-41E9-92F2-BB9BE5418AEA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{1301C4CD-53B5-4502-8706-10AA4BF52214}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1301C4CD-53B5-4502-8706-10AA4BF52214}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1301C4CD-53B5-4502-8706-10AA4BF52214}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77309D1E-A2EB-41E9-92F2-BB9BE5418AEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77309D1E-A2EB-41E9-92F2-BB9BE5418AEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77309D1E-A2EB-41E9-92F2-BB9BE5418AEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77309D1E-A2EB-41E9-92F2-BB9BE5418AEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

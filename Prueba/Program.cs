@@ -20,31 +20,30 @@ namespace Prueba
         static void Main(string[] args)
         {
             //Pruebas bitacora
-            //CreaTicket ticket = new CreaTicket();
-            //ticket.TipoOperacion = "C_INC";
-            //ticket.NombreProveedor = "PEOPLE-MEDIA";
-            //ticket.TicketIMSS = "INC007878";
-            //ticket.Descripcion = "PRUEBA DE INTEGRACIOn 7";
-            //ticket.Resumen = "PRUEBA DE INTEGRACIOn 7";
-            //ticket.Impacto = "1000";
-            //ticket.Urgencia = "2000";
-            //ticket.Prioridad = null;
-            //ticket.TipoIncidencia = "";
-            //ticket.FuenteReportada = "2000";
-            //ticket.NombreProducto = "";
-            //ticket.GrupoSoporte = "SOPORTE";
-            //ticket.CategoriaOpe01 = "INFRAESTRUCTURA DE REDES Y TELECOMUNICACIONES";
-            //ticket.CategoriaOpe02 = "REDES Y ENLACES";
-            //ticket.CategoriaOpe03 = "SOPORTAR";
-            //ticket.CategoriaPro01 = "HARDWARE";
-            //ticket.CategoriaPro02 = "COMPUTO PERSONAL";
-            //ticket.CategoriaPro03 = "";
-            //ticket.EstadoNuevo = 1;
-            //ticket.Notas = "Prueba de notas";
-            //ticket.FechaCreacion = "02/02/2023 07:30:00 p.m.";
-            //ticket.Cliente = "IMSS";
-            //ticket.VIP = "Si";
-            //ticket.Sensibilidad = "Sensibilidad";
+            CreaTicketIN ticket = new CreaTicketIN();
+            ticket.TipoOperacion = "C_INC";
+            ticket.NombreProveedor = "PEOPLE MEDIA";
+            ticket.TicketIMSS = "INC001234";
+            ticket.Descripcion = "PRUEBA DE INTEGRACIOn 7";
+            ticket.Resumen = "PRUEBA DE INTEGRACIOn 7";
+            ticket.Impacto = 1000;
+            ticket.Urgencia = 2000;
+            ticket.TipoIncidencia = "";
+            ticket.FuenteReportada = "2000";
+            ticket.NombreProducto = "";
+            ticket.GrupoSoporte = "SOPORTE";
+            ticket.CategoriaOpe01 = "INFRAESTRUCTURA DE REDES Y TELECOMUNICACIONES";
+            ticket.CategoriaOpe02 = "REDES Y ENLACES";
+            ticket.CategoriaOpe03 = "SOPORTAR";
+            ticket.CategoriaPro01 = "HARDWARE";
+            ticket.CategoriaPro02 = "COMPUTO PERSONAL";
+            ticket.CategoriaPro03 = "";
+            ticket.EstadoNuevo = "1";
+            ticket.Notas = "Prueba de notas";
+            ticket.FechaCreacion = DateTime.Now;
+            ticket.Cliente = "IMSS";
+            ticket.VIP = "Si";
+            ticket.Sensibilidad = "Sensibilidad";
 
             //String concat = "CAT PROD" + "|" +//"MESA DE SERVICIO IMSS" + "|" +
             //                "APLICACIONES|" +
@@ -69,13 +68,13 @@ namespace Prueba
             //invgate.GetIncidente(get);
 
 
-            CategoriastInvgate invgate = new CategoriastInvgate();
+            //CategoriastInvgate invgate = new CategoriastInvgate();
 
-            Categorizacion categorizacion = invgate.GetCategorizacion(1413);
+            //Categorizacion categorizacion = invgate.GetCategorizacion(1413);
 
 
-            //IncidenteData incidenteData= new IncidenteData();
-            ////incidenteData.Crear(ticket, 1275, out string result);
+            IncidenteData incidenteData= new IncidenteData();
+            incidenteData.Crear(ticket, 1234, out string result);
             //Ticket result = incidenteData.Get(ticket.TicketIMSS);
             //Console.WriteLine(result);  
 

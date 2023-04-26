@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\desarrollo\Documents\GitHub\REMEDYINVGATE2\ServiceBitacora\DBInter.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\desarrollo\Documents\Visual Studio 2022\Projects\REMEDYINVGATE_MITZY\REMEDYINVGATE_MITZY\ServiceBitacora\DBInter.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

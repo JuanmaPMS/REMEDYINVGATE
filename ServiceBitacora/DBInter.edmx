@@ -127,6 +127,7 @@
           <Property Name="VIP" Type="bit" />
           <Property Name="Sensibilidad" Type="nvarchar" MaxLength="200" />
           <Property Name="Usuario" Type="nvarchar" MaxLength="50" />
+          <Property Name="Req" Type="nvarchar" MaxLength="50" />
           <Property Name="Inclusion" Type="datetime" />
         </EntityType>
         <EntityType Name="IncidenteNotas">
@@ -177,6 +178,7 @@
           <Property Name="VIP" Type="bit" />
           <Property Name="Sensibilidad" Type="nvarchar" MaxLength="200" />
           <Property Name="Usuario" Type="nvarchar" MaxLength="50" />
+          <Property Name="Req" Type="nvarchar" MaxLength="50" />
           <Property Name="Inclusion" Type="datetime" />
         </EntityType>
         <EntityType Name="OrdenTrabajoDocumentos">
@@ -413,6 +415,7 @@
           <Property Name="Inclusion" Type="DateTime" Precision="3" />
           <NavigationProperty Name="IncidenteNotas" Relationship="Self.FK_IncidenteNotas_Incidente" FromRole="Incidente" ToRole="IncidenteNotas" />
           <NavigationProperty Name="IncidentesDocumentos" Relationship="Self.FK_IncidentesDocumentos_Incidente" FromRole="Incidente" ToRole="IncidentesDocumentos" />
+          <Property Name="Req" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="IncidenteNotas">
           <Key>
@@ -467,6 +470,7 @@
           <Property Name="Inclusion" Type="DateTime" Precision="3" />
           <NavigationProperty Name="OrdenTrabajoDocumentos" Relationship="Self.FK_OrdenTrabajoDocumentos_OrdenTrabajo" FromRole="OrdenTrabajo" ToRole="OrdenTrabajoDocumentos" />
           <NavigationProperty Name="OrdenTrabajoNotas" Relationship="Self.FK_OrdenTrabajoNotas_OrdenTrabajo" FromRole="OrdenTrabajo" ToRole="OrdenTrabajoNotas" />
+          <Property Name="Req" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="OrdenTrabajoDocumentos">
           <Key>
@@ -689,6 +693,7 @@
           <EntitySetMapping Name="Incidente">
             <EntityTypeMapping TypeName="InterRemedyInvgateModel.Incidente">
               <MappingFragment StoreEntitySet="Incidente">
+                <ScalarProperty Name="Req" ColumnName="Req" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="TicketRemedy" ColumnName="TicketRemedy" />
                 <ScalarProperty Name="TicketInvgate" ColumnName="TicketInvgate" />
@@ -744,6 +749,7 @@
           <EntitySetMapping Name="OrdenTrabajo">
             <EntityTypeMapping TypeName="InterRemedyInvgateModel.OrdenTrabajo">
               <MappingFragment StoreEntitySet="OrdenTrabajo">
+                <ScalarProperty Name="Req" ColumnName="Req" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="TicketRemedy" ColumnName="TicketRemedy" />
                 <ScalarProperty Name="TicketInvgate" ColumnName="TicketInvgate" />

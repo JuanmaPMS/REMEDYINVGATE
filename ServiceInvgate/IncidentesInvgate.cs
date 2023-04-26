@@ -124,18 +124,18 @@ namespace ServiceInvgate
             return response.StatusCode.ToString();
         }
 
-        public dynamic GetAttachments(int idFile)
+        public AttachmentResponse GetAttachments(int idFile)
         {
             var client = new RestClient(ApiAttachments + "/GetFile");
             var request = new RestRequest("", Method.Get);
             request.AddParameter("idAtachment", idFile);
            
             var response = client.Execute(request);
-            dynamic result = null;
+            AttachmentResponse result = null;
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                result = JsonConvert.DeserializeObject<dynamic>(response.Content);           
+                result = JsonConvert.DeserializeObject<AttachmentResponse>(response.Content);           
             }
 
             return result;
@@ -305,6 +305,41 @@ namespace ServiceInvgate
                 {
                     Resultado.Ticket = IncidenteId.ToString();
                     Resultado.Resultado = "Transacción exitosa, registro actualizado en Invgate People Media";
+                    Resultado.Estado = "Exito";
+                }
+                else
+                {
+                    Resultado.Ticket = String.Empty;
+                    Resultado.Resultado = response.ErrorException.Message;
+                    Resultado.Estado = "Error";
+                }
+            }
+            catch (Exception ex)
+            {
+                Resultado.Ticket = String.Empty;
+                Resultado.Resultado = "Ocurrio un error: " + ex.Message;
+                Resultado.Estado = "Error";
+            }
+            return Resultado;
+        }
+
+        public Entities.Intermedio.Result PostColaborador(IncidenteColaborador colaborador)
+        {
+            Entities.Intermedio.Result Resultado = new Entities.Intermedio.Result();
+            try
+            {
+                var client = new RestClient(UrlServiciosCtrl + "/InsertaObservador");
+                var request = new RestRequest("", Method.Post);
+                request.AddHeader("Content-Type", "application/json");
+                request.AddParameter("application/json", colaborador, ParameterType.RequestBody);
+                var response = client.Execute(request);
+
+                Console.WriteLine(response.Content);
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    Resultado.Ticket = colaborador.IncidentId.ToString();
+                    Resultado.Resultado = "Transacción exitosa, registro agregado a Invgate People Media";
                     Resultado.Estado = "Exito";
                 }
                 else

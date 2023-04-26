@@ -395,40 +395,40 @@ namespace TaskIncidencias
 
                                 if (arrFiles.Length >= 3)
                                 {
-                                    dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+                                    AttachmentResponse file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
 
                                     if (file1 != null)
                                     {
-                                        if (Convert.ToBoolean(file1.success))
+                                        if (file1.success)
                                         {
                                             _coment.Adjunto01 = file1.attach;
                                             _coment.AdjuntoName01 = file1.name;
-                                            _coment.AdjuntoSize01 = file1.size;
+                                            _coment.AdjuntoSize01 = file1.size.ToString();
                                         }
                                     }
 
 
-                                    dynamic file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
+                                    AttachmentResponse file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
 
                                     if (file2 != null)
                                     {
-                                        if (Convert.ToBoolean(file2.success))
+                                        if (file2.success)
                                         {
                                             _coment.Adjunto02 = file2.attach;
                                             _coment.AdjuntoName02 = file2.name;
-                                            _coment.AdjuntoSize02 = file2.size;
+                                            _coment.AdjuntoSize02 = file2.size.ToString();
                                         }
                                     }
 
-                                    dynamic file3 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[2]));
+                                    AttachmentResponse file3 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[2]));
 
                                     if (file3 != null)
                                     {
-                                        if (Convert.ToBoolean(file3.success))
+                                        if (file3.success)
                                         {
                                             _coment.Adjunto03 = file3.attach;
                                             _coment.AdjuntoName03 = file3.name;
-                                            _coment.AdjuntoSize03 = file3.size;
+                                            _coment.AdjuntoSize03 = file3.size.ToString();
                                         }
                                     }
 
@@ -436,43 +436,43 @@ namespace TaskIncidencias
 
                                 if (arrFiles.Length == 2)
                                 {
-                                    dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+                                    AttachmentResponse file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
 
                                     if (file1 != null)
                                     {
-                                        if (Convert.ToBoolean(file1.success))
+                                        if (file1.success)
                                         {
                                             _coment.Adjunto01 = file1.attach;
                                             _coment.AdjuntoName01 = file1.name;
-                                            _coment.AdjuntoSize01 = file1.size;
+                                            _coment.AdjuntoSize01 = file1.size.ToString();
                                         }
                                     }
 
 
-                                    dynamic file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
+                                    AttachmentResponse file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
 
                                     if (file2 != null)
                                     {
-                                        if (Convert.ToBoolean(file2.success))
+                                        if (file2.success)
                                         {
                                             _coment.Adjunto02 = file2.attach;
                                             _coment.AdjuntoName02 = file2.name;
-                                            _coment.AdjuntoSize02 = file2.size;
+                                            _coment.AdjuntoSize02 = file2.size.ToString();
                                         }
                                     }
                                 }
 
                                 if (arrFiles.Length == 1)
                                 {
-                                    dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+                                    AttachmentResponse file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
 
                                     if (file1 != null)
                                     {
-                                        if (Convert.ToBoolean(file1.success))
+                                        if (file1.success)
                                         {
                                             _coment.Adjunto01 = file1.attach;
                                             _coment.AdjuntoName01 = file1.name;
-                                            _coment.AdjuntoSize01 = file1.size;
+                                            _coment.AdjuntoSize01 = file1.size.ToString();
                                         }
                                     }
                                 }
@@ -524,40 +524,40 @@ namespace TaskIncidencias
 
                                 if (arrFiles.Length >= 3)
                                 {
-                                    dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+                                    AttachmentResponse file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
 
                                     if (file1 != null)
                                     {
-                                        if (Convert.ToBoolean(file1.success))
+                                        if (file1.success)
                                         {
                                             _coment.Adjunto01 = file1.attach;
                                             _coment.AdjuntoName01 = file1.name;
-                                            _coment.AdjuntoSize01 = file1.size;
+                                            _coment.AdjuntoSize01 = file1.size.ToString();
                                         }
                                     }
 
 
-                                    dynamic file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
+                                    AttachmentResponse file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
 
                                     if (file2 != null)
                                     {
-                                        if (Convert.ToBoolean(file2.success))
+                                        if (file2.success)
                                         {
                                             _coment.Adjunto02 = file2.attach;
                                             _coment.AdjuntoName02 = file2.name;
-                                            _coment.AdjuntoSize02 = file2.size;
+                                            _coment.AdjuntoSize02 = file2.size.ToString();
                                         }
                                     }
 
-                                    dynamic file3 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[2]));
+                                    AttachmentResponse file3 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[2]));
 
                                     if (file3 != null)
                                     {
-                                        if (Convert.ToBoolean(file3.success))
+                                        if (file3.success)
                                         {
                                             _coment.Adjunto03 = file3.attach;
                                             _coment.AdjuntoName03 = file3.name;
-                                            _coment.AdjuntoSize03 = file3.size;
+                                            _coment.AdjuntoSize03 = file3.size.ToString();
                                         }
                                     }
 
@@ -565,43 +565,43 @@ namespace TaskIncidencias
 
                                 if (arrFiles.Length == 2)
                                 {
-                                    dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+                                    AttachmentResponse file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
 
                                     if (file1 != null)
                                     {
-                                        if (Convert.ToBoolean(file1.success))
+                                        if (file1.success)
                                         {
                                             _coment.Adjunto01 = file1.attach;
                                             _coment.AdjuntoName01 = file1.name;
-                                            _coment.AdjuntoSize01 = file1.size;
+                                            _coment.AdjuntoSize01 = file1.size.ToString();
                                         }
                                     }
 
 
-                                    dynamic file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
+                                    AttachmentResponse file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
 
                                     if (file2 != null)
                                     {
-                                        if (Convert.ToBoolean(file2.success))
+                                        if (file2.success)
                                         {
                                             _coment.Adjunto02 = file2.attach;
                                             _coment.AdjuntoName02 = file2.name;
-                                            _coment.AdjuntoSize02 = file2.size;
+                                            _coment.AdjuntoSize02 = file2.size.ToString();
                                         }
                                     }
                                 }
 
                                 if (arrFiles.Length == 1)
                                 {
-                                    dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+                                    AttachmentResponse file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
 
                                     if (file1 != null)
                                     {
-                                        if (Convert.ToBoolean(file1.success))
+                                        if (file1.success)
                                         {
                                             _coment.Adjunto01 = file1.attach;
                                             _coment.AdjuntoName01 = file1.name;
-                                            _coment.AdjuntoSize01 = file1.size;
+                                            _coment.AdjuntoSize01 = file1.size.ToString();
                                         }
                                     }
                                 }
@@ -633,83 +633,83 @@ namespace TaskIncidencias
 
                             if (arrFiles.Length >= 3)
                             {
-                                dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+                                AttachmentResponse file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
 
                                 if (file1 != null)
                                 {
-                                    if (Convert.ToBoolean(file1.success))
+                                    if (file1.success)
                                     {
                                         _request.Adjunto01 = file1.attach;
                                         _request.AdjuntoName01 = file1.name;
-                                        _request.AdjuntoSize01 = file1.size;
+                                        _request.AdjuntoSize01 = file1.size.ToString();
                                     }
                                 }
 
 
-                                dynamic file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
+                                AttachmentResponse file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
 
                                 if (file2 != null)
                                 {
-                                    if (Convert.ToBoolean(file2.success))
+                                    if (file2.success)
                                     {
                                         _request.Adjunto02 = file2.attach;
                                         _request.AdjuntoName02 = file2.name;
-                                        _request.AdjuntoSize02 = file2.size;
+                                        _request.AdjuntoSize02 = file2.size.ToString();
                                     }
                                 }
 
-                                dynamic file3 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[2]));
+                                AttachmentResponse file3 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[2]));
 
                                 if (file3 != null)
                                 {
-                                    if (Convert.ToBoolean(file3.success))
+                                    if (file3.success)
                                     {
                                         _request.Adjunto03 = file3.attach;
                                         _request.AdjuntoName03 = file3.name;
-                                        _request.AdjuntoSize03 = file3.size;
+                                        _request.AdjuntoSize03 = file3.size.ToString();
                                     }
                                 }
                             }
 
                             if (arrFiles.Length == 2)
                             {
-                                dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+                                AttachmentResponse file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
 
                                 if (file1 != null)
                                 {
-                                    if (Convert.ToBoolean(file1.success))
+                                    if (file1.success)
                                     {
                                         _request.Adjunto01 = file1.attach;
                                         _request.AdjuntoName01 = file1.name;
-                                        _request.AdjuntoSize01 = file1.size;
+                                        _request.AdjuntoSize01 = file1.size.ToString();
                                     }
                                 }
 
 
-                                dynamic file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
+                                AttachmentResponse file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
 
                                 if (file2 != null)
                                 {
-                                    if (Convert.ToBoolean(file2.success))
+                                    if (file2.success)
                                     {
                                         _request.Adjunto02 = file2.attach;
                                         _request.AdjuntoName02 = file2.name;
-                                        _request.AdjuntoSize02 = file2.size;
+                                        _request.AdjuntoSize02 = file2.size.ToString();
                                     }
                                 }
                             }
 
                             if (arrFiles.Length == 1)
                             {
-                                dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+                                AttachmentResponse file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
 
                                 if (file1 != null)
                                 {
-                                    if (Convert.ToBoolean(file1.success))
+                                    if (file1.success)
                                     {
                                         _request.Adjunto01 = file1.attach;
                                         _request.AdjuntoName01 = file1.name;
-                                        _request.AdjuntoSize01 = file1.size;
+                                        _request.AdjuntoSize01 = file1.size.ToString();
                                     }
                                 }
                             }
@@ -756,15 +756,15 @@ namespace TaskIncidencias
                     _request.Notas = "Adjuntos Ticket: " + bitacora.TicketRemedy;
 
 
-                    dynamic file = incidentes.GetAttachments(idFile);
+                    AttachmentResponse file = incidentes.GetAttachments(idFile);
 
                     if (file != null)
                     {
-                        if (Convert.ToBoolean(file.success))
+                        if (file.success)
                         {
                             _request.Adjunto01 = file.attach;
                             _request.AdjuntoName01 = file.name;
-                            _request.AdjuntoSize01 = file.size;
+                            _request.AdjuntoSize01 = file.size.ToString();
                         }
                     }
 
@@ -1125,40 +1125,40 @@ namespace TaskIncidencias
 
                                 if (arrFiles.Length >= 3)
                                 {
-                                    dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+                                    AttachmentResponse file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
 
                                     if (file1 != null)
                                     {
-                                        if (Convert.ToBoolean(file1.success))
+                                        if (file1.success)
                                         {
                                             _coment.Adjunto01 = file1.attach;
                                             _coment.AdjuntoName01 = file1.name;
-                                            _coment.AdjuntoSize01 = file1.size;
+                                            _coment.AdjuntoSize01 = file1.size.ToString();
                                         }
                                     }
 
 
-                                    dynamic file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
+                                    AttachmentResponse file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
 
                                     if (file2 != null)
                                     {
-                                        if (Convert.ToBoolean(file2.success))
+                                        if (file2.success)
                                         {
                                             _coment.Adjunto02 = file2.attach;
                                             _coment.AdjuntoName02 = file2.name;
-                                            _coment.AdjuntoSize02 = file2.size;
+                                            _coment.AdjuntoSize02 = file2.size.ToString();
                                         }
                                     }
 
-                                    dynamic file3 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[2]));
+                                    AttachmentResponse file3 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[2]));
 
                                     if (file3 != null)
                                     {
-                                        if (Convert.ToBoolean(file3.success))
+                                        if (file3.success)
                                         {
                                             _coment.Adjunto03 = file3.attach;
                                             _coment.AdjuntoName03 = file3.name;
-                                            _coment.AdjuntoSize03 = file3.size;
+                                            _coment.AdjuntoSize03 = file3.size.ToString();
                                         }
                                     }
 
@@ -1166,43 +1166,43 @@ namespace TaskIncidencias
 
                                 if (arrFiles.Length == 2)
                                 {
-                                    dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+                                    AttachmentResponse file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
 
                                     if (file1 != null)
                                     {
-                                        if (Convert.ToBoolean(file1.success))
+                                        if (file1.success)
                                         {
                                             _coment.Adjunto01 = file1.attach;
                                             _coment.AdjuntoName01 = file1.name;
-                                            _coment.AdjuntoSize01 = file1.size;
+                                            _coment.AdjuntoSize01 = file1.size.ToString();
                                         }
                                     }
 
 
-                                    dynamic file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
+                                    AttachmentResponse file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
 
                                     if (file2 != null)
                                     {
-                                        if (Convert.ToBoolean(file2.success))
+                                        if (file2.success)
                                         {
                                             _coment.Adjunto02 = file2.attach;
                                             _coment.AdjuntoName02 = file2.name;
-                                            _coment.AdjuntoSize02 = file2.size;
+                                            _coment.AdjuntoSize02 = file2.size.ToString();
                                         }
                                     }
                                 }
 
                                 if (arrFiles.Length == 1)
                                 {
-                                    dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+                                    AttachmentResponse file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
 
                                     if (file1 != null)
                                     {
-                                        if (Convert.ToBoolean(file1.success))
+                                        if (file1.success)
                                         {
                                             _coment.Adjunto01 = file1.attach;
                                             _coment.AdjuntoName01 = file1.name;
-                                            _coment.AdjuntoSize01 = file1.size;
+                                            _coment.AdjuntoSize01 = file1.size.ToString();
                                         }
                                     }
                                 }
@@ -1255,40 +1255,40 @@ namespace TaskIncidencias
 
                                 if (arrFiles.Length >= 3)
                                 {
-                                    dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+                                    AttachmentResponse file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
 
                                     if (file1 != null)
                                     {
-                                        if (Convert.ToBoolean(file1.success))
+                                        if (file1.success)
                                         {
                                             _coment.Adjunto01 = file1.attach;
                                             _coment.AdjuntoName01 = file1.name;
-                                            _coment.AdjuntoSize01 = file1.size;
+                                            _coment.AdjuntoSize01 = file1.size.ToString();
                                         }
                                     }
 
 
-                                    dynamic file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
+                                    AttachmentResponse file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
 
                                     if (file2 != null)
                                     {
-                                        if (Convert.ToBoolean(file2.success))
+                                        if (file2.success)
                                         {
                                             _coment.Adjunto02 = file2.attach;
                                             _coment.AdjuntoName02 = file2.name;
-                                            _coment.AdjuntoSize02 = file2.size;
+                                            _coment.AdjuntoSize02 = file2.size.ToString();
                                         }
                                     }
 
-                                    dynamic file3 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[2]));
+                                    AttachmentResponse file3 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[2]));
 
                                     if (file3 != null)
                                     {
-                                        if (Convert.ToBoolean(file3.success))
+                                        if (file3.success)
                                         {
                                             _coment.Adjunto03 = file3.attach;
                                             _coment.AdjuntoName03 = file3.name;
-                                            _coment.AdjuntoSize03 = file3.size;
+                                            _coment.AdjuntoSize03 = file3.size.ToString();
                                         }
                                     }
 
@@ -1296,43 +1296,43 @@ namespace TaskIncidencias
 
                                 if (arrFiles.Length == 2)
                                 {
-                                    dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+                                    AttachmentResponse file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
 
                                     if (file1 != null)
                                     {
-                                        if (Convert.ToBoolean(file1.success))
+                                        if (file1.success)
                                         {
                                             _coment.Adjunto01 = file1.attach;
                                             _coment.AdjuntoName01 = file1.name;
-                                            _coment.AdjuntoSize01 = file1.size;
+                                            _coment.AdjuntoSize01 = file1.size.ToString();
                                         }
                                     }
 
 
-                                    dynamic file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
+                                    AttachmentResponse file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
 
                                     if (file2 != null)
                                     {
-                                        if (Convert.ToBoolean(file2.success))
+                                        if (file2.success)
                                         {
                                             _coment.Adjunto02 = file2.attach;
                                             _coment.AdjuntoName02 = file2.name;
-                                            _coment.AdjuntoSize02 = file2.size;
+                                            _coment.AdjuntoSize02 = file2.size.ToString();
                                         }
                                     }
                                 }
 
                                 if (arrFiles.Length == 1)
                                 {
-                                    dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+                                    AttachmentResponse file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
 
                                     if (file1 != null)
                                     {
-                                        if (Convert.ToBoolean(file1.success))
+                                        if (file1.success)
                                         {
                                             _coment.Adjunto01 = file1.attach;
                                             _coment.AdjuntoName01 = file1.name;
-                                            _coment.AdjuntoSize01 = file1.size;
+                                            _coment.AdjuntoSize01 = file1.size.ToString();
                                         }
                                     }
                                 }
@@ -1365,83 +1365,83 @@ namespace TaskIncidencias
 
                             if (arrFiles.Length >= 3)
                             {
-                                dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+                                AttachmentResponse file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
 
                                 if (file1 != null)
                                 {
-                                    if (Convert.ToBoolean(file1.success))
+                                    if (file1.success)
                                     {
                                         _request.Adjunto01 = file1.attach;
                                         _request.AdjuntoName01 = file1.name;
-                                        _request.AdjuntoSize01 = file1.size;
+                                        _request.AdjuntoSize01 = file1.size.ToString();
                                     }
                                 }
 
 
-                                dynamic file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
+                                AttachmentResponse file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
 
                                 if (file2 != null)
                                 {
-                                    if (Convert.ToBoolean(file2.success))
+                                    if (file2.success)
                                     {
                                         _request.Adjunto02 = file2.attach;
                                         _request.AdjuntoName02 = file2.name;
-                                        _request.AdjuntoSize02 = file2.size;
+                                        _request.AdjuntoSize02 = file2.size.ToString();
                                     }
                                 }
 
-                                dynamic file3 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[2]));
+                                AttachmentResponse file3 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[2]));
 
                                 if (file3 != null)
                                 {
-                                    if (Convert.ToBoolean(file3.success))
+                                    if (file3.success)
                                     {
                                         _request.Adjunto03 = file3.attach;
                                         _request.AdjuntoName03 = file3.name;
-                                        _request.AdjuntoSize03 = file3.size;
+                                        _request.AdjuntoSize03 = file3.size.ToString();
                                     }
                                 }
                             }
 
                             if (arrFiles.Length == 2)
                             {
-                                dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+                                AttachmentResponse file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
 
                                 if (file1 != null)
                                 {
-                                    if (Convert.ToBoolean(file1.success))
+                                    if (file1.success)
                                     {
                                         _request.Adjunto01 = file1.attach;
                                         _request.AdjuntoName01 = file1.name;
-                                        _request.AdjuntoSize01 = file1.size;
+                                        _request.AdjuntoSize01 = file1.size.ToString();
                                     }
                                 }
 
 
-                                dynamic file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
+                                AttachmentResponse file2 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[1]));
 
                                 if (file2 != null)
                                 {
-                                    if (Convert.ToBoolean(file2.success))
+                                    if (file2.success)
                                     {
                                         _request.Adjunto02 = file2.attach;
                                         _request.AdjuntoName02 = file2.name;
-                                        _request.AdjuntoSize02 = file2.size;
+                                        _request.AdjuntoSize02 = file2.size.ToString();
                                     }
                                 }
                             }
 
                             if (arrFiles.Length == 1)
                             {
-                                dynamic file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
+                                AttachmentResponse file1 = incidentes.GetAttachments(Convert.ToInt32(arrFiles[0]));
 
                                 if (file1 != null)
                                 {
-                                    if (Convert.ToBoolean(file1.success))
+                                    if (file1.success)
                                     {
                                         _request.Adjunto01 = file1.attach;
                                         _request.AdjuntoName01 = file1.name;
-                                        _request.AdjuntoSize01 = file1.size;
+                                        _request.AdjuntoSize01 = file1.size.ToString();
                                     }
                                 }
                             }
@@ -1488,15 +1488,15 @@ namespace TaskIncidencias
                     _request.Notas = "Adjuntos Ticket: " + bitacora.TicketRemedy;
 
 
-                    dynamic file = incidentes.GetAttachments(idFile);
+                    AttachmentResponse file = incidentes.GetAttachments(idFile);
 
                     if (file != null)
                     {
-                        if (Convert.ToBoolean(file.success))
+                        if (file.success)
                         {
                             _request.Adjunto01 = file.attach;
                             _request.AdjuntoName01 = file.name;
-                            _request.AdjuntoSize01 = file.size;
+                            _request.AdjuntoSize01 = file.size.ToString();
                         }
                     }
 
