@@ -46,6 +46,7 @@
     <Compile Include="Intermedio\ActualizaTicketWO.cs" />
     <Compile Include="Intermedio\AttachedFile.cs" />
     <Compile Include="Intermedio\CreaTicketWO.cs" />
+    <Compile Include="Intermedio\EmailBody.cs" />
     <Compile Include="Intermedio\Ticket.cs" />
     <Compile Include="Invgate\AttachmentResponse.cs" />
     <Compile Include="Invgate\Class1.cs" />

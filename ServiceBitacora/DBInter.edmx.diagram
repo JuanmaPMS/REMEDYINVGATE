@@ -26,6 +26,9 @@
         <AssociationConnector Association="InterRemedyInvgateModel.FK_IncidentesDocumentos_Incidente" ManuallyRouted="false" />
         <AssociationConnector Association="InterRemedyInvgateModel.FK_OrdenTrabajoDocumentos_OrdenTrabajo" ManuallyRouted="false" />
         <AssociationConnector Association="InterRemedyInvgateModel.FK_OrdenTrabajoNotas_OrdenTrabajo" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="InterRemedyInvgateModel.Notificacion" Width="1.5" PointX="3.375" PointY="11.75" />
+        <EntityTypeShape EntityType="InterRemedyInvgateModel.NotificacionAgente" Width="1.5" PointX="12.375" PointY="6.75" />
+        <EntityTypeShape EntityType="InterRemedyInvgateModel.NotificacionConsultor" Width="1.5" PointX="13.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

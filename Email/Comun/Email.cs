@@ -6,12 +6,13 @@ using System.Net.Mail;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Configuration;
 
 namespace Email
 {
     public class Email
     {
-        private IConfiguration Configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: false).Build();
+        private Configuracion config = new Configuracion();
         private string[] destinatarios;
         private string[] destinatariosCC;
         private string[] destinatariosBCC;
@@ -39,8 +40,13 @@ namespace Email
             {
                 MailMessage message = new MailMessage();
                 SmtpClient smtp = new SmtpClient();
+                config.From = ConfigurationManager.AppSettings["From"];
+                config.Password = ConfigurationManager.AppSettings["Password"];
+                config.SmtpServer = ConfigurationManager.AppSettings["SmtpServer"];
+                config.Port = Convert.ToInt32(ConfigurationManager.AppSettings["Port"]);
+                config.DisplayName = ConfigurationManager.AppSettings["DisplayName"];
 
-                Configuracion config = Configuration.GetSection("EmailConfiguration").Get<Configuracion>();
+                //Configuracion config = Configuration.GetSection("EmailConfiguration").Get<Configuracion>();
 
                 message.From = new MailAddress(config.From, config.DisplayName, Encoding.UTF8);
                 message.Subject = asunto;

@@ -37,7 +37,7 @@ namespace Prueba
             ticket.CategoriaOpe03 = "SOPORTAR";
             ticket.CategoriaPro01 = "HARDWARE";
             ticket.CategoriaPro02 = "COMPUTO PERSONAL";
-            ticket.CategoriaPro03 = "";
+            ticket.CategoriaPro03 = "NECOSPE";
             ticket.EstadoNuevo = "1";
             ticket.Notas = "Prueba de notas";
             ticket.FechaCreacion = DateTime.Now;
@@ -74,6 +74,7 @@ namespace Prueba
 
 
             IncidenteData incidenteData= new IncidenteData();
+            ticket.Req = "REQ120";
             incidenteData.Crear(ticket, 1234, out string result);
             //Ticket result = incidenteData.Get(ticket.TicketIMSS);
             //Console.WriteLine(result);  

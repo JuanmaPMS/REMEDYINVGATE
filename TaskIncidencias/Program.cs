@@ -86,6 +86,15 @@ namespace TaskIncidencias
                     actualiza = registros.Procesados(procesados);
 
                 Console.WriteLine(actualiza);
+
+                //Notificaciones
+                NotificacionData notifica = new NotificacionData();
+                EnviaNotificacion asigna =  new EnviaNotificacion();
+                List<Notificacion> asignaciones = notifica.Get();
+                foreach(Notificacion notificacion in asignaciones)
+                {
+                    asigna.AsignaIncidente(notificacion.id, notificacion.TicketInvgate, notificacion.Tipo.Value);
+                }
             }
             catch(Exception ex) 
             {

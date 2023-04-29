@@ -73,6 +73,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EnviaNotificacion.cs" />
     <Compile Include="Models\Resultado.cs" />
     <Compile Include="ProcesaRegistro.cs" />
     <Compile Include="Program.cs" />
@@ -106,6 +107,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Email\Email.csproj">
+      <Project>{77309d1e-a2eb-41e9-92f2-bb9be5418aea}</Project>
+      <Name>Email</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Entities\Entities.csproj">
       <Project>{4f6cd4ee-548b-49be-908e-93cb98753184}</Project>
       <Name>Entities</Name>
@@ -150,6 +155,10 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Plantillas\Asignacion.html" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

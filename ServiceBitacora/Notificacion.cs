@@ -12,11 +12,13 @@ namespace ServiceBitacora
     using System;
     using System.Collections.Generic;
     
-    public partial class CatUrgenciaIncidente
+    public partial class Notificacion
     {
         public int id { get; set; }
-        public Nullable<int> ClaveRemedy { get; set; }
-        public string Descripcion { get; set; }
-        public Nullable<int> ClaveInvgate { get; set; }
+        public int TicketInvgate { get; set; }
+        public string CategoriaPro03 { get; set; }
+        public Nullable<bool> Enviado { get; set; }
+        public Nullable<System.DateTime> Inclusion { get; set; }
+        public Nullable<int> Tipo { get; set; }
     }
 }

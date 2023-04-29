@@ -152,6 +152,45 @@
           <Property Name="Usuario" Type="nvarchar" MaxLength="50" />
           <Property Name="Inclusion" Type="datetime" />
         </EntityType>
+        <EntityType Name="Notificacion">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TicketInvgate" Type="int" Nullable="false" />
+          <Property Name="CategoriaPro03" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Tipo" Type="int" />
+          <Property Name="Enviado" Type="bit" />
+          <Property Name="Inclusion" Type="datetime" />
+        </EntityType>
+        <EntityType Name="NotificacionAgente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Area" Type="nvarchar" MaxLength="500" />
+          <Property Name="Aplicativo" Type="nvarchar" MaxLength="500" />
+          <Property Name="GrupoSoporte" Type="nvarchar" MaxLength="500" />
+          <Property Name="IdUsuarioInvgate" Type="int" Nullable="false" />
+          <Property Name="Agente" Type="nvarchar" MaxLength="500" />
+          <Property Name="Correo" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Activo" Type="bit" />
+          <Property Name="Inclusion" Type="datetime" />
+        </EntityType>
+        <EntityType Name="NotificacionConsultor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Area" Type="nvarchar" MaxLength="500" />
+          <Property Name="Aplicativo" Type="nvarchar" MaxLength="500" />
+          <Property Name="GrupoSoporte" Type="nvarchar" MaxLength="500" />
+          <Property Name="IdUsuarioInvgate" Type="int" Nullable="false" />
+          <Property Name="Consultor" Type="nvarchar" MaxLength="500" />
+          <Property Name="Correo" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Activo" Type="bit" />
+          <Property Name="Inclusion" Type="datetime" />
+        </EntityType>
         <EntityType Name="OrdenTrabajo">
           <Key>
             <PropertyRef Name="id" />
@@ -266,6 +305,9 @@
           <EntitySet Name="Incidente" EntityType="Self.Incidente" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="IncidenteNotas" EntityType="Self.IncidenteNotas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="IncidentesDocumentos" EntityType="Self.IncidentesDocumentos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Notificacion" EntityType="Self.Notificacion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NotificacionAgente" EntityType="Self.NotificacionAgente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NotificacionConsultor" EntityType="Self.NotificacionConsultor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OrdenTrabajo" EntityType="Self.OrdenTrabajo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OrdenTrabajoDocumentos" EntityType="Self.OrdenTrabajoDocumentos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OrdenTrabajoNotas" EntityType="Self.OrdenTrabajoNotas" Schema="dbo" store:Type="Tables" />
@@ -578,7 +620,49 @@
             <End Role="OrdenTrabajo" EntitySet="OrdenTrabajo" />
             <End Role="OrdenTrabajoNotas" EntitySet="OrdenTrabajoNotas" />
           </AssociationSet>
+          <EntitySet Name="Notificacion" EntityType="InterRemedyInvgateModel.Notificacion" />
+          <EntitySet Name="NotificacionAgente" EntityType="InterRemedyInvgateModel.NotificacionAgente" />
+          <EntitySet Name="NotificacionConsultor" EntityType="InterRemedyInvgateModel.NotificacionConsultor" />
         </EntityContainer>
+        <EntityType Name="Notificacion">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TicketInvgate" Type="Int32" Nullable="false" />
+          <Property Name="CategoriaPro03" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Enviado" Type="Boolean" />
+          <Property Name="Inclusion" Type="DateTime" Precision="3" />
+          <Property Name="Tipo" Type="Int32" />
+        </EntityType>
+        <EntityType Name="NotificacionAgente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Area" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Aplicativo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="GrupoSoporte" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IdUsuarioInvgate" Type="Int32" Nullable="false" />
+          <Property Name="Agente" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Correo" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Activo" Type="Boolean" />
+          <Property Name="Inclusion" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="NotificacionConsultor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Area" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Aplicativo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="GrupoSoporte" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IdUsuarioInvgate" Type="Int32" Nullable="false" />
+          <Property Name="Consultor" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Correo" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Activo" Type="Boolean" />
+          <Property Name="Inclusion" Type="DateTime" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -797,6 +881,48 @@
                 <ScalarProperty Name="Nota" ColumnName="Nota" />
                 <ScalarProperty Name="Usuario" ColumnName="Usuario" />
                 <ScalarProperty Name="Inclusion" ColumnName="Inclusion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Notificacion">
+            <EntityTypeMapping TypeName="InterRemedyInvgateModel.Notificacion">
+              <MappingFragment StoreEntitySet="Notificacion">
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+                <ScalarProperty Name="Inclusion" ColumnName="Inclusion" />
+                <ScalarProperty Name="Enviado" ColumnName="Enviado" />
+                <ScalarProperty Name="CategoriaPro03" ColumnName="CategoriaPro03" />
+                <ScalarProperty Name="TicketInvgate" ColumnName="TicketInvgate" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NotificacionAgente">
+            <EntityTypeMapping TypeName="InterRemedyInvgateModel.NotificacionAgente">
+              <MappingFragment StoreEntitySet="NotificacionAgente">
+                <ScalarProperty Name="Inclusion" ColumnName="Inclusion" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+                <ScalarProperty Name="Agente" ColumnName="Agente" />
+                <ScalarProperty Name="IdUsuarioInvgate" ColumnName="IdUsuarioInvgate" />
+                <ScalarProperty Name="GrupoSoporte" ColumnName="GrupoSoporte" />
+                <ScalarProperty Name="Aplicativo" ColumnName="Aplicativo" />
+                <ScalarProperty Name="Area" ColumnName="Area" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NotificacionConsultor">
+            <EntityTypeMapping TypeName="InterRemedyInvgateModel.NotificacionConsultor">
+              <MappingFragment StoreEntitySet="NotificacionConsultor">
+                <ScalarProperty Name="Inclusion" ColumnName="Inclusion" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+                <ScalarProperty Name="Consultor" ColumnName="Consultor" />
+                <ScalarProperty Name="IdUsuarioInvgate" ColumnName="IdUsuarioInvgate" />
+                <ScalarProperty Name="GrupoSoporte" ColumnName="GrupoSoporte" />
+                <ScalarProperty Name="Aplicativo" ColumnName="Aplicativo" />
+                <ScalarProperty Name="Area" ColumnName="Area" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
