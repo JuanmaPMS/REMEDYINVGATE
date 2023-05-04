@@ -258,6 +258,14 @@ namespace TaskIncidencias
 
                         if (result.Success)//Actualiza estatus en Invgate
                         {
+                            //Duplica resolucion en nota
+                            WS_Remedy.Comentario _coment = new WS_Remedy.Comentario();
+                            _coment.IDTicketInvgate = id.ToString();
+                            _coment.IDTicketRemedy = bitacora.TicketRemedy;
+                            _coment.Notas = arrNota[2].Trim();
+
+                            WS_Remedy.Result exCom = imss.IncidenteAdicionaNotas(_coment);
+
                             IncidentPutRequest VarInter = new IncidentPutRequest();
                             VarInter.id = id;
                             VarInter.statusId = idEstatusInvgate;
@@ -389,7 +397,7 @@ namespace TaskIncidencias
                                 WS_Remedy.Comentario _coment = new WS_Remedy.Comentario();
                                 _coment.IDTicketInvgate = id.ToString();
                                 _coment.IDTicketRemedy = bitacora.TicketRemedy;
-                                _coment.Notas = "Adjuntos cierrre de ticket.";
+                                _coment.Notas = arrNota[2].Trim();
 
                                 string[] arrFiles = files.Split(',');
 
@@ -518,7 +526,7 @@ namespace TaskIncidencias
                                 WS_Remedy.Comentario _coment = new WS_Remedy.Comentario();
                                 _coment.IDTicketInvgate = id.ToString();
                                 _coment.IDTicketRemedy = bitacora.TicketRemedy;
-                                _coment.Notas = arrNota[0].Substring(8).Trim() == string.Empty ? "Adjuntos actualización estatus." : arrNota[1].Trim();
+                                _coment.Notas = arrNota[0].Substring(8).Trim() == string.Empty ? "Adjuntos actualización estatus." : arrNota[0].Substring(8).Trim();
 
                                 string[] arrFiles = files.Split(',');
 
@@ -817,7 +825,7 @@ namespace TaskIncidencias
                             _request.EstadoNuevo = idEstatusImss;
 
                             WS_Remedy.Result exec = imss.OrdenTrabajoActualiza(_request);
-                            Console.WriteLine(exec.Resultado);
+                            //Console.WriteLine(exec.Resultado);
 
 
                             if (exec.Resultado.Contains("ERROR: El cambio de estado a 'En curso' no está permitido en la Orden de trabajo actual"))
@@ -999,6 +1007,14 @@ namespace TaskIncidencias
 
                         if (result.Success)//Actualiza estatus en Invgate
                         {
+                            //Duplica resolucion en nota
+                            WS_Remedy.Comentario _coment = new WS_Remedy.Comentario();
+                            _coment.IDTicketInvgate = id.ToString();
+                            _coment.IDTicketRemedy = bitacora.TicketRemedy;
+                            _coment.Notas = arrNota[0].Substring(8).Trim();
+
+                            WS_Remedy.Result exCom = imss.OrdenTrabajoAdicionaNotas(_coment);
+
                             IncidentPutRequest VarInter = new IncidentPutRequest();
                             VarInter.id = id;
                             VarInter.statusId = idEstatusInvgate;
@@ -1119,7 +1135,7 @@ namespace TaskIncidencias
                                 WS_Remedy.Comentario _coment = new WS_Remedy.Comentario();
                                 _coment.IDTicketInvgate = id.ToString();
                                 _coment.IDTicketRemedy = bitacora.TicketRemedy;
-                                _coment.Notas = "Adjuntos cierre de WO.";
+                                _coment.Notas = arrNota[0].Substring(8).Trim();
 
                                 string[] arrFiles = files.Split(',');
 
