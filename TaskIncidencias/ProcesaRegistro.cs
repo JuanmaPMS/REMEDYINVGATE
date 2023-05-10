@@ -256,6 +256,16 @@ namespace TaskIncidencias
                         result.Success = exec.Estatus;
                         result.Message = exec.Resultado;
 
+                        if(!result.Success)
+                        {
+                            //Valida si el incidente fue cerrado en Remedy
+                            if (result.Message.Contains("ERROR: El cambio de estado a 'Resuelto' no está permitido en el Incidente actual ( Resuelto ).")
+                            || result.Message.Contains("ERROR: El cambio de estado a 'Resuelto' no está permitido en el Incidente actual ( Closed )."))
+                            {
+                                result.Success = true;
+                            }
+                        }           
+
                         if (result.Success)//Actualiza estatus en Invgate
                         {
                             //Duplica resolucion en nota
@@ -388,6 +398,16 @@ namespace TaskIncidencias
 
                         result.Success = exec.Estatus;
                         result.Message = exec.Resultado;
+
+                        if (!result.Success)
+                        {
+                            //Valida si el incidente fue cerrado en Remedy
+                            if (result.Message.Contains("ERROR: El cambio de estado a 'Resuelto' no está permitido en el Incidente actual ( Resuelto ).")
+                            || result.Message.Contains("ERROR: El cambio de estado a 'Resuelto' no está permitido en el Incidente actual ( Closed )."))
+                            {
+                                result.Success = true;
+                            }
+                        }
 
                         if (result.Success)
                         {
@@ -1005,6 +1025,16 @@ namespace TaskIncidencias
                         result.Success = exec.Estatus;
                         result.Message = exec.Resultado;
 
+                        if (!result.Success)
+                        {
+                            //Valida si el incidente fue cerrado en Remedy
+                            if (result.Message.Contains("ERROR: El cambio de estado a 'Terminado' no está permitido en la Orden de trabajo actual ( Completed ).")
+                               || result.Message.Contains("ERROR: El cambio de estado a 'Terminado' no está permitido en la Orden de trabajo actual ( Closed )."))
+                            {
+                                result.Success = true;
+                            }
+                        }                        
+
                         if (result.Success)//Actualiza estatus en Invgate
                         {
                             //Duplica resolucion en nota
@@ -1126,6 +1156,16 @@ namespace TaskIncidencias
 
                         result.Success = exec.Estatus;
                         result.Message = exec.Resultado;
+
+                        if (!result.Success)
+                        {
+                            //Valida si el incidente fue cerrado en Remedy
+                            if (result.Message.Contains("ERROR: El cambio de estado a 'Terminado' no está permitido en la Orden de trabajo actual ( Completed ).")
+                               || result.Message.Contains("ERROR: El cambio de estado a 'Terminado' no está permitido en la Orden de trabajo actual ( Closed )."))
+                            {
+                                result.Success = true;
+                            }
+                        }
 
                         if (result.Success)
                         {
