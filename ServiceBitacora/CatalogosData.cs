@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Entities.Intermedio;
 using System.Data.SqlClient;
 using System.Net.NetworkInformation;
+using Entities;
 
 namespace ServiceBitacora
 {
@@ -32,12 +33,48 @@ namespace ServiceBitacora
             return id;
         }
 
+        public int GetUrgenciaInvgate(string Urgencia)
+        {
+            int id = 0;
+            try
+            {
+                CatUrgenciaIncidente catUrgencia = ctx.CatUrgenciaIncidente.Where(x => x.DescripcionRemedy == Urgencia).FirstOrDefault();
+                if (catUrgencia != null)
+                {
+                    id = catUrgencia.ClaveInvgate.Value;
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return id;
+        }
+
         public int GetPrioridadInvgate(int idPrioridad)
         {
             int id = 0;
             try
             {
                 id = ctx.Database.SqlQuery<int>("EXEC [dbo].[SP_OBTIENE_PRIORIDAD_INVGATE] @PrioridadId", new SqlParameter("@PrioridadId", idPrioridad)).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return id;
+        }
+
+        public int GetPrioridadInvgate(string Prioridad)
+        {
+            int id = 0;
+            try
+            {
+                CatPrioridadWO catPrioridad = ctx.CatPrioridadWO.Where(x => x.DescripcionRemedy == Prioridad).FirstOrDefault();
+                if (catPrioridad != null)
+                {
+                    id = catPrioridad.ClaveInvgate.Value;
+                }
             }
             catch (Exception ex)
             {

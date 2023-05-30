@@ -18,5 +18,6 @@ namespace ServiceBitacora
         public Nullable<int> ClaveRemedy { get; set; }
         public string Descripcion { get; set; }
         public Nullable<int> ClaveInvgate { get; set; }
+        public string DescripcionRemedy { get; set; }
     }
 }

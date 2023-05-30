@@ -648,7 +648,8 @@ namespace Inter_ServiceDesk_PM
                         if (!bitacoraWO.Existe(request.TicketIMSS))
                         {
                             //Otiene prioridad
-                            int IdPrioridad = catalogos.GetPrioridadInvgate(Convert.ToInt32(request.Prioridad));
+                            //int IdPrioridad = catalogos.GetPrioridadInvgate(Convert.ToInt32(request.Prioridad));
+                            int IdPrioridad = catalogos.GetPrioridadInvgate(request.Prioridad);
 
                             string concat = "\r\n" + "||Categoria:" +
                                     request.CategoriaOpe01 + "|" +
@@ -813,8 +814,9 @@ namespace Inter_ServiceDesk_PM
 
                                 if (request.Prioridad != null)
                                 {
-                                    //Otiene urgencia
-                                    int IdPrioridad = catalogos.GetPrioridadInvgate(Convert.ToInt32(request.Prioridad));
+                                    //Otiene prioridad
+                                    //int IdPrioridad = catalogos.GetPrioridadInvgate(Convert.ToInt32(request.Prioridad));
+                                    int IdPrioridad = catalogos.GetPrioridadInvgate(request.Prioridad);
 
                                     VarInter.id = idTicketInvgate; 
                                     VarInter.priorityId = IdPrioridad;
@@ -898,7 +900,8 @@ namespace Inter_ServiceDesk_PM
                             IncidentPutRequest VarInter = new IncidentPutRequest();
 
                             //Otiene prioridad
-                            int IdPrioridad = catalogos.GetPrioridadInvgate(Convert.ToInt32(request.Prioridad));
+                            //int IdPrioridad = catalogos.GetPrioridadInvgate(Convert.ToInt32(request.Prioridad));
+                            int IdPrioridad = catalogos.GetPrioridadInvgate(request.Prioridad);
 
                             VarInter.id = idTicketInvgate;
                             VarInter.priorityId = IdPrioridad;

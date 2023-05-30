@@ -63,6 +63,7 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ClaveRemedy" Type="int" />
+          <Property Name="DescripcionRemedy" Type="nvarchar" MaxLength="200" />
           <Property Name="ClaveInvgate" Type="int" />
           <Property Name="Descripcion" Type="nvarchar" MaxLength="200" />
         </EntityType>
@@ -96,6 +97,7 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ClaveRemedy" Type="int" />
+          <Property Name="DescripcionRemedy" Type="nvarchar" MaxLength="200" />
           <Property Name="ClaveInvgate" Type="int" />
           <Property Name="Descripcion" Type="nvarchar" MaxLength="200" />
         </EntityType>
@@ -392,6 +394,7 @@
           <Property Name="ClaveRemedy" Type="Int32" />
           <Property Name="Descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="ClaveInvgate" Type="Int32" />
+          <Property Name="DescripcionRemedy" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="CatTipoIncidencia">
           <Key>
@@ -425,6 +428,7 @@
           <Property Name="ClaveRemedy" Type="Int32" />
           <Property Name="Descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="ClaveInvgate" Type="Int32" />
+          <Property Name="DescripcionRemedy" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Incidente">
           <Key>
@@ -730,6 +734,7 @@
           <EntitySetMapping Name="CatPrioridadWO">
             <EntityTypeMapping TypeName="InterRemedyInvgateModel.CatPrioridadWO">
               <MappingFragment StoreEntitySet="CatPrioridadWO">
+                <ScalarProperty Name="DescripcionRemedy" ColumnName="DescripcionRemedy" />
                 <ScalarProperty Name="ClaveInvgate" ColumnName="ClaveInvgate" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="ClaveRemedy" ColumnName="ClaveRemedy" />
@@ -767,6 +772,7 @@
           <EntitySetMapping Name="CatUrgenciaIncidente">
             <EntityTypeMapping TypeName="InterRemedyInvgateModel.CatUrgenciaIncidente">
               <MappingFragment StoreEntitySet="CatUrgenciaIncidente">
+                <ScalarProperty Name="DescripcionRemedy" ColumnName="DescripcionRemedy" />
                 <ScalarProperty Name="ClaveInvgate" ColumnName="ClaveInvgate" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="ClaveRemedy" ColumnName="ClaveRemedy" />
