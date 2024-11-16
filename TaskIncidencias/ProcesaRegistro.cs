@@ -256,15 +256,11 @@ namespace TaskIncidencias
                         result.Success = exec.Estatus;
                         result.Message = exec.Resultado;
 
-                        if(!result.Success)
+                        if (result.Message.Contains("ERROR: El cambio de estado a 'Resuelto' no está permitido en el Incidente actual ( Resuelto ).")
+                            || result.Message.Contains("ERROR: El cambio de estado a 'Terminado' no está permitido en el Incidente actual ( Closed )."))
                         {
-                            //Valida si el incidente fue cerrado en Remedy
-                            if (result.Message.Contains("ERROR: El cambio de estado a 'Resuelto' no está permitido en el Incidente actual ( Resuelto ).")
-                            || result.Message.Contains("ERROR: El cambio de estado a 'Resuelto' no está permitido en el Incidente actual ( Closed )."))
-                            {
-                                result.Success = true;
-                            }
-                        }           
+                            result.Success = true;
+                        }
 
                         if (result.Success)//Actualiza estatus en Invgate
                         {
@@ -398,16 +394,6 @@ namespace TaskIncidencias
 
                         result.Success = exec.Estatus;
                         result.Message = exec.Resultado;
-
-                        if (!result.Success)
-                        {
-                            //Valida si el incidente fue cerrado en Remedy
-                            if (result.Message.Contains("ERROR: El cambio de estado a 'Resuelto' no está permitido en el Incidente actual ( Resuelto ).")
-                            || result.Message.Contains("ERROR: El cambio de estado a 'Resuelto' no está permitido en el Incidente actual ( Closed )."))
-                            {
-                                result.Success = true;
-                            }
-                        }
 
                         if (result.Success)
                         {
@@ -848,7 +834,8 @@ namespace TaskIncidencias
                             //Console.WriteLine(exec.Resultado);
 
 
-                            if (exec.Resultado.Contains("ERROR: El cambio de estado a 'En curso' no está permitido en la Orden de trabajo actual"))
+                            if (exec.Resultado.Contains("ERROR: El cambio de estado a 'En curso' no está permitido en la Orden de trabajo actual")
+                                || exec.Resultado.Contains("ERROR: El valor del ID de Ticket IMSS: '"+ bitacora.TicketRemedy  + "' no existe"))
                             { 
                                 result.Success = true;
                                 result.Message = exec.Resultado;
@@ -921,6 +908,10 @@ namespace TaskIncidencias
                     result.Success = exec.Estatus;
                     result.Message = exec.Resultado;
 
+                    if (result.Message.Contains("ERROR: El valor del ID de Ticket IMSS: '" + bitacora.TicketRemedy + "' no existe"))
+                    {
+                        result.Success = true;
+                    }
                 }
                 else
                 {
@@ -965,6 +956,11 @@ namespace TaskIncidencias
 
                         result.Success = exec.Estatus;
                         result.Message = exec.Resultado;
+
+                        if (result.Message.Contains("ERROR: El valor del ID de Ticket IMSS: '" + bitacora.TicketRemedy + "' no existe"))
+                        {
+                            result.Success = true;
+                        }
                     }
                     else
                     {
@@ -1010,8 +1006,12 @@ namespace TaskIncidencias
                         //Obtiene Estatus
                         int idEstatusInvgate = 5;//Solucionado
                         int idEstatusImss = catalogos.GetEstatusWOIMSS(idEstatusInvgate);
-                        //Obtiene Motivo Estado
+                        //int index1 = arrNota[0].IndexOf('@', 3) + 3;
+                        //string _motivo = arrNota[0].Substring(index1, 5).Replace('&', ' ').Trim();
+                        ////Obtiene Motivo Estado
+                        //int idMotivo = Convert.ToInt32(_motivo);
                         int idMotivo = Convert.ToInt32(arrNota[0].Substring(3, 5).Trim());
+
 
                         WS_Remedy.OrdenTrabajo _request = new WS_Remedy.OrdenTrabajo();
                         _request.IDTicketInvgate = id.ToString();
@@ -1025,15 +1025,13 @@ namespace TaskIncidencias
                         result.Success = exec.Estatus;
                         result.Message = exec.Resultado;
 
-                        if (!result.Success)
+                        if(result.Message.Contains("ERROR: El cambio de estado a 'Terminado' no está permitido en la Orden de trabajo actual ( Completed ).")
+                            || result.Message.Contains("ERROR: El cambio de estado a 'Terminado' no está permitido en la Orden de trabajo actual ( Closed ).")
+                            || result.Message.Contains("ERROR: El cambio de estado a 'Terminado' no está permitido en la Orden de trabajo actual ( Cancelled ).")
+                            || result.Message.Contains("ERROR: El valor del ID de Ticket IMSS: '" + bitacora.TicketRemedy + "' no existe"))
                         {
-                            //Valida si el incidente fue cerrado en Remedy
-                            if (result.Message.Contains("ERROR: El cambio de estado a 'Terminado' no está permitido en la Orden de trabajo actual ( Completed ).")
-                               || result.Message.Contains("ERROR: El cambio de estado a 'Terminado' no está permitido en la Orden de trabajo actual ( Closed )."))
-                            {
-                                result.Success = true;
-                            }
-                        }                        
+                            result.Success = true;
+                        }
 
                         if (result.Success)//Actualiza estatus en Invgate
                         {
@@ -1058,7 +1056,11 @@ namespace TaskIncidencias
                         int idEstatusInvgate = 4;//En Espera
                         int idEstatusImss = catalogos.GetEstatusWOIMSS(4);
                         //Obtiene Motivo Estado
-                        int idMotivo = Convert.ToInt32(arrNota[0].Substring(3, 5).Trim());
+                        //int index1 = arrNota[0].IndexOf('@', 3);
+                        //string _motivo = arrNota[0].Substring(index1, 5).Replace('&', ' ').Trim();
+                        //Obtiene Motivo Estado
+                        //int idMotivo = Convert.ToInt32(_motivo);
+                        int idMotivo = Convert.ToInt32(arrNota[0].Substring(3).Trim());
 
                         WS_Remedy.OrdenTrabajo _request = new WS_Remedy.OrdenTrabajo();
                         _request.IDTicketInvgate = id.ToString();
@@ -1070,6 +1072,14 @@ namespace TaskIncidencias
 
                         result.Success = exec.Estatus;
                         result.Message = exec.Resultado;
+
+                        if (result.Message.Contains("ERROR: El cambio de estado a 'Terminado' no está permitido en la Orden de trabajo actual ( Completed ).")
+                            || result.Message.Contains("ERROR: El cambio de estado a 'Terminado' no está permitido en la Orden de trabajo actual ( Closed ).")
+                            || result.Message.Contains("ERROR: El cambio de estado a 'Terminado' no está permitido en la Orden de trabajo actual ( Cancelled ).")
+                            || result.Message.Contains("ERROR: El valor del ID de Ticket IMSS: '" + bitacora.TicketRemedy + "' no existe"))
+                        {
+                            result.Success = true;
+                        }
 
                         if (result.Success)//Actualiza estatus en Invgate
                         {
@@ -1098,6 +1108,11 @@ namespace TaskIncidencias
 
                         result.Success = exec.Estatus;
                         result.Message = exec.Resultado;
+
+                        if (result.Message.Contains("ERROR: El valor del ID de Ticket IMSS: '" + bitacora.TicketRemedy + "' no existe"))
+                        {
+                            result.Success = true;
+                        }
                     }                   
 
                 }
@@ -1157,14 +1172,12 @@ namespace TaskIncidencias
                         result.Success = exec.Estatus;
                         result.Message = exec.Resultado;
 
-                        if (!result.Success)
+                        if (result.Message.Contains("ERROR: El cambio de estado a 'Terminado' no está permitido en la Orden de trabajo actual ( Completed ).")
+                            || result.Message.Contains("ERROR: El cambio de estado a 'Terminado' no está permitido en la Orden de trabajo actual ( Closed ).")
+                            || result.Message.Contains("ERROR: El cambio de estado a 'Terminado' no está permitido en la Orden de trabajo actual ( Cancelled ).")
+                            || result.Message.Contains("ERROR: El valor del ID de Ticket IMSS: '" + bitacora.TicketRemedy + "' no existe"))
                         {
-                            //Valida si el incidente fue cerrado en Remedy
-                            if (result.Message.Contains("ERROR: El cambio de estado a 'Terminado' no está permitido en la Orden de trabajo actual ( Completed ).")
-                               || result.Message.Contains("ERROR: El cambio de estado a 'Terminado' no está permitido en la Orden de trabajo actual ( Closed )."))
-                            {
-                                result.Success = true;
-                            }
+                            result.Success = true;
                         }
 
                         if (result.Success)
@@ -1296,6 +1309,14 @@ namespace TaskIncidencias
 
                         result.Success = exec.Estatus;
                         result.Message = exec.Resultado;
+
+                        if (result.Message.Contains("ERROR: El cambio de estado a 'Terminado' no está permitido en la Orden de trabajo actual ( Completed ).")
+                            || result.Message.Contains("ERROR: El cambio de estado a 'Terminado' no está permitido en la Orden de trabajo actual ( Cancelled ).")
+                            || result.Message.Contains("ERROR: El cambio de estado a 'Terminado' no está permitido en la Orden de trabajo actual ( Closed ).")
+                            || result.Message.Contains("ERROR: El valor del ID de Ticket IMSS: '" + bitacora.TicketRemedy + "' no existe"))
+                        {
+                            result.Success = true;
+                        }
 
                         if (result.Success)
                         {
@@ -1507,6 +1528,14 @@ namespace TaskIncidencias
                         WS_Remedy.Result exec = imss.OrdenTrabajoAdicionaNotas(_request);
                         result.Success = exec.Estatus;
                         result.Message = exec.Resultado;
+
+                        if (result.Message.Contains("ERROR: El cambio de estado a 'Terminado' no está permitido en la Orden de trabajo actual ( Completed ).")
+                            || result.Message.Contains("ERROR: El cambio de estado a 'Terminado' no está permitido en la Orden de trabajo actual ( Cancelled ).")
+                            || result.Message.Contains("ERROR: El cambio de estado a 'Terminado' no está permitido en la Orden de trabajo actual ( Closed ).")
+                            || result.Message.Contains("ERROR: El valor del ID de Ticket IMSS: '" + bitacora.TicketRemedy + "' no existe"))
+                        {
+                            result.Success = true;
+                        }
                     }
                 }
                 else
@@ -1560,6 +1589,14 @@ namespace TaskIncidencias
                     WS_Remedy.Result exec = imss.OrdenTrabajoAdicionaNotas(_request);
                     result.Success = exec.Estatus;
                     result.Message = exec.Resultado;
+
+                    if (result.Message.Contains("ERROR: El cambio de estado a 'Terminado' no está permitido en la Orden de trabajo actual ( Completed ).")
+                            || result.Message.Contains("ERROR: El cambio de estado a 'Terminado' no está permitido en la Orden de trabajo actual ( Closed ).")
+                            || result.Message.Contains("ERROR: El cambio de estado a 'Terminado' no está permitido en la Orden de trabajo actual ( Cancelled ).")
+                            || result.Message.Contains("ERROR: El valor del ID de Ticket IMSS: '" + bitacora.TicketRemedy + "' no existe"))
+                    {
+                        result.Success = true;
+                    }
 
                 }
                 else

@@ -11,7 +11,8 @@ using Inter_ServiceDesk_PM.Helper;
 using System.Web.Services.Protocols;
 using Entities.Invgate;
 using System.Configuration;
-
+using System.Text.RegularExpressions;
+using System.Text;
 
 namespace Inter_ServiceDesk_PM
 {
@@ -54,6 +55,22 @@ namespace Inter_ServiceDesk_PM
         {
             long epoch = (value.Ticks - 621355968000000000) / 10000000;
             return epoch;
+        }
+
+        private static string CleanInput(string strIn)
+        {
+            // Replace invalid characters with empty strings.
+            try
+            {
+                string newString = strIn.Replace(" ⁠", "").Replace("", "").Replace("•", "");
+
+                return Regex.Replace(newString, "<.*?>", string.Empty);
+
+            }
+            catch (RegexMatchTimeoutException)
+            {
+                return String.Empty;
+            }
         }
 
         //private byte[] ObjectToByteArray(object obj)
@@ -115,7 +132,7 @@ namespace Inter_ServiceDesk_PM
                             VarInter.creator_id = 1240;
                             VarInter.type_id = 1;//Incidente
                             VarInter.category_id = idCategorizacion;
-                            VarInter.description =  request.Descripcion + concat;
+                            VarInter.description = CleanInput(request.Descripcion) + concat;
                             VarInter.title = request.TicketIMSS + " - " + request.Resumen;
                             VarInter.source_id = 2;
 
@@ -199,7 +216,7 @@ namespace Inter_ServiceDesk_PM
                                     IncidentesCommentPostRequest VarComent = new IncidentesCommentPostRequest();
 
                                     VarComent.request_id = Convert.ToInt32(response_.Ticket);
-                                    VarComent.comment = request.Notas;
+                                    VarComent.comment = CleanInput(request.Notas);
                                     VarComent.author_id = 1240;
                                     VarComent.is_solution = false;
 
@@ -264,7 +281,7 @@ namespace Inter_ServiceDesk_PM
                                 IncidentesCommentPostRequest VarComent = new IncidentesCommentPostRequest();
 
                                 VarComent.request_id = idTicketInvgate;
-                                VarComent.comment = request.Notas == string.Empty ? "Ticket Solucionado" : request.Notas;
+                                VarComent.comment = CleanInput(request.Notas) == string.Empty ? "Ticket Solucionado" : request.Notas;
                                 VarComent.author_id = 2;
                                 VarComent.is_solution = true;
 
@@ -280,7 +297,7 @@ namespace Inter_ServiceDesk_PM
                                     IncidentesCommentPostRequest VarComent = new IncidentesCommentPostRequest();
 
                                     VarComent.request_id = idTicketInvgate;
-                                    VarComent.comment = request.Notas;
+                                    VarComent.comment = CleanInput(request.Notas);
                                     VarComent.author_id = 1240;
                                     VarComent.is_solution = false;
 
@@ -590,7 +607,7 @@ namespace Inter_ServiceDesk_PM
                                 IncidentesCommentPostRequest VarInter = new IncidentesCommentPostRequest();
 
                                 VarInter.request_id = idTicketInvgate;
-                                VarInter.comment = request.Notas;
+                                VarInter.comment = CleanInput(request.Notas);
                                 VarInter.author_id = 1240;
                                 VarInter.is_solution = false;
 
@@ -648,8 +665,7 @@ namespace Inter_ServiceDesk_PM
                         if (!bitacoraWO.Existe(request.TicketIMSS))
                         {
                             //Otiene prioridad
-                            //int IdPrioridad = catalogos.GetPrioridadInvgate(Convert.ToInt32(request.Prioridad));
-                            int IdPrioridad = catalogos.GetPrioridadInvgate(request.Prioridad);
+                            int IdPrioridad = catalogos.GetPrioridadInvgate(Convert.ToInt32(request.Prioridad));
 
                             string concat = "\r\n" + "||Categoria:" +
                                     request.CategoriaOpe01 + "|" +
@@ -670,7 +686,7 @@ namespace Inter_ServiceDesk_PM
                             VarInter.creator_id = 1240;
                             VarInter.type_id = 2; //Orden Trabajo
                             VarInter.category_id = idCategorizacion;
-                            VarInter.description = request.Descripcion + concat;
+                            VarInter.description = CleanInput(request.Descripcion) + concat;
                             VarInter.title = request.TicketIMSS + " - " + request.Resumen;
                             VarInter.source_id = 2;
 
@@ -722,7 +738,7 @@ namespace Inter_ServiceDesk_PM
                                     IncidentesCommentPostRequest VarComent = new IncidentesCommentPostRequest();
 
                                     VarComent.request_id = Convert.ToInt32(response_.Ticket);
-                                    VarComent.comment = request.Notas;
+                                    VarComent.comment = CleanInput(request.Notas);
                                     VarComent.author_id = 1240;
                                     VarComent.is_solution = false;
 
@@ -789,7 +805,7 @@ namespace Inter_ServiceDesk_PM
                                 IncidentesCommentPostRequest VarComent = new IncidentesCommentPostRequest();
 
                                 VarComent.request_id = idTicketInvgate;
-                                VarComent.comment = request.Notas == string.Empty ? "Solicitud Terminada" : request.Notas; ;
+                                VarComent.comment = CleanInput(request.Notas) == string.Empty ? "Solicitud Terminada" : request.Notas; ;
                                 VarComent.author_id = 2;
                                 VarComent.is_solution = true;
 
@@ -805,7 +821,7 @@ namespace Inter_ServiceDesk_PM
                                     IncidentesCommentPostRequest VarComent = new IncidentesCommentPostRequest();
 
                                     VarComent.request_id = idTicketInvgate;
-                                    VarComent.comment = request.Notas;
+                                    VarComent.comment = CleanInput(request.Notas);
                                     VarComent.author_id = 1240;
                                     VarComent.is_solution = false;
 
@@ -814,9 +830,8 @@ namespace Inter_ServiceDesk_PM
 
                                 if (request.Prioridad != null)
                                 {
-                                    //Otiene prioridad
-                                    //int IdPrioridad = catalogos.GetPrioridadInvgate(Convert.ToInt32(request.Prioridad));
-                                    int IdPrioridad = catalogos.GetPrioridadInvgate(request.Prioridad);
+                                    //Otiene urgencia
+                                    int IdPrioridad = catalogos.GetPrioridadInvgate(Convert.ToInt32(request.Prioridad));
 
                                     VarInter.id = idTicketInvgate; 
                                     VarInter.priorityId = IdPrioridad;
@@ -900,8 +915,7 @@ namespace Inter_ServiceDesk_PM
                             IncidentPutRequest VarInter = new IncidentPutRequest();
 
                             //Otiene prioridad
-                            //int IdPrioridad = catalogos.GetPrioridadInvgate(Convert.ToInt32(request.Prioridad));
-                            int IdPrioridad = catalogos.GetPrioridadInvgate(request.Prioridad);
+                            int IdPrioridad = catalogos.GetPrioridadInvgate(Convert.ToInt32(request.Prioridad));
 
                             VarInter.id = idTicketInvgate;
                             VarInter.priorityId = IdPrioridad;
@@ -1117,7 +1131,7 @@ namespace Inter_ServiceDesk_PM
                                 IncidentesCommentPostRequest VarInter = new IncidentesCommentPostRequest();
 
                                 VarInter.request_id = idTicketInvgate;
-                                VarInter.comment = request.Notas;
+                                VarInter.comment = CleanInput(request.Notas);
                                 VarInter.author_id = 1240;
                                 VarInter.is_solution = false;
 
