@@ -1,18 +1,19 @@
-﻿using SB = ServiceBitacora;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TaskIncidencias.Models;
-using ServiceInvgate;
-using TaskIncidencias.WS_Remedy;
-using Entities;
-using System.Text.RegularExpressions;
 using System.Net.NetworkInformation;
-using Newtonsoft.Json;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+using Entities;
 using Entities.Invgate;
+using Newtonsoft.Json;
 using ServiceBitacora;
+using ServiceInvgate;
+using TaskIncidencias.Models;
+using TaskIncidencias.WS_Remedy;
+using SB = ServiceBitacora;
 
 namespace TaskIncidencias
 {
@@ -21,6 +22,7 @@ namespace TaskIncidencias
         ServiciosImss imss = new ServiciosImss();
         IncidentesInvgate incidentes = new IncidentesInvgate();
         LogTask log = new LogTask();
+        const long maxBytes = 10L * 1024 * 1024; // 10 MB
 
         public Resultado IncidenteActualiza(int id, int idEstatus)
         {
@@ -405,7 +407,7 @@ namespace TaskIncidencias
                                 _coment.IDTicketRemedy = bitacora.TicketRemedy;
                                 _coment.Notas = arrNota[2].Trim();
 
-                                string[] arrFiles = files.Split(',');
+                                /*string[] arrFiles = files.Split(',');
 
                                 if (arrFiles.Length >= 3)
                                 {
@@ -488,6 +490,56 @@ namespace TaskIncidencias
                                             _coment.AdjuntoName01 = file1.name;
                                             _coment.AdjuntoSize01 = file1.size.ToString();
                                         }
+                                    }
+                                }*/
+
+                                var arrFiles = (files ?? string.Empty).Split(',');
+
+                                var arrValidos = new List<AttachmentResponse>();
+
+                                foreach (var f in arrFiles)
+                                {
+                                    if (!int.TryParse(f, out int idAdjunto))
+                                        continue;
+
+                                    var resp = incidentes.GetAttachments(idAdjunto);
+
+                                    if (resp == null || !resp.success)
+                                        continue;
+
+                                    //Valida tamaño
+                                    if (resp.size > maxBytes)
+                                        continue;
+
+                                    arrValidos.Add(resp);
+                                }
+
+                                //Tomar los primeros 3 válidos
+                                var arrFilesSend = arrValidos.Take(3).ToList();
+
+                                for (int i = 0; i < arrFilesSend.Count; i++)
+                                {
+                                    var r = arrFilesSend[i];
+
+                                    switch (i)
+                                    {
+                                        case 0:
+                                            _coment.Adjunto01 = r.attach;
+                                            _coment.AdjuntoName01 = r.name;
+                                            _coment.AdjuntoSize01 = r.size.ToString();
+                                            break;
+
+                                        case 1:
+                                            _coment.Adjunto02 = r.attach;
+                                            _coment.AdjuntoName02 = r.name;
+                                            _coment.AdjuntoSize02 = r.size.ToString();
+                                            break;
+
+                                        case 2:
+                                            _coment.Adjunto03 = r.attach;
+                                            _coment.AdjuntoName03 = r.name;
+                                            _coment.AdjuntoSize03 = r.size.ToString();
+                                            break;
                                     }
                                 }
 
@@ -534,7 +586,7 @@ namespace TaskIncidencias
                                 _coment.IDTicketRemedy = bitacora.TicketRemedy;
                                 _coment.Notas = arrNota[0].Substring(8).Trim() == string.Empty ? "Adjuntos actualización estatus." : arrNota[0].Substring(8).Trim();
 
-                                string[] arrFiles = files.Split(',');
+                                /*string[] arrFiles = files.Split(',');
 
                                 if (arrFiles.Length >= 3)
                                 {
@@ -618,6 +670,56 @@ namespace TaskIncidencias
                                             _coment.AdjuntoSize01 = file1.size.ToString();
                                         }
                                     }
+                                }*/
+
+                                var arrFiles = (files ?? string.Empty).Split(',');
+
+                                var arrValidos = new List<AttachmentResponse>();
+
+                                foreach (var f in arrFiles)
+                                {
+                                    if (!int.TryParse(f, out int idAdjunto))
+                                        continue;
+
+                                    var resp = incidentes.GetAttachments(idAdjunto);
+
+                                    if (resp == null || !resp.success)
+                                        continue;
+
+                                    //Valida tamaño
+                                    if (resp.size > maxBytes)
+                                        continue;
+
+                                    arrValidos.Add(resp);
+                                }
+
+                                //Tomar los primeros 3 válidos
+                                var arrFilesSend = arrValidos.Take(3).ToList();
+
+                                for (int i = 0; i < arrFilesSend.Count; i++)
+                                {
+                                    var r = arrFilesSend[i];
+
+                                    switch (i)
+                                    {
+                                        case 0:
+                                            _coment.Adjunto01 = r.attach;
+                                            _coment.AdjuntoName01 = r.name;
+                                            _coment.AdjuntoSize01 = r.size.ToString();
+                                            break;
+
+                                        case 1:
+                                            _coment.Adjunto02 = r.attach;
+                                            _coment.AdjuntoName02 = r.name;
+                                            _coment.AdjuntoSize02 = r.size.ToString();
+                                            break;
+
+                                        case 2:
+                                            _coment.Adjunto03 = r.attach;
+                                            _coment.AdjuntoName03 = r.name;
+                                            _coment.AdjuntoSize03 = r.size.ToString();
+                                            break;
+                                    }
                                 }
 
                                 WS_Remedy.Result exCom = imss.IncidenteAdicionaNotas(_coment);
@@ -643,7 +745,7 @@ namespace TaskIncidencias
                         
                         if (!string.IsNullOrEmpty(files))
                         {
-                            string[] arrFiles = files.Split(',');
+                            /*string[] arrFiles = files.Split(',');
 
                             if (arrFiles.Length >= 3)
                             {
@@ -726,8 +828,57 @@ namespace TaskIncidencias
                                         _request.AdjuntoSize01 = file1.size.ToString();
                                     }
                                 }
+                            }*/
+
+                            var arrFiles = (files ?? string.Empty).Split(',');
+
+                            var arrValidos = new List<AttachmentResponse>();
+
+                            foreach (var f in arrFiles)
+                            {
+                                if (!int.TryParse(f, out int idAdjunto))
+                                    continue;
+
+                                var resp = incidentes.GetAttachments(idAdjunto);
+
+                                if (resp == null || !resp.success)
+                                    continue;
+
+                                //Valida tamaño
+                                if (resp.size > maxBytes)
+                                    continue;
+
+                                arrValidos.Add(resp);
                             }
 
+                            //Tomar los primeros 3 válidos
+                            var arrFilesSend = arrValidos.Take(3).ToList();
+
+                            for (int i = 0; i < arrFilesSend.Count; i++)
+                            {
+                                var r = arrFilesSend[i];
+
+                                switch (i)
+                                {
+                                    case 0:
+                                        _request.Adjunto01 = r.attach;
+                                        _request.AdjuntoName01 = r.name;
+                                        _request.AdjuntoSize01 = r.size.ToString();
+                                        break;
+
+                                    case 1:
+                                        _request.Adjunto02 = r.attach;
+                                        _request.AdjuntoName02 = r.name;
+                                        _request.AdjuntoSize02 = r.size.ToString();
+                                        break;
+
+                                    case 2:
+                                        _request.Adjunto03 = r.attach;
+                                        _request.AdjuntoName03 = r.name;
+                                        _request.AdjuntoSize03 = r.size.ToString();
+                                        break;
+                                }
+                            }
                         }
 
                         WS_Remedy.Result exec = imss.IncidenteAdicionaNotas(_request);
@@ -774,7 +925,7 @@ namespace TaskIncidencias
 
                     if (file != null)
                     {
-                        if (file.success)
+                        if (file.success && file.size <= maxBytes)
                         {
                             _request.Adjunto01 = file.attach;
                             _request.AdjuntoName01 = file.name;
@@ -1190,7 +1341,7 @@ namespace TaskIncidencias
                                 _coment.IDTicketRemedy = bitacora.TicketRemedy;
                                 _coment.Notas = arrNota[0].Substring(8).Trim();
 
-                                string[] arrFiles = files.Split(',');
+                                /*string[] arrFiles = files.Split(',');
 
                                 if (arrFiles.Length >= 3)
                                 {
@@ -1273,6 +1424,56 @@ namespace TaskIncidencias
                                             _coment.AdjuntoName01 = file1.name;
                                             _coment.AdjuntoSize01 = file1.size.ToString();
                                         }
+                                    }
+                                }*/
+
+                                var arrFiles = (files ?? string.Empty).Split(',');
+
+                                var arrValidos = new List<AttachmentResponse>();
+
+                                foreach (var f in arrFiles)
+                                {
+                                    if (!int.TryParse(f, out int idAdjunto))
+                                        continue;
+
+                                    var resp = incidentes.GetAttachments(idAdjunto);
+
+                                    if (resp == null || !resp.success)
+                                        continue;
+
+                                    //Valida tamaño
+                                    if (resp.size > maxBytes)
+                                        continue;
+
+                                    arrValidos.Add(resp);
+                                }
+
+                                //Tomar los primeros 3 válidos
+                                var arrFilesSend = arrValidos.Take(3).ToList();
+
+                                for (int i = 0; i < arrFilesSend.Count; i++)
+                                {
+                                    var r = arrFilesSend[i];
+
+                                    switch (i)
+                                    {
+                                        case 0:
+                                            _coment.Adjunto01 = r.attach;
+                                            _coment.AdjuntoName01 = r.name;
+                                            _coment.AdjuntoSize01 = r.size.ToString();
+                                            break;
+
+                                        case 1:
+                                            _coment.Adjunto02 = r.attach;
+                                            _coment.AdjuntoName02 = r.name;
+                                            _coment.AdjuntoSize02 = r.size.ToString();
+                                            break;
+
+                                        case 2:
+                                            _coment.Adjunto03 = r.attach;
+                                            _coment.AdjuntoName03 = r.name;
+                                            _coment.AdjuntoSize03 = r.size.ToString();
+                                            break;
                                     }
                                 }
 
@@ -1328,7 +1529,7 @@ namespace TaskIncidencias
                                 _coment.IDTicketRemedy = bitacora.TicketRemedy;
                                 _coment.Notas = arrNota[0].Substring(8).Trim() == string.Empty ? "Adjuntos actualización estatus." : arrNota[0].Substring(8).Trim();
 
-                                string[] arrFiles = files.Split(',');
+                                /*string[] arrFiles = files.Split(',');
 
                                 if (arrFiles.Length >= 3)
                                 {
@@ -1412,6 +1613,56 @@ namespace TaskIncidencias
                                             _coment.AdjuntoSize01 = file1.size.ToString();
                                         }
                                     }
+                                }*/
+
+                                var arrFiles = (files ?? string.Empty).Split(',');
+
+                                var arrValidos = new List<AttachmentResponse>();
+
+                                foreach (var f in arrFiles)
+                                {
+                                    if (!int.TryParse(f, out int idAdjunto))
+                                        continue;
+
+                                    var resp = incidentes.GetAttachments(idAdjunto);
+
+                                    if (resp == null || !resp.success)
+                                        continue;
+
+                                    //Valida tamaño
+                                    if (resp.size > maxBytes)
+                                        continue;
+
+                                    arrValidos.Add(resp);
+                                }
+
+                                //Tomar los primeros 3 válidos
+                                var arrFilesSend = arrValidos.Take(3).ToList();
+
+                                for (int i = 0; i < arrFilesSend.Count; i++)
+                                {
+                                    var r = arrFilesSend[i];
+
+                                    switch (i)
+                                    {
+                                        case 0:
+                                            _coment.Adjunto01 = r.attach;
+                                            _coment.AdjuntoName01 = r.name;
+                                            _coment.AdjuntoSize01 = r.size.ToString();
+                                            break;
+
+                                        case 1:
+                                            _coment.Adjunto02 = r.attach;
+                                            _coment.AdjuntoName02 = r.name;
+                                            _coment.AdjuntoSize02 = r.size.ToString();
+                                            break;
+
+                                        case 2:
+                                            _coment.Adjunto03 = r.attach;
+                                            _coment.AdjuntoName03 = r.name;
+                                            _coment.AdjuntoSize03 = r.size.ToString();
+                                            break;
+                                    }
                                 }
 
                                 WS_Remedy.Result exCom = imss.OrdenTrabajoAdicionaNotas(_coment);
@@ -1438,7 +1689,7 @@ namespace TaskIncidencias
 
                         if (!string.IsNullOrEmpty(files))
                         {
-                            string[] arrFiles = files.Split(',');
+                            /*string[] arrFiles = files.Split(',');
 
                             if (arrFiles.Length >= 3)
                             {
@@ -1521,8 +1772,57 @@ namespace TaskIncidencias
                                         _request.AdjuntoSize01 = file1.size.ToString();
                                     }
                                 }
+                            }*/
+
+                            var arrFiles = (files ?? string.Empty).Split(',');
+
+                            var arrValidos = new List<AttachmentResponse>();
+
+                            foreach (var f in arrFiles)
+                            {
+                                if (!int.TryParse(f, out int idAdjunto))
+                                    continue;
+
+                                var resp = incidentes.GetAttachments(idAdjunto);
+
+                                if (resp == null || !resp.success)
+                                    continue;
+
+                                //Valida tamaño
+                                if (resp.size > maxBytes)
+                                    continue;
+
+                                arrValidos.Add(resp);
                             }
 
+                            //Tomar los primeros 3 válidos
+                            var arrFilesSend = arrValidos.Take(3).ToList();
+
+                            for (int i = 0; i < arrFilesSend.Count; i++)
+                            {
+                                var r = arrFilesSend[i];
+
+                                switch (i)
+                                {
+                                    case 0:
+                                        _request.Adjunto01 = r.attach;
+                                        _request.AdjuntoName01 = r.name;
+                                        _request.AdjuntoSize01 = r.size.ToString();
+                                        break;
+
+                                    case 1:
+                                        _request.Adjunto02 = r.attach;
+                                        _request.AdjuntoName02 = r.name;
+                                        _request.AdjuntoSize02 = r.size.ToString();
+                                        break;
+
+                                    case 2:
+                                        _request.Adjunto03 = r.attach;
+                                        _request.AdjuntoName03 = r.name;
+                                        _request.AdjuntoSize03 = r.size.ToString();
+                                        break;
+                                }
+                            }
                         }
 
                         WS_Remedy.Result exec = imss.OrdenTrabajoAdicionaNotas(_request);
@@ -1577,7 +1877,7 @@ namespace TaskIncidencias
 
                     if (file != null)
                     {
-                        if (file.success)
+                        if (file.success && file.size <= maxBytes)
                         {
                             _request.Adjunto01 = file.attach;
                             _request.AdjuntoName01 = file.name;
