@@ -19,9 +19,9 @@ namespace Inter_ServiceDesk_PM
     /// <summary>
     /// Summary description for MesaServicio
     /// </summary>
-    [WebService(Namespace = "http://tempuri.org/")]
-    [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
-    [System.ComponentModel.ToolboxItem(false)]
+    //[WebService(Namespace = "http://tempuri.org/")]
+    //[WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
+    //[System.ComponentModel.ToolboxItem(false)]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
     // [System.Web.Script.Services.ScriptService]
     public class MemoryPostedFile : HttpPostedFileBase
@@ -41,6 +41,16 @@ namespace Inter_ServiceDesk_PM
 
         public override Stream InputStream { get; }
     }
+
+    /// <summary>
+    /// Summary description for MesaServicio
+    /// </summary>
+    // SOAP contract must be independent of the public or private endpoint URL.
+    [WebService(Namespace = "urn:imss:remedy-invgate:mesa-servicio")]
+    [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
+    [System.ComponentModel.ToolboxItem(false)]
+    // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line.
+    // [System.Web.Script.Services.ScriptService]
     public class MesaServicio : System.Web.Services.WebService
     {
         public Autenticacion Autenticacion;
