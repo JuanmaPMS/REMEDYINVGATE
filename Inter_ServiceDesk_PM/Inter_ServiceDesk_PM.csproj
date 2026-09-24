@@ -83,6 +83,7 @@
       <DependentUpon>ConnRemedy.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Helper\MesaServicioWsdlModule.cs" />
     <Compile Include="Helper\Autenticacion.cs" />
     <Compile Include="Intermediario\MesaServicio.asmx.cs">
       <DependentUpon>MesaServicio.asmx</DependentUpon>
