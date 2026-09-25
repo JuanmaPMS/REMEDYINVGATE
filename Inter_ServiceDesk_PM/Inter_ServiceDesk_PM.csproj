@@ -75,12 +75,17 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ConnRemedy.asmx" />
+    <Content Include="Helix\ConnHelix.asmx" />
     <Content Include="Intermediario\MesaServicio.asmx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConnRemedy.asmx.cs">
       <DependentUpon>ConnRemedy.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Helix\ConnHelix.asmx.cs">
+      <DependentUpon>ConnHelix.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Helper\MesaServicioWsdlModule.cs" />

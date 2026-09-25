@@ -42,6 +42,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helix\ActualizacionIncidencia.cs" />
+    <Compile Include="Helix\BitacoraTrabajoIncidencia.cs" />
+    <Compile Include="Helix\ActualizacionOrdenTrabajo.cs" />
+    <Compile Include="Helix\BitacoraTrabajoOrdenTrabajo.cs" />
     <Compile Include="Intermedio\ActualizaPriorizacionWO.cs" />
     <Compile Include="Intermedio\ActualizaTicketWO.cs" />
     <Compile Include="Intermedio\AttachedFile.cs" />

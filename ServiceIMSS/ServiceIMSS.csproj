@@ -73,6 +73,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helix\IncidentesHelix.cs" />
+    <Compile Include="Helix\OrdenesTrabajoHelix.cs" />
     <Compile Include="Incidentes.cs" />
     <Compile Include="OrdenesTrabajo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
