@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="urn:imss:helix-invgate" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" targetNamespace="urn:imss:helix-invgate" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="urn:imss:helix-invgate">
+      <s:element name="IncidenteActualiza">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="incidente" type="tns:ActualizacionIncidencia" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ActualizacionIncidencia">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="TipoOperacion" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TipoTicket" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IdIncidencia" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TicketProveedor" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EstadoNuevo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="MotivoEstadoNuevo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CategoriaResolucion1" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CategoriaResolucion2" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CategoriaResolucion3" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Resolucion" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="IncidenteActualizaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="IncidenteActualizaResult" type="tns:Result" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Result">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Estatus" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="Resultado" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="IncidenteAdicionaNotas">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="nota" type="tns:BitacoraTrabajoIncidencia" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="BitacoraTrabajoIncidencia">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="TipoOperacion" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TipoTicket" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IdIncidencia" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TicketProveedor" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Notas" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Adjunto1Nombre" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Adjunto1Datos" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Adjunto1Tamano" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Adjunto2Nombre" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Adjunto2Datos" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Adjunto2Tamano" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Adjunto3Nombre" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Adjunto3Datos" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Adjunto3Tamano" nillable="true" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="IncidenteAdicionaNotasResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="IncidenteAdicionaNotasResult" type="tns:Result" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="OrdenTrabajoActualiza">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ordenTrabajo" type="tns:ActualizacionOrdenTrabajo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ActualizacionOrdenTrabajo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="TipoOperacion" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TipoTicket" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IdOrdenTrabajo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TicketProveedor" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EstadoNuevo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="MotivoEstadoNuevo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NotaResolucion" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="OrdenTrabajoActualizaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="OrdenTrabajoActualizaResult" type="tns:Result" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="OrdenTrabajoAdicionaNotas">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="nota" type="tns:BitacoraTrabajoOrdenTrabajo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="BitacoraTrabajoOrdenTrabajo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="TipoOperacion" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TipoTicket" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IdOrdenTrabajo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TicketProveedor" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Notas" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Adjunto1Nombre" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Adjunto1Datos" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Adjunto1Tamano" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Adjunto2Nombre" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Adjunto2Datos" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Adjunto2Tamano" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Adjunto3Nombre" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Adjunto3Datos" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Adjunto3Tamano" nillable="true" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="OrdenTrabajoAdicionaNotasResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="OrdenTrabajoAdicionaNotasResult" type="tns:Result" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="IncidenteActualizaSoapIn">
+    <wsdl:part name="parameters" element="tns:IncidenteActualiza" />
+  </wsdl:message>
+  <wsdl:message name="IncidenteActualizaSoapOut">
+    <wsdl:part name="parameters" element="tns:IncidenteActualizaResponse" />
+  </wsdl:message>
+  <wsdl:message name="IncidenteAdicionaNotasSoapIn">
+    <wsdl:part name="parameters" element="tns:IncidenteAdicionaNotas" />
+  </wsdl:message>
+  <wsdl:message name="IncidenteAdicionaNotasSoapOut">
+    <wsdl:part name="parameters" element="tns:IncidenteAdicionaNotasResponse" />
+  </wsdl:message>
+  <wsdl:message name="OrdenTrabajoActualizaSoapIn">
+    <wsdl:part name="parameters" element="tns:OrdenTrabajoActualiza" />
+  </wsdl:message>
+  <wsdl:message name="OrdenTrabajoActualizaSoapOut">
+    <wsdl:part name="parameters" element="tns:OrdenTrabajoActualizaResponse" />
+  </wsdl:message>
+  <wsdl:message name="OrdenTrabajoAdicionaNotasSoapIn">
+    <wsdl:part name="parameters" element="tns:OrdenTrabajoAdicionaNotas" />
+  </wsdl:message>
+  <wsdl:message name="OrdenTrabajoAdicionaNotasSoapOut">
+    <wsdl:part name="parameters" element="tns:OrdenTrabajoAdicionaNotasResponse" />
+  </wsdl:message>
+  <wsdl:portType name="MesaHelixSoap">
+    <wsdl:operation name="IncidenteActualiza">
+      <wsdl:input message="tns:IncidenteActualizaSoapIn" />
+      <wsdl:output message="tns:IncidenteActualizaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="IncidenteAdicionaNotas">
+      <wsdl:input message="tns:IncidenteAdicionaNotasSoapIn" />
+      <wsdl:output message="tns:IncidenteAdicionaNotasSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="OrdenTrabajoActualiza">
+      <wsdl:input message="tns:OrdenTrabajoActualizaSoapIn" />
+      <wsdl:output message="tns:OrdenTrabajoActualizaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="OrdenTrabajoAdicionaNotas">
+      <wsdl:input message="tns:OrdenTrabajoAdicionaNotasSoapIn" />
+      <wsdl:output message="tns:OrdenTrabajoAdicionaNotasSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="MesaHelixSoap" type="tns:MesaHelixSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="IncidenteActualiza">
+      <soap:operation soapAction="urn:imss:helix-invgate/IncidenteActualiza" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IncidenteAdicionaNotas">
+      <soap:operation soapAction="urn:imss:helix-invgate/IncidenteAdicionaNotas" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OrdenTrabajoActualiza">
+      <soap:operation soapAction="urn:imss:helix-invgate/OrdenTrabajoActualiza" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OrdenTrabajoAdicionaNotas">
+      <soap:operation soapAction="urn:imss:helix-invgate/OrdenTrabajoAdicionaNotas" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="MesaHelixSoap12" type="tns:MesaHelixSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="IncidenteActualiza">
+      <soap12:operation soapAction="urn:imss:helix-invgate/IncidenteActualiza" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IncidenteAdicionaNotas">
+      <soap12:operation soapAction="urn:imss:helix-invgate/IncidenteAdicionaNotas" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OrdenTrabajoActualiza">
+      <soap12:operation soapAction="urn:imss:helix-invgate/OrdenTrabajoActualiza" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OrdenTrabajoAdicionaNotas">
+      <soap12:operation soapAction="urn:imss:helix-invgate/OrdenTrabajoAdicionaNotas" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MesaHelix">
+    <wsdl:port name="MesaHelixSoap" binding="tns:MesaHelixSoap">
+      <soap:address location="http://localhost:51849/Helix/ConnHelix.asmx" />
+    </wsdl:port>
+    <wsdl:port name="MesaHelixSoap12" binding="tns:MesaHelixSoap12">
+      <soap12:address location="http://localhost:51849/Helix/ConnHelix.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

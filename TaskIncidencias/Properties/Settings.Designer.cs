@@ -32,5 +32,15 @@ namespace TaskIncidencias.Properties {
                 return ((string)(this["TaskIncidencias_WS_Remedy_MesaIMSS"]));
             }
         }
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://34.70.161.184/Helix/ConnHelix.asmx")]
+        public string TaskIncidencias_WS_Helix_MesaHelix {
+            get {
+                return ((string)(this["TaskIncidencias_WS_Helix_MesaHelix"]));
+            }
+        }
+
     }
 }

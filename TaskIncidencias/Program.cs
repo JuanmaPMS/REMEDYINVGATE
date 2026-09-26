@@ -18,7 +18,8 @@ namespace TaskIncidencias
             try
             {
                 RegistrosInvgate registros = new RegistrosInvgate();
-                ProcesaRegistro procesa = new ProcesaRegistro();              
+                //ProcesaRegistro procesa = new ProcesaRegistro();
+                ProcesaRegistroHelix procesa = new ProcesaRegistroHelix();
 
                 List<RegistrosRequest> list = registros.Get().OrderBy(x => x.fecha).ToList();
 
