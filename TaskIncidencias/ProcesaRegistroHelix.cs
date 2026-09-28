@@ -147,6 +147,11 @@ namespace TaskIncidencias
 
         private Resultado ProcesarNotaIncidente(int id, string nota, string archivos, string operacion)
         {
+            if (EsNotaAutomatica(nota))
+            {
+                return Exito("Nota automatica");
+            }
+
             try
             {
                 SB.Incidente bitacora = new SB.IncidenteData().GetIdIMSS(id);
@@ -196,6 +201,11 @@ namespace TaskIncidencias
 
         private Resultado ProcesarNotaOrdenTrabajo(int id, string nota, string archivos, string operacion)
         {
+            if (EsNotaAutomatica(nota))
+            {
+                return Exito("Nota automatica");
+            }
+
             try
             {
                 SB.OrdenTrabajo bitacora = new SB.OrdenTrabajoData().GetIdIMSS(id);
@@ -514,6 +524,11 @@ namespace TaskIncidencias
                 Success = true,
                 Message = mensaje
             };
+        }
+
+        private static bool EsNotaAutomatica(string nota)
+        {
+            return !String.IsNullOrEmpty(nota) && nota.IndexOf("[No message provided]", StringComparison.Ordinal) >= 0;
         }
 
         private Resultado Error(string operacion, int id, Exception ex)
