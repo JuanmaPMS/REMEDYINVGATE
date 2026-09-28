@@ -27,6 +27,11 @@ namespace TaskIncidencias
                     return TicketNoEncontrado();
                 }
 
+                if (IncidenteEnEstatusResolved(bitacora))
+                {
+                    return Exito("OK");
+                }
+
                 if (idEstatus != 1 && idEstatus != 2 && idEstatus != 3)
                 {
                     return Exito("OK");
@@ -89,6 +94,11 @@ namespace TaskIncidencias
                 if (bitacora == null || bitacora.TicketInvgate <= 0)
                 {
                     return TicketNoEncontrado();
+                }
+
+                if (OrdenTrabajoEnEstatusComplete(bitacora))
+                {
+                    return Exito("OK");
                 }
 
                 if (idEstatus != 1 && idEstatus != 2 && idEstatus != 3)
@@ -166,6 +176,11 @@ namespace TaskIncidencias
 
                 if (notaLimpia.Contains("@@R"))
                 {
+                    if (IncidenteEnEstatusResolved(bitacora))
+                    {
+                        return EnviarNotaIncidente(id, bitacora.TicketRemedy, TextoResolucion(partes), adjuntos);
+                    }
+
                     int idEstatusImss = new SB.CatalogosData().GetEstatusIncidenteIMSS(5);
                     int idMotivo = Convert.ToInt32(partes[0].Substring(3).Trim());
                     string[] categoriasResolucion = partes[1].Split(new[] { "|" }, StringSplitOptions.None);
@@ -180,6 +195,11 @@ namespace TaskIncidencias
 
                 if (notaLimpia.Contains("@@P"))
                 {
+                    if (IncidenteEnEstatusResolved(bitacora))
+                    {
+                        return EnviarNotaIncidente(id, bitacora.TicketRemedy, TextoPendiente(partes), adjuntos);
+                    }
+
                     int idEstatusImss = new SB.CatalogosData().GetEstatusIncidenteIMSS(4);
                     int idMotivo = Convert.ToInt32(partes[0].Substring(3, 5).Trim());
                     Resultado resultado = EnviarActualizacionIncidente(id, bitacora.TicketRemedy, idEstatusImss, idMotivo, null, null, null, null);
@@ -220,6 +240,11 @@ namespace TaskIncidencias
 
                 if (notaLimpia.Contains("@@R"))
                 {
+                    if (OrdenTrabajoEnEstatusComplete(bitacora))
+                    {
+                        return EnviarNotaOrdenTrabajo(id, bitacora.TicketRemedy, TextoResolucion(partes), adjuntos);
+                    }
+
                     int idEstatusImss = new SB.CatalogosData().GetEstatusWOIMSS(5);
                     int idMotivo = Convert.ToInt32(partes[0].Substring(3, 5).Trim());
                     Resultado resultado = EnviarActualizacionOrdenTrabajo(id, bitacora.TicketRemedy, idEstatusImss, idMotivo, TextoResolucion(partes));
@@ -233,6 +258,11 @@ namespace TaskIncidencias
 
                 if (notaLimpia.Contains("@@P"))
                 {
+                    if (OrdenTrabajoEnEstatusComplete(bitacora))
+                    {
+                        return EnviarNotaOrdenTrabajo(id, bitacora.TicketRemedy, TextoPendiente(partes), adjuntos);
+                    }
+
                     int idEstatusImss = new SB.CatalogosData().GetEstatusWOIMSS(4);
                     int idMotivo = Convert.ToInt32(partes[0].Substring(3).Trim());
                     Resultado resultado = EnviarActualizacionOrdenTrabajo(id, bitacora.TicketRemedy, idEstatusImss, idMotivo, null);
@@ -273,7 +303,12 @@ namespace TaskIncidencias
                 Resolucion = resolucion
             };
 
-            return DesdeRespuesta(helix.IncidenteActualiza(solicitud));
+            Resultado resultado = DesdeRespuesta(helix.IncidenteActualiza(solicitud));
+            if (EsCambioEstadoNoPermitidoIncidente(resultado.Message))
+            {
+                resultado.Success = true;
+            }
+            return resultado;
         }
 
         private Resultado EnviarActualizacionOrdenTrabajo(int id, string ticketImss, int idEstatusImss, int? motivo, string notaResolucion)
@@ -294,7 +329,12 @@ namespace TaskIncidencias
                 NotaResolucion = notaResolucion
             };
 
-            return DesdeRespuesta(helix.OrdenTrabajoActualiza(solicitud));
+            Resultado resultado = DesdeRespuesta(helix.OrdenTrabajoActualiza(solicitud));
+            if (EsCambioEstadoNoPermitidoOrdenTrabajo(resultado.Message))
+            {
+                resultado.Success = true;
+            }
+            return resultado;
         }
 
         private Resultado EnviarNotaIncidente(int id, string ticketImss, string nota, List<AttachmentResponse> adjuntos)
@@ -503,6 +543,37 @@ namespace TaskIncidencias
             };
         }
 
+        private static bool EsCambioEstadoNoPermitidoIncidente(string mensaje)
+        {
+            return EsCambioEstadoNoPermitido(mensaje, "Resolved", "Closed");
+        }
+
+        private static bool EsCambioEstadoNoPermitidoOrdenTrabajo(string mensaje)
+        {
+            return EsCambioEstadoNoPermitido(mensaje, "Completed", "Closed", "Cancelled");
+        }
+
+        private static bool EsCambioEstadoNoPermitido(string mensaje, params string[] estatusFinales)
+        {
+            if (String.IsNullOrEmpty(mensaje) ||
+                !mensaje.Contains("ERROR: El cambio de estado") ||
+                !mensaje.Contains("no está permitido") ||
+                !mensaje.Contains("estatus actual"))
+            {
+                return false;
+            }
+
+            foreach (string estatusFinal in estatusFinales)
+            {
+                if (mensaje.Contains("estatus actual (" + estatusFinal + ")"))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private static Resultado AccionNoImplementada()
         {
             return Exito("Acción no implementada");
@@ -524,6 +595,16 @@ namespace TaskIncidencias
                 Success = true,
                 Message = mensaje
             };
+        }
+
+        private static bool IncidenteEnEstatusResolved(SB.Incidente bitacora)
+        {
+            return bitacora != null && String.Equals((bitacora.Estado ?? String.Empty).Trim(), "4", StringComparison.Ordinal);
+        }
+
+        private static bool OrdenTrabajoEnEstatusComplete(SB.OrdenTrabajo bitacora)
+        {
+            return bitacora != null && String.Equals((bitacora.Estado ?? String.Empty).Trim(), "5", StringComparison.Ordinal);
         }
 
         private static bool EsNotaAutomatica(string nota)
