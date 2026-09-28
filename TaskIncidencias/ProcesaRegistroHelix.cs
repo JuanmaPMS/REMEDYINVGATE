@@ -167,7 +167,7 @@ namespace TaskIncidencias
                 if (notaLimpia.Contains("@@R"))
                 {
                     int idEstatusImss = new SB.CatalogosData().GetEstatusIncidenteIMSS(5);
-                    int idMotivo = Convert.ToInt32(partes[0].Substring(3).Trim());
+                    int idMotivo = Convert.ToInt32(partes[0].Substring(3,5).Trim());
                     string[] categoriasResolucion = partes[1].Split(new[] { "|" }, StringSplitOptions.None);
                     Resultado resultado = EnviarActualizacionIncidente(id, bitacora.TicketRemedy, idEstatusImss, idMotivo, TextoResolucion(partes), categoriasResolucion[1], categoriasResolucion[2], categoriasResolucion[3]);
                     if (resultado.Success)
@@ -234,7 +234,7 @@ namespace TaskIncidencias
                 if (notaLimpia.Contains("@@P"))
                 {
                     int idEstatusImss = new SB.CatalogosData().GetEstatusWOIMSS(4);
-                    int idMotivo = Convert.ToInt32(partes[0].Substring(3).Trim());
+                    int idMotivo = Convert.ToInt32(partes[0].Substring(3, 5).Trim());
                     Resultado resultado = EnviarActualizacionOrdenTrabajo(id, bitacora.TicketRemedy, idEstatusImss, idMotivo, null);
                     if (resultado.Success)
                     {
