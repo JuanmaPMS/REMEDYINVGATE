@@ -545,12 +545,12 @@ namespace TaskIncidencias
 
         private static bool EsCambioEstadoNoPermitidoIncidente(string mensaje)
         {
-            return EsCambioEstadoNoPermitido(mensaje, "Resolved", "Closed");
+            return EsCambioEstadoNoPermitido(mensaje, "Resolved", "Closed", "In Progress");
         }
 
         private static bool EsCambioEstadoNoPermitidoOrdenTrabajo(string mensaje)
         {
-            return EsCambioEstadoNoPermitido(mensaje, "Completed", "Closed", "Cancelled");
+            return EsCambioEstadoNoPermitido(mensaje, "Completed", "Closed", "Cancelled", "In Progress");
         }
 
         private static bool EsCambioEstadoNoPermitido(string mensaje, params string[] estatusFinales)
