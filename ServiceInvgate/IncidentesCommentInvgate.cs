@@ -33,10 +33,15 @@ namespace ServiceInvgate
 
                 string parametros = String.Join("&", properties.ToArray());
 
-                var client = new RestClient(UrlServicios+ "/incident.comment" + "?" + parametros);
+                var options = new RestClientOptions(UrlServicios + "/incident.comment" + "?" + parametros)
+                {
+                    Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator(user, password)
+                };
+                //var client = new RestClient(UrlServicios + "/incident.comment" + "?" + parametros);
+                var client = new RestClient(options);
 
                 var request = new RestRequest("", Method.Get);
-                client.Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator(user, password);
+                //client.Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator(user, password);
 
                 var response = client.Execute(request);
 
@@ -65,9 +70,14 @@ namespace ServiceInvgate
              Entities.Intermedio.Result Resultado = new Entities.Intermedio.Result();
             try
             {
-                var client = new RestClient(UrlServicios + "/incident.comment");
+                var options = new RestClientOptions(UrlServicios + "/incident.comment")
+                {
+                    Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator(user, password)
+                };
+                //var client = new RestClient(UrlServicios + "/incident.comment");
+                var client = new RestClient(options);
                 var request = new RestRequest("", Method.Post);
-                client.Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator(user, password);
+                //client.Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator(user, password);
                 request.AddHeader("Content-Type", "application/json");
                 request.AddParameter("application/json", comentario, ParameterType.RequestBody);
                 var response = client.Execute(request);

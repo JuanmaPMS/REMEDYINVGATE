@@ -34,10 +34,15 @@ namespace ServiceInvgate
 
                 string parametros = String.Join("&", properties.ToArray());
 
-                var client = new RestClient(UrlServicios + "/incident" + "?" + parametros);
+                var options = new RestClientOptions(UrlServicios + "/incident" + "?" + parametros)
+                {
+                    Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator(user, password)
+                }; 
+                //var client = new RestClient(UrlServicios + "/incident" + "?" + parametros);
+                var client = new RestClient(options);
 
                 var request = new RestRequest("", Method.Get);
-                client.Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator(user, password);
+                //client.Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator(user, password);
 
                 var response = client.Execute(request);
 
@@ -65,12 +70,17 @@ namespace ServiceInvgate
             Entities.Intermedio.Result Resultado = new Entities.Intermedio.Result();
 
 
-            object data;
+            //object data;
             try
             {
-                var client = new RestClient(UrlServicios + "/incident");
+                var options = new RestClientOptions(UrlServicios + "/incident")
+                {
+                    Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator(user, password)
+                }; 
+                //var client = new RestClient(UrlServicios + "/incident");
+                var client = new RestClient(options);
                 var request = new RestRequest("", Method.Post);
-                client.Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator(user, password);
+                //client.Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator(user, password);
                 request.AddHeader("Content-Type", "application/json");
                 request.AddParameter("application/json", incidente, ParameterType.RequestBody);
                 var response = client.Execute(request);
@@ -129,9 +139,14 @@ namespace ServiceInvgate
             Entities.Intermedio.Result Resultado = new Entities.Intermedio.Result();
             try
             {
-                var client = new RestClient(UrlServicios + "/incident");
+                var options = new RestClientOptions(UrlServicios + "/incident")
+                {
+                    Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator(user, password)
+                }; 
+                //var client = new RestClient(UrlServicios + "/incident");
+                var client = new RestClient(options);
                 var request = new RestRequest("", Method.Put);
-                client.Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator(user, password);
+                //client.Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator(user, password);
                 request.AddHeader("Content-Type", "application/json");
                 request.AddParameter("application/json", incidente, ParameterType.RequestBody);
                 var response = client.Execute(request);

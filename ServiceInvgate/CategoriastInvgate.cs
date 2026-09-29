@@ -456,10 +456,16 @@ namespace ServiceInvgate
 
             try
             {
-                var client = new RestClient(UrlServicios + "/categories");
+                var options = new RestClientOptions(UrlServicios + "/categories")
+                {
+                    Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator(user, password)
+                };
+
+                //var client = new RestClient(UrlServicios + "/categories");
+                var client = new RestClient(options);
 
                 var request = new RestRequest("", Method.Get);
-                client.Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator(user, password);
+                //client.Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator(user, password);
 
                 var response = client.Execute(request);
 
@@ -563,10 +569,15 @@ namespace ServiceInvgate
 
             try
             {
-                var client = new RestClient(UrlServicios + "/categories");
+                var options = new RestClientOptions(UrlServicios + "/categories")
+                {
+                    Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator(user, password)
+                };
+                //var client = new RestClient(UrlServicios + "/categories");
+                var client = new RestClient(options);
 
                 var request = new RestRequest("", Method.Get);
-                client.Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator(user, password);
+                //client.Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator(user, password);
 
                 var response = client.Execute(request);
 
@@ -611,10 +622,15 @@ namespace ServiceInvgate
 
             try
             {
-                var client = new RestClient(UrlServicios + "/categories");
+                var options = new RestClientOptions(UrlServicios + "/categories")
+                {
+                    Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator(user, password)
+                };
+                //var client = new RestClient(UrlServicios + "/categories");
+                var client = new RestClient(options);
 
                 var request = new RestRequest("", Method.Get);
-                client.Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator(user, password);
+                //client.Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator(user, password);
 
                 var response = client.Execute(request);
 
