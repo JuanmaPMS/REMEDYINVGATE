@@ -43,10 +43,16 @@ namespace ServiceInvgate
 
                 string parametros = String.Join("&", properties.ToArray());
 
-                var client = new RestClient("https://servicio.grupopm.mx/api/v1/incident"+"?" + parametros);
+                var options = new RestClientOptions("https://servicio.grupopm.mx/api/v1/incident" + "?" + parametros)
+                {
+                    Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator("remedy-imss", "TndbhizYaot15zCfNqbaoon9")
+                };
+
+                //var client = new RestClient("https://servicio.grupopm.mx/api/v1/incident"+"?" + parametros);
+                var client = new RestClient(options);
 
                 var request = new RestRequest("", Method.Get);
-                client.Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator("remedy-imss", "TndbhizYaot15zCfNqbaoon9");
+                //client.Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator("remedy-imss", "TndbhizYaot15zCfNqbaoon9");
                 //request.AddHeader("Authorization", "Basic cmVtZWR5LWltc3M6VG5kYmhpellhb3QxNXpDZk5xYmFvb245");
                 //request.AddHeader("Cookie", "PHPSESSID=b3a2974d3b4cb6fcb4ea992dcb6997a8");
                 //request.AddHeader("Content-Type", "application/json");
