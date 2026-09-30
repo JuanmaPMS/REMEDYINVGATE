@@ -31,8 +31,8 @@ namespace TaskIncidencias
                 {
                     return Exito("OK");
                 }
-
-                if (idEstatus != 1 && idEstatus != 2 && idEstatus != 3)
+                //Solo estatus Abierto/En espera = In progress
+                if (idEstatus != 2 && idEstatus != 4)
                 {
                     return Exito("OK");
                 }
@@ -100,8 +100,8 @@ namespace TaskIncidencias
                 {
                     return Exito("OK");
                 }
-
-                if (idEstatus != 1 && idEstatus != 2 && idEstatus != 3)
+                //Solo estatus Abierto/En espera = In progress
+                if (idEstatus != 2 && idEstatus != 4)
                 {
                     return Exito("OK");
                 }
@@ -206,7 +206,7 @@ namespace TaskIncidencias
                     if (resultado.Success)
                     {
                         EnviarNotaIncidente(id, bitacora.TicketRemedy, TextoPendiente(partes), adjuntos);
-                        ActualizarEstadoInvgate(id, 4);
+                        ActualizarEstadoInvgate(id, 3);
                     }
                     return resultado;
                 }
@@ -269,7 +269,7 @@ namespace TaskIncidencias
                     if (resultado.Success)
                     {
                         EnviarNotaOrdenTrabajo(id, bitacora.TicketRemedy, TextoPendiente(partes), adjuntos);
-                        ActualizarEstadoInvgate(id, 4);
+                        ActualizarEstadoInvgate(id, 3);
                     }
                     return resultado;
                 }
