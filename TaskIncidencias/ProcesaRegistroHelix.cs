@@ -200,7 +200,7 @@ namespace TaskIncidencias
                         return EnviarNotaIncidente(id, bitacora.TicketRemedy, TextoPendiente(partes), adjuntos);
                     }
 
-                    int idEstatusImss = new SB.CatalogosData().GetEstatusIncidenteIMSS(4);
+                    int idEstatusImss = new SB.CatalogosData().GetEstatusIncidenteIMSS(3);
                     int idMotivo = Convert.ToInt32(partes[0].Substring(3, 5).Trim());
                     Resultado resultado = EnviarActualizacionIncidente(id, bitacora.TicketRemedy, idEstatusImss, idMotivo, null, null, null, null);
                     if (resultado.Success)
@@ -263,7 +263,7 @@ namespace TaskIncidencias
                         return EnviarNotaOrdenTrabajo(id, bitacora.TicketRemedy, TextoPendiente(partes), adjuntos);
                     }
 
-                    int idEstatusImss = new SB.CatalogosData().GetEstatusWOIMSS(4);
+                    int idEstatusImss = new SB.CatalogosData().GetEstatusWOIMSS(3);
                     int idMotivo = Convert.ToInt32(partes[0].Substring(3, 5).Trim());
                     Resultado resultado = EnviarActualizacionOrdenTrabajo(id, bitacora.TicketRemedy, idEstatusImss, idMotivo, null);
                     if (resultado.Success)
