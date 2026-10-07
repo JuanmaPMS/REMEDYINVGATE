@@ -290,8 +290,10 @@ namespace Inter_ServiceDesk_PM
                             {
                                 IncidentesCommentPostRequest VarComent = new IncidentesCommentPostRequest();
 
+                                string nota = CleanInput(request.Notas ?? string.Empty);
+
                                 VarComent.request_id = idTicketInvgate;
-                                VarComent.comment = CleanInput(request.Notas) == string.Empty ? "Ticket Solucionado" : request.Notas;
+                                VarComent.comment = string.IsNullOrWhiteSpace(nota) ? "Ticket Solucionado" : nota;
                                 VarComent.author_id = 2;
                                 VarComent.is_solution = true;
 
@@ -814,8 +816,10 @@ namespace Inter_ServiceDesk_PM
                             {
                                 IncidentesCommentPostRequest VarComent = new IncidentesCommentPostRequest();
 
+                                string nota = CleanInput(request.Notas ?? string.Empty);
+
                                 VarComent.request_id = idTicketInvgate;
-                                VarComent.comment = CleanInput(request.Notas) == string.Empty ? "Solicitud Terminada" : request.Notas; ;
+                                VarComent.comment = string.IsNullOrWhiteSpace(nota) ? "Solicitud Terminada" : nota;
                                 VarComent.author_id = 2;
                                 VarComent.is_solution = true;
 
