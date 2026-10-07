@@ -200,7 +200,8 @@ namespace TaskIncidencias
             {
                 //return Regex.Replace(strIn, @"[^\w\.@-]", "",
                 //                     RegexOptions.None, TimeSpan.FromSeconds(1.5));
-                return Regex.Replace(strIn, "<.*?>", string.Empty);
+                string texto = System.Net.WebUtility.HtmlDecode(strIn ?? String.Empty);
+                return Regex.Replace(texto, "<.*?>", string.Empty);
 
             }
             catch (RegexMatchTimeoutException)

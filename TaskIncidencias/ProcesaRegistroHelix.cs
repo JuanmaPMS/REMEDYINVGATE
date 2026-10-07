@@ -498,7 +498,8 @@ namespace TaskIncidencias
 
         private static string LimpiarNota(string nota)
         {
-            return Regex.Replace(nota ?? String.Empty, "<.*?>", String.Empty);
+            string notaDecodificada = System.Net.WebUtility.HtmlDecode(nota ?? String.Empty);
+            return Regex.Replace(notaDecodificada, "<.*?>", String.Empty);
         }
 
         private static string ExtraerArchivos(string nota)
