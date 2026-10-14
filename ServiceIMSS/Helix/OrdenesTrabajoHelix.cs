@@ -11,8 +11,11 @@ namespace ServiceIMSS.Helix
 {
     public class OrdenesTrabajoHelix
     {
-        private const string EspacioDeNombres = "urn:IMSS_Integraciones_Bandeja_De_Entrada_Ordenes_de_Trabajo";
-        private const string NombreServicio = "IMSS_Integraciones_Bandeja_De_Entrada_Ordenes_de_Trabajo";
+        // Contrato de producción definido en WoHelixProd-soapui-project.xml.
+        // El sufijo identifica la bandeja del proveedor y forma parte tanto del
+        // namespace como del nombre publicado del web service.
+        private const string EspacioDeNombres = "urn:IMSS_Integraciones_Bandeja_De_Entrada_Ordenes_de_Trabajo_PEOPLE_MEDIA";
+        private const string NombreServicio = "IMSS_Integraciones_Bandeja_De_Entrada_Ordenes_de_Trabajo_PEOPLE_MEDIA";
         private readonly string user = ConfigurationManager.AppSettings["user"];
         private readonly string password = ConfigurationManager.AppSettings["password"];
         private readonly string nombreProveedor = ConfigurationManager.AppSettings["Proveedor"];
@@ -37,7 +40,7 @@ namespace ServiceIMSS.Helix
                 Elemento("Nota_de_Resolucion", data.NotaResolucion));
 
             return EjecutarSolicitud(
-                "urn:IMSS_Integraciones_Bandeja_De_Entrada_Ordenes_de_Trabajo/Actualiza_Ordenes_de_Trabajo",
+                EspacioDeNombres + "/Actualiza_Ordenes_de_Trabajo",
                 "Actualiza_Ordenes_de_TrabajoResponse",
                 body);
         }
@@ -68,7 +71,7 @@ namespace ServiceIMSS.Helix
                 Elemento("Adjunto_3_Size", TamanoAdjunto(data.Adjunto3Tamano)));
 
             return EjecutarSolicitud(
-                "urn:IMSS_Integraciones_Bandeja_De_Entrada_Ordenes_de_Trabajo/Bitacora_de_Trabajo_Orden_de_Trabajo",
+                EspacioDeNombres + "/Bitacora_de_Trabajo_Orden_de_Trabajo",
                 "Bitacora_de_Trabajo_Orden_de_TrabajoResponse",
                 body);
         }

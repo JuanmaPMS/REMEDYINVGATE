@@ -11,8 +11,11 @@ namespace ServiceIMSS.Helix
 {
     public class IncidentesHelix
     {
-        private const string EspacioDeNombres = "urn:IMSS_Integraciones_Bandeja_De_Entrada_Incidencias";
-        private const string NombreServicio = "IMSS_Integraciones_Bandeja_De_Entrada_Incidencias";
+        // Contrato de producción definido en IncHelixProd-soapui-project.xml.
+        // El sufijo identifica la bandeja del proveedor y forma parte tanto del
+        // namespace como del nombre publicado del web service.
+        private const string EspacioDeNombres = "urn:IMSS_Integraciones_Bandeja_De_Entrada_Incidencias_PEOPLE_MEDIA";
+        private const string NombreServicio = "IMSS_Integraciones_Bandeja_De_Entrada_Incidencias_PEOPLE_MEDIA";
         private readonly string user = ConfigurationManager.AppSettings["user"];
         private readonly string password = ConfigurationManager.AppSettings["password"];
         private readonly string nombreProveedor = ConfigurationManager.AppSettings["Proveedor"];
@@ -40,7 +43,7 @@ namespace ServiceIMSS.Helix
                 Elemento("Resolucion", data.Resolucion));
 
             return EjecutarSolicitud(
-                "urn:IMSS_Integraciones_Bandeja_De_Entrada_Incidencias/Actualiza_Incidencias",
+                EspacioDeNombres + "/Actualiza_Incidencias",
                 "Actualiza_IncidenciasResponse",
                 body);
         }
@@ -71,7 +74,7 @@ namespace ServiceIMSS.Helix
                 Elemento("Adjunto_3_Size", TamanoAdjunto(data.Adjunto3Tamano)));
 
             return EjecutarSolicitud(
-                "urn:IMSS_Integraciones_Bandeja_De_Entrada_Incidencias/Bitacora_de_Trabajo_Incidencias",
+                EspacioDeNombres + "/Bitacora_de_Trabajo_Incidencias",
                 "Bitacora_de_Trabajo_IncidenciasResponse",
                 body);
         }
