@@ -521,8 +521,12 @@ namespace TaskIncidencias
 
         private static string TextoResolucion(string[] partes)
         {
-            if (partes.Length > 2 && !String.IsNullOrWhiteSpace(partes[2]))
+            if (partes.Length > 2)
             {
+                if (String.IsNullOrWhiteSpace(partes[2]))
+                {
+                    return "Ticket resuelto";
+                }
                 return partes[2].Trim();
             }
 
