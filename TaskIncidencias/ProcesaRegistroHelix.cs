@@ -178,16 +178,26 @@ namespace TaskIncidencias
                 {
                     if (IncidenteEnEstatusResolved(bitacora))
                     {
-                        return EnviarNotaIncidente(id, bitacora.TicketRemedy, TextoResolucion(partes), adjuntos);
+                        if (!String.IsNullOrEmpty(TextoResolucion(partes)))
+                        {
+                            return EnviarNotaIncidente(id, bitacora.TicketRemedy, TextoResolucion(partes), adjuntos);
+                        }
+                        else
+                        {
+                            return Exito("OK");
+                        }
                     }
 
                     int idEstatusImss = new SB.CatalogosData().GetEstatusIncidenteIMSS(5);
-                    int idMotivo = Convert.ToInt32(partes[0].Substring(3,5).Trim());
+                    int idMotivo = partes[0].Length > 7 ? Convert.ToInt32(partes[0].Substring(3, 5).Trim()) : Convert.ToInt32(partes[0].Substring(3, partes[0].Length - 3).Trim());
                     string[] categoriasResolucion = partes[1].Split(new[] { "|" }, StringSplitOptions.None);
                     Resultado resultado = EnviarActualizacionIncidente(id, bitacora.TicketRemedy, idEstatusImss, idMotivo, TextoResolucion(partes), categoriasResolucion[1], categoriasResolucion[2], categoriasResolucion[3]);
                     if (resultado.Success)
                     {
-                        EnviarNotaIncidente(id, bitacora.TicketRemedy, TextoResolucion(partes), adjuntos);
+                        if (!String.IsNullOrEmpty(TextoResolucion(partes)))
+                        {
+                            EnviarNotaIncidente(id, bitacora.TicketRemedy, TextoResolucion(partes), adjuntos);
+                        }
                         ActualizarEstadoInvgate(id, 5);
                     }
                     return resultado;
@@ -197,7 +207,14 @@ namespace TaskIncidencias
                 {
                     if (IncidenteEnEstatusResolved(bitacora))
                     {
-                        return EnviarNotaIncidente(id, bitacora.TicketRemedy, TextoPendiente(partes), adjuntos);
+                        if (!String.IsNullOrEmpty(TextoPendiente(partes)))
+                        {
+                            return EnviarNotaIncidente(id, bitacora.TicketRemedy, TextoPendiente(partes), adjuntos);
+                        }
+                        else
+                        {
+                            return Exito("OK");
+                        }
                     }
 
                     int idEstatusImss = new SB.CatalogosData().GetEstatusIncidenteIMSS(3);
@@ -205,7 +222,9 @@ namespace TaskIncidencias
                     Resultado resultado = EnviarActualizacionIncidente(id, bitacora.TicketRemedy, idEstatusImss, idMotivo, null, null, null, null);
                     if (resultado.Success)
                     {
-                        EnviarNotaIncidente(id, bitacora.TicketRemedy, TextoPendiente(partes), adjuntos);
+                        if (!String.IsNullOrEmpty(TextoPendiente(partes))) { 
+                            EnviarNotaIncidente(id, bitacora.TicketRemedy, TextoPendiente(partes), adjuntos);
+                        }
                         ActualizarEstadoInvgate(id, 3);
                     }
                     return resultado;
@@ -242,15 +261,22 @@ namespace TaskIncidencias
                 {
                     if (OrdenTrabajoEnEstatusComplete(bitacora))
                     {
-                        return EnviarNotaOrdenTrabajo(id, bitacora.TicketRemedy, TextoResolucion(partes), adjuntos);
+                        if (!String.IsNullOrEmpty(TextoResolucion(partes))) { 
+                            return EnviarNotaOrdenTrabajo(id, bitacora.TicketRemedy, TextoResolucion(partes), adjuntos);
+                        } else {
+                            return Exito("OK");
+                        }
                     }
 
                     int idEstatusImss = new SB.CatalogosData().GetEstatusWOIMSS(5);
-                    int idMotivo = Convert.ToInt32(partes[0].Substring(3, 5).Trim());
+                    int idMotivo = partes[0].Length > 7 ? Convert.ToInt32(partes[0].Substring(3, 5).Trim()) : Convert.ToInt32(partes[0].Substring(3, partes[0].Length -3).Trim());
                     Resultado resultado = EnviarActualizacionOrdenTrabajo(id, bitacora.TicketRemedy, idEstatusImss, idMotivo, TextoResolucion(partes));
                     if (resultado.Success)
                     {
-                        EnviarNotaOrdenTrabajo(id, bitacora.TicketRemedy, TextoResolucion(partes), adjuntos);
+                        if (!String.IsNullOrEmpty(TextoResolucion(partes)))
+                        {
+                            EnviarNotaOrdenTrabajo(id, bitacora.TicketRemedy, TextoResolucion(partes), adjuntos);
+                        }
                         ActualizarEstadoInvgate(id, 5);
                     }
                     return resultado;
@@ -258,9 +284,17 @@ namespace TaskIncidencias
 
                 if (notaLimpia.Contains("@@P"))
                 {
+
                     if (OrdenTrabajoEnEstatusComplete(bitacora))
                     {
-                        return EnviarNotaOrdenTrabajo(id, bitacora.TicketRemedy, TextoPendiente(partes), adjuntos);
+                        if (!String.IsNullOrEmpty(TextoPendiente(partes)))
+                        {
+                            return EnviarNotaOrdenTrabajo(id, bitacora.TicketRemedy, TextoPendiente(partes), adjuntos);
+                        }
+                        else
+                        {
+                            return Exito("OK");
+                        }
                     }
 
                     int idEstatusImss = new SB.CatalogosData().GetEstatusWOIMSS(3);
@@ -268,7 +302,10 @@ namespace TaskIncidencias
                     Resultado resultado = EnviarActualizacionOrdenTrabajo(id, bitacora.TicketRemedy, idEstatusImss, idMotivo, null);
                     if (resultado.Success)
                     {
-                        EnviarNotaOrdenTrabajo(id, bitacora.TicketRemedy, TextoPendiente(partes), adjuntos);
+                        if (!String.IsNullOrEmpty(TextoPendiente(partes)))
+                        {
+                            EnviarNotaOrdenTrabajo(id, bitacora.TicketRemedy, TextoPendiente(partes), adjuntos);
+                        }
                         ActualizarEstadoInvgate(id, 3);
                     }
                     return resultado;
@@ -536,7 +573,7 @@ namespace TaskIncidencias
         private static string TextoPendiente(string[] partes)
         {
             string encabezado = partes.Length == 0 ? String.Empty : partes[0];
-            return encabezado.Length > 8 ? encabezado.Substring(8).Trim() : encabezado.Trim();
+            return encabezado.Length > 8 ? encabezado.Substring(8).Trim() : string.Empty;
         }
 
         private static Resultado DesdeRespuesta(Helix.Result respuesta)
