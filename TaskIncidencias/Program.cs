@@ -76,10 +76,17 @@ namespace TaskIncidencias
                         }
                     }
 
-                    if (resultado.Success)
+                    /*if (resultado.Success)
                     { procesados.Add(req.id); }
                     else
-                    { log.LogMsg("Error|" + req.tipoControl + "|Id: " + req.idIncidencia.ToString() + "|" + resultado.Message); }
+                    { log.LogMsg("Error|" + req.tipoControl + "|Id: " + req.id.ToString() + "|"+ "|Id incidencia: " + req.idIncidencia.ToString() + "|" + resultado.Message); }*/
+                    //Todos se actualizan  1 = PROCESADO para que no se intente el reenvio, solo se guarda en la bitácora de error
+                    procesados.Add(req.id);
+
+                    if (!resultado.Success)
+                    { 
+                        log.LogMsg("Error|" + req.tipoControl + "|Id: " + req.id.ToString() + "|" + "|Id incidencia: " + req.idIncidencia.ToString() + "|" + resultado.Message); 
+                    }
                 }
 
                 bool actualiza = false;
